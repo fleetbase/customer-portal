@@ -15,8 +15,21 @@ export default class CustomerPortalEngine extends Engine {
         externalRoutes,
     };
     setupExtension = function (app, engine, universe) {
+        // create registries
+        universe.createRegistries(['customer-portal:sidebar']);
+
         // register menu item in header
-        universe.registerHeaderMenuItem('Customer Portal', 'console.customer-portal', { icon: 'layer-group', priority: 5 });
+        universe.registerMenuItem('auth:login', 'Customer Portal', {
+            route: 'customer-portal.login',
+            type: 'link',
+            wrapperClass: 'btn-block py-1 border dark:border-gray-700 border-gray-200 hover:opacity-50',
+            onClick: () => {
+                const router = app.lookup('service:router');
+                if (router) {
+                    router.transitionTo('customer-portal.portal-auth.login');
+                }
+            },
+        });
     };
 }
 

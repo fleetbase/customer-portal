@@ -1,0 +1,27 @@
+<header id="portal-header" class="portal-header">
+    <div class="portal-header-left"></div>
+    <div class="portal-header-right">
+        <Layout::Header::LoadingIndicator />
+        <div id="portal-header-actions"></div>
+        <div class="flex items-center justify-end">
+            <div class="flex items-center pr-1 space-x-1">
+                <LocaleSelectorTray />
+                {{!-- <NotificationTray @registerAPI={{@registerNotificationTrayApi}} @onClickNotification={{@onClickNotification}} /> --}}
+            </div>
+            <div class="flex items-center justify-end">
+                <Layout::Header::Dropdown @items={{this.userMenuItems}} @onAction={{@onAction}} class="flex-shrink-0" @triggerClass="flex-shrink-0" as |dd|>
+                    <div class="next-user-button-trigger flex-shrink-0 {{if dd.isOpen 'is-open'}}">
+                        <Image
+                            class="rounded-full h-5 w-5 shadow-sm flex-shrink-0"
+                            height="20"
+                            width="20"
+                            src={{this.currentUser.avatarUrl}}
+                            @fallbackSrc="https://s3.ap-southeast-1.amazonaws.com/flb-assets/static/no-avatar.png"
+                            alt={{this.currentUser.name}}
+                        />
+                    </div>
+                </Layout::Header::Dropdown>
+            </div>
+        </div>
+    </div>
+</header>
