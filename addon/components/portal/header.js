@@ -14,7 +14,7 @@ export default class PortalHeaderComponent extends Component {
     @tracked menuItems = [];
     @tracked userMenuItems = [];
 
-    constructor(owner, { menuItems = [], organizationMenuItems = [], userMenuItems = [] }) {
+    constructor(owner, { menuItems = [], userMenuItems = [] }) {
         super(...arguments);
         this.company = this.currentUser.getCompany();
         this.menuItems = this.mergeMenuItems(menuItems);
@@ -23,6 +23,9 @@ export default class PortalHeaderComponent extends Component {
 
     mergeMenuItems(menuItems = []) {
         const headerMenuItems = this.universe.portalHeaderMenuItems ?? [];
+
+        // Push provided menu items
+        headerMenuItems.pushObjects(menuItems);
 
         // Callback to allow mutation of menu items
         if (typeof this.args.mutateMenuItems === 'function') {

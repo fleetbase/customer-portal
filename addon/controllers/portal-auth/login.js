@@ -195,6 +195,15 @@ export default class PortalAuthLoginController extends Controller {
     }
 
     /**
+     * Transition the user back to console.
+     *
+     * @memberof PortalAuthLoginController
+     */
+    @action transitionToConsole() {
+        this.hostRouter.transitionTo('console');
+    }
+
+    /**
      * Sets correct route to send user to after login.
      *
      * @void

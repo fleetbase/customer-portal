@@ -16,7 +16,17 @@ export default class CustomerPortalEngine extends Engine {
     };
     setupExtension = function (app, engine, universe) {
         // create registries
-        universe.createRegistries(['customer-portal:sidebar']);
+        universe.createRegistries(['customer-portal:sidebar', 'customer-portal:auth:login']);
+
+        // register hook to redirect customers to portal
+        universe.registerHook('console:before-model', (session, router) => {
+            if (session.data.authenticated.type === 'customer') {
+                return router.transitionTo('customer-portal');
+            }
+        });
+
+        // register a customer dashboard
+        universe.registerDashboard('customer-portal');
 
         // register menu item in header
         universe.registerMenuItem('auth:login', 'Customer Portal', {
