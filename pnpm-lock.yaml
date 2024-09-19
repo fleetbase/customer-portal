@@ -44,6 +44,9 @@ importers:
       ember-cli-htmlbars:
         specifier: ^6.3.0
         version: 6.3.0
+      ember-drag-sort:
+        specifier: ^3.0.1
+        version: 3.0.1
       ember-intl:
         specifier: 6.3.2
         version: 6.3.2(@babel/core@7.25.2)(webpack@5.94.0)
@@ -3862,6 +3865,10 @@ packages:
   ember-destroyable-polyfill@2.0.3:
     resolution: {integrity: sha512-TovtNqCumzyAiW0/OisSkkVK93xnVF4NRU6+FN0ubpfwEOpRrmM2RqDwXI6YAChCgSHON1cz0DfQStpA1Gjuuw==}
     engines: {node: 10.* || >= 12}
+
+  ember-drag-sort@3.0.1:
+    resolution: {integrity: sha512-yVCS+OjRBQUv18kZ8Uq8fQXxCqtFYB+oC4Vlm3WBICgNztL9nxeup/UnQddm1RIoosCeuFruLvPXPAiSXW5KWw==}
+    engines: {node: '>= 12.*'}
 
   ember-element-helper@0.6.1:
     resolution: {integrity: sha512-YiOdAMlzYul4ulkIoNp8z7iHDfbT1fbut/9xGFRfxDwU/FmF8HtAUB2f1veu/w50HTeZNopa1OV2PCloZ76XlQ==}
@@ -13514,6 +13521,13 @@ snapshots:
       ember-compatibility-helpers: 1.2.7(@babel/core@7.25.2)
     transitivePeerDependencies:
       - '@babel/core'
+      - supports-color
+
+  ember-drag-sort@3.0.1:
+    dependencies:
+      ember-cli-babel: 7.26.11
+      ember-cli-htmlbars: 6.3.0
+    transitivePeerDependencies:
       - supports-color
 
   ember-element-helper@0.6.1(ember-source@5.4.1(@babel/core@7.25.2)(@glimmer/component@1.1.2(@babel/core@7.25.2))(rsvp@4.8.5)(webpack@5.94.0)):

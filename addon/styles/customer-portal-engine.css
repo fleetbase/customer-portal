@@ -99,6 +99,7 @@ body[data-theme='dark'].fleetbase-portal .portal-container > .portal-main > .por
     border-radius: 0.5rem;
     background-color: #fff;
     padding: 0.75rem;
+    position: relative;
 }
 
 body[data-theme='dark'].fleetbase-portal .portal-container .portal-content-wrapper {

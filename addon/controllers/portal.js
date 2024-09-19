@@ -3,9 +3,9 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class PortalController extends Controller {
+    @service universe;
     @service session;
     @service currentUser;
-    @service universe;
 
     /**
      * Action to invalidate and log user out
