@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import '@fleetbase/leaflet-routing-machine';
 
 export default class PortalRoute extends Route {
     @service universe;
@@ -13,7 +14,7 @@ export default class PortalRoute extends Route {
      * @return {Promise}
      * @memberof PortalRoute
      */
-    async beforeModel (transition) {
+    async beforeModel(transition) {
         this.session.requireAuthentication(transition, 'customer-portal.portal-auth.login');
 
         if (this.session.isAuthenticated) {

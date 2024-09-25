@@ -8,7 +8,7 @@ export default class CustomerSessionService extends Service {
     @service notifications;
     @tracked customer = {};
 
-    @task *loadCustomer () {
+    @task *loadCustomer() {
         try {
             this.customer = yield this.fetch.get('customers', { single: 1 }, { normalizeToEmberData: true, normalizeModelType: 'customer' });
             this.currentUser['customer'] = this.customer;
@@ -17,7 +17,7 @@ export default class CustomerSessionService extends Service {
         }
     }
 
-    async promiseCurrentCustomer () {
+    async promiseCurrentCustomer() {
         try {
             this.customer = await this.fetch.get('customers', { single: 1 }, { normalizeToEmberData: true, normalizeModelType: 'customer' });
             this.currentUser['customer'] = this.customer;
@@ -26,11 +26,11 @@ export default class CustomerSessionService extends Service {
         }
     }
 
-    getCustomer () {
+    getCustomer() {
         return this.customer;
     }
 
-    get (key, defaultValue = null) {
+    get(key, defaultValue = null) {
         const value = this.customer[key];
         if (value === undefined) {
             return defaultValue;
