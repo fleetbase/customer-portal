@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "fleetbase/core-api": "^1.4.30",
+        "fleetbase/core-api": "^1.5.9",
         "php-http/guzzle7-adapter": "^1.0",
         "psr/http-factory-implementation": "*"
     },
