@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <div class="mt-6">
+    <div class="mt-6 space-y-4">
         <Button
             @buttonType="submit"
             @type="primary"
@@ -90,5 +90,21 @@
             @isLoading={{this.isLoading}}
             @onClick={{this.login}}
         />
+        <RegistryYield @type="menu" @registry="customer-portal:auth:login" as |menuItem|>
+            <Button
+                @text={{menuItem.title}}
+                @type={{menuItem.type}}
+                @wrapperClass={{menuItem.wrapperClass}}
+                @disabled={{this.isLoading}}
+                @onClick={{menuItem.onClick}}
+                @permission={{menuItem.permission}}
+            />
+        </RegistryYield>
     </div>
 </form>
+
+<div class="absolute left-0 top-0">
+    <div class="p-4">
+        <Button @text="Back to Console" @icon="arrow-left" @onClick={{this.transitionToConsole}} @size="xs" />
+    </div>
+</div>

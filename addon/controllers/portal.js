@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class PortalController extends Controller {
+    @service universe;
     @service session;
     @service currentUser;
 
@@ -11,7 +12,7 @@ export default class PortalController extends Controller {
      *
      * @void
      */
-    @action invalidateSession(event) {
+    @action invalidateSession() {
         this.session.invalidateWithLoader();
     }
 }

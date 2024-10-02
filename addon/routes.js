@@ -9,8 +9,8 @@ export default buildRoutes(function () {
         this.route('reset-password');
     });
     this.route('portal', { path: '/' }, function () {
-        this.route('home');
+        this.route('home', { path: '/' });
         this.route('account');
-        this.route('virtual', { path: '/:slug/:view' });
+        this.route('virtual', { path: '/:slug' });
     });
 });

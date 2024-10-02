@@ -21,7 +21,7 @@
                 <dd.Content>
                     <div class="next-dd-menu">
                         <div class="px-1">
-                            <Layout::Sidebar::Item class="next-dd-item" @route="portal.account" @icon="settings">Account</Layout::Sidebar::Item>
+                            <Layout::Sidebar::Item class="next-dd-item" @route="customer-portal.portal.account" @icon="gear">Account</Layout::Sidebar::Item>
                         </div>
                         <Layout::Header::DarkModeToggle />
                         <div class="next-dd-menu-seperator"></div>
@@ -33,8 +33,12 @@
             </BasicDropdown>
             <Layout::Sidebar::Item @route="customer-portal.portal.home" @icon="home">Dashboard</Layout::Sidebar::Item>
             <RegistryYield @type="menu" @registry="customer-portal:sidebar" as |menuItem|>
-                {{log menuItem}}
-                <Layout::Sidebar::Item @route={{menuItem.route}} @model={{menuItem}} @icon={{menuItem.icon}} @permission={{menuItem.permission}}>{{menuItem.title}}</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item
+                    @onClick={{fn this.universe.transitionMenuItem "customer-portal.portal.virtual" menuItem}}
+                    @item={{menuItem}}
+                    @icon={{menuItem.icon}}
+                    @permission={{menuItem.permission}}
+                >{{menuItem.title}}</Layout::Sidebar::Item>
             </RegistryYield>
         </Portal::Sidebar>
         <Portal::Section>{{outlet}}</Portal::Section>
