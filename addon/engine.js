@@ -15,6 +15,19 @@ export default class CustomerPortalEngine extends Engine {
         services,
         externalRoutes,
     };
+    preboot = function (app, engine, universe) {
+        // register hook to catch urls and load customer portal
+        universe.registerHook('application:loading', (session, router, transition) => {
+            if (universe.initialLocation) {
+                const exiting = transition && transition.from && typeof transition.from.name === 'string' && transition.from.name.startsWith('customer-portal');
+                const pathname = universe.initialLocation.pathname;
+                const validPathname = typeof pathname === 'string' && pathname.startsWith('/customer-access/') && pathname.split('/').filter(Boolean).length === 2;
+                if (validPathname && !exiting) {
+                    router.transitionTo('customer-portal', { queryParams: { company: pathname.replace('/customer-access/', '') } });
+                }
+            }
+        });
+    };
     setupExtension = function (app, engine, universe) {
         // create registries
         universe.createRegistries(['customer-portal:sidebar', 'customer-portal:auth:login']);
@@ -36,25 +49,21 @@ export default class CustomerPortalEngine extends Engine {
             },
         });
 
-        // register customer portal link at login page
-        universe.afterBoot(function (universe) {
-            if (universe.didBootEngine('@fleetbase/fleetops-engine')) {
-                universe.registerMenuItem('engine:fleet-ops', 'Customer Portal', {
-                    component: CustomerPortalAdminSettingsComponent,
-                    registerComponentToEngine: '@fleetbase/fleetops-engine',
-                    icon: 'users-gear',
-                    slug: 'customer-portal',
-                    section: 'settings',
-                });
-            }
+        // register admin settings to the organization settings
+        // @todo add permissions
+        universe.registerSettingsMenuItem('Customer Portal', {
+            icon: 'users-gear',
+            slug: 'customer-portal',
+            index: 3,
+            view: 'index',
+            component: CustomerPortalAdminSettingsComponent,
+            onClick: (menuItem) => {
+                const router = app.lookup('service:router');
+                if (router) {
+                    return router.transitionTo('console.settings.virtual', menuItem.slug);
+                }
+            },
         });
-
-        // // register admin settings -- create a fleet-ops menu panel with it's own setting options
-        // universe.registerAdminMenuItem('Customer Portal', {
-        //     icon: 'users-gear',
-        //     component: CustomerPortalAdminSettingsComponent,
-        //     slug: 'customer-portal',
-        // });
 
         // register hook to redirect customers to portal
         universe.registerHook('console:before-model', (session, router) => {

@@ -1,6 +1,6 @@
 {
     "name": "fleetbase/customer-portal-api",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Extendable Customer Portal for Fleetbase",
     "keywords": [
         "fleetbase",
@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "fleetbase/core-api": "^1.5.9",
+        "fleetbase/core-api": "^1.5.10",
         "php-http/guzzle7-adapter": "^1.0",
         "psr/http-factory-implementation": "*"
     },
