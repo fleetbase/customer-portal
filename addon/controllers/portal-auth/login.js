@@ -200,7 +200,7 @@ export default class PortalAuthLoginController extends Controller {
      * @memberof PortalAuthLoginController
      */
     @action transitionToConsole() {
-        this.hostRouter.transitionTo('console');
+        this.hostRouter.transitionTo('auth.login');
     }
 
     /**

@@ -5,6 +5,12 @@ export default class ApplicationRoute extends Route {
     @service store;
     @service theme;
 
+    queryParams = {
+        company: {
+            refreshRoute: false,
+        },
+    };
+
     /**
      * Get the branding settings.
      *
