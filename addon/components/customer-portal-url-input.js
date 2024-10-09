@@ -17,13 +17,14 @@ export default class CustomerPortalUrlInputComponent extends Component {
 
         const baseUrl = this.getBaseUrl();
         const escapedBaseUrl = this.escapeMaskChars(baseUrl);
+        const escapedBaseSlug = this.escapeMaskChars('customer-access');
 
         this.maskOptions = {
-            mask: `${escapedBaseUrl}/customer-access/{slug}`,
+            mask: `${escapedBaseUrl}/${escapedBaseSlug}/{slug}`,
             lazy: false,
             blocks: {
                 slug: {
-                    mask: /[a-z0-9\-]*/,
+                    mask: /[a-z0-9-]*/,
                     prepare: function (str) {
                         return str.toLowerCase().replace(/\s+/g, '-');
                     },

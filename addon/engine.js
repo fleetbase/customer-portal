@@ -17,7 +17,7 @@ export default class CustomerPortalEngine extends Engine {
     };
     preboot = function (app, engine, universe) {
         // register hook to catch urls and load customer portal
-        universe.registerHook('application:loading', (session, router, transition) => {
+        universe.registerHook('application:before-model', (session, router, transition) => {
             if (universe.initialLocation) {
                 const exiting = transition && transition.from && typeof transition.from.name === 'string' && transition.from.name.startsWith('customer-portal');
                 const pathname = universe.initialLocation.pathname;

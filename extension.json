@@ -1,6 +1,6 @@
 {
     "name": "Customer Portal",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Extendable Customer Portal for Fleetbase",
     "repository": "https://github.com/fleetbase/customer-portal",
     "license": "AGPL-3.0-or-later",
