@@ -3,6 +3,8 @@ import { inject as service } from '@ember/service';
 
 export default class PortalAuthRoute extends Route {
     @service session;
+    @service hostRouter;
+    @service universe;
 
     /**
      * If user is authentication redirect to portal.
@@ -10,7 +12,8 @@ export default class PortalAuthRoute extends Route {
      * @memberof LoginRoute
      * @void
      */
-    beforeModel() {
+    beforeModel(transition) {
         this.session.prohibitAuthentication('customer-portal.portal');
+        this.universe.callHooks('customer-portal:auth:before-model', this.session, this.hostRouter, transition);
     }
 }

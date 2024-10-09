@@ -9,7 +9,7 @@ export default class CustomerPortalAdminSettingsComponent extends Component {
     @tracked accessUrlSlug;
     @tracked accessUrlSlugValidation;
 
-    constructor(owner) {
+    constructor() {
         super(...arguments);
         this.getConfig.perform();
     }
