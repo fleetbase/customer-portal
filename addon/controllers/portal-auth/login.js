@@ -173,7 +173,7 @@ export default class PortalAuthLoginController extends Controller {
         return this.fetch.post('auth/create-verification-session', { email, send: true }).then(({ token, session }) => {
             return this.session.store.persist({ email }).then(() => {
                 this.notifications.warning(this.intl.t('auth.login.unverified-notification'));
-                return this.router.transitionTo('customer-portal.portal-auth.verification', { queryParams: { token, hello: session } }).then(() => {
+                return this.hostRouter.transitionTo('customer-portal.portal-auth.verification', { queryParams: { token, hello: session } }).then(() => {
                     this.reset('error');
                 });
             });
@@ -189,7 +189,7 @@ export default class PortalAuthLoginController extends Controller {
      */
     @action sendUserForPasswordReset(email) {
         this.notifications.warning(this.intl.t('auth.login.password-reset-required'));
-        return this.router.transitionTo('customer-portal.portal-auth.forgot-password', { queryParams: { email } }).then(() => {
+        return this.hostRouter.transitionTo('customer-portal.portal-auth.forgot-password', { queryParams: { email } }).then(() => {
             this.reset('error');
         });
     }

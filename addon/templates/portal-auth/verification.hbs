@@ -1,2 +1,75 @@
-{{page-title "Verification"}}
-{{outlet}}
+<div class="bg-white dark:bg-gray-800 py-8 px-4 shadow rounded-lg w-full">
+    <div class="mb-6">
+        <LinkTo @route="portal" class="flex items-center justify-center">
+            <LogoIcon @brand={{@brand}} @size="12" class="rounded-md" />
+        </LinkTo>
+        <h2 class="mt-6 text-center text-lg font-extrabold text-gray-900 dark:text-white truncate">
+            {{t "auth.verification.title"}}
+        </h2>
+    </div>
+
+    <InfoBlock @type="info" @icon="shield-halved" @iconSize="lg">
+        {{t "auth.verification.message-text" htmlSafe=true}}
+    </InfoBlock>
+
+    <form class="mt-8 space-y-6" {{on "submit" (perform this.verifyCode)}}>
+        <InputGroup
+            @type="tel"
+            @name={{t "auth.verification.verification-input-label"}}
+            @value={{this.code}}
+            @helpText={{t "auth.verification.verification-code-text"}}
+            @inputClass="input-lg"
+            {{on "input" this.validateInput}}
+            {{did-insert this.validateInitInput}}
+        />
+
+        <div class="flex flex-row items-center space-x-4">
+            <Button
+                @icon="check"
+                @iconPrefix="fas"
+                @buttonType="submit"
+                @type="primary"
+                @size="lg"
+                @text="Verify & Continue"
+                @isLoading={{this.verifyCode.isRunning}}
+                @disabled={{not this.isReadyToSubmit}}
+                @onClick={{perform this.verifyCode}}
+            />
+            <a href="javascript:;" {{on "click" this.onDidntReceiveCode}} class="text-sm text-blue-400 hover:text-blue-300">{{t "auth.verification.didnt-receive-a-code"}}</a>
+        </div>
+
+        {{#if this.stillWaiting}}
+            <div class="flex flex-col flex-grow-0 flex-shrink-0 text-sm bg-yellow-800 border border-yellow-600 px-2 py-2 rounded-md text-yellow-100 my-4 transition-all">
+                <div class="flex flex-row items-start mb-2">
+                    <div class="w-8 flex-grow-0 flex-shrink-0">
+                        <FaIcon @icon="triangle-exclamation" @size="xl" class="pt-1" />
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex-1 text-sm text-yellow-100">
+                            <div>{{t "auth.verification.didnt-receive-a-code" htmlSafe=true}}</div>
+                            <div>{{t "auth.verification.not-sent.alternative-choice" htmlSafe=true}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <Button
+                        @text={{t "auth.verification.not-sent.resend-email"}}
+                        @buttonType="button"
+                        @type="link"
+                        class="text-yellow-100"
+                        @wrapperClass="px-4 py-2 bg-gray-900 bg-opacity-25 hover:opacity-50"
+                        @onClick={{this.resendEmail}}
+                    />
+                    <Button
+                        @text={{t "auth.verification.not-sent.send-by-sms"}}
+                        @buttonType="button"
+                        @type="link"
+                        class="text-yellow-100"
+                        @wrapperClass="px-4 py-2 bg-gray-900 bg-opacity-25 hover:opacity-50"
+                        @onClick={{this.resendBySms}}
+                    />
+                </div>
+            </div>
+        {{/if}}
+    </form>
+</div>

@@ -13,9 +13,9 @@ class SettingController extends Controller
     public function getSettings()
     {
         $customerPortalConfig = Setting::lookupFromCompany('customer-portal-config');
-        $accessUrlSlug = data_get($customerPortalConfig, 'accessUrlSlug');
+        $accessUrlSlug        = data_get($customerPortalConfig, 'accessUrlSlug');
         if (!$accessUrlSlug) {
-            $accessUrlSlug = $this->_createDefaultAccessUrlSlug();
+            $accessUrlSlug        = $this->_createDefaultAccessUrlSlug();
             $customerPortalConfig = data_set($customerPortalConfig, 'accessUrlSlug', $accessUrlSlug);
         }
 
@@ -34,7 +34,7 @@ class SettingController extends Controller
 
     public function validateAccessUrlSlug(Request $request)
     {
-        $accessUrlSlug = (string) $request->input('accessUrlSlug');
+        $accessUrlSlug           = (string) $request->input('accessUrlSlug');
         $accessUrlSlugValidation = $this->_validateAccessUrlSlug($accessUrlSlug);
 
         return response()->json($accessUrlSlugValidation);
@@ -45,8 +45,8 @@ class SettingController extends Controller
         $company = Auth::getCompany();
         if ($company) {
             $accessUrlSlug = Str::slug($company->name);
-            $numberPrefix = 1;
-            while($this->_validateAccessUrlSlug($accessUrlSlug)['valid'] === false) {
+            $numberPrefix  = 1;
+            while ($this->_validateAccessUrlSlug($accessUrlSlug)['valid'] === false) {
                 $accessUrlSlug = $accessUrlSlug + '-' + $numberPrefix;
                 $numberPrefix++;
             }
@@ -56,7 +56,7 @@ class SettingController extends Controller
 
         return '';
     }
-    
+
     private function _validateAccessUrlSlug(string $accessUrlSlug = '')
     {
         if (empty($accessUrlSlug) || !is_string($accessUrlSlug)) {
@@ -68,7 +68,7 @@ class SettingController extends Controller
 
         // Pull all access slug urls from settings
         $customerPortalConfigs = Setting::where('key', 'LIKE', '%customer-portal-config')->where('key', 'NOT LIKE', "%{$companyUuid}%")->get();
-        $slugs = [];
+        $slugs                 = [];
         foreach ($customerPortalConfigs as $customerPortalConfig) {
             $accessUrlSlug = data_get($customerPortalConfig, 'value.accessUrlSlug');
             if (is_string($accessUrlSlug) && !empty($accessUrlSlug)) {
