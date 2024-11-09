@@ -1,6 +1,6 @@
 {
     "name": "@fleetbase/customer-portal-engine",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Extendable Customer Portal for Fleetbase",
     "keywords": [
         "fleetbase-extension",

@@ -10,7 +10,7 @@ export default class CustomerSessionService extends Service {
 
     @task *loadCustomer() {
         try {
-            this.customer = yield this.fetch.get('customers', { single: 1 }, { normalizeToEmberData: true, normalizeModelType: 'customer' });
+            this.customer = yield this.fetch.get('customers', { single: 1, user: this.currentUser.id }, { normalizeToEmberData: true, normalizeModelType: 'customer' });
             this.currentUser['customer'] = this.customer;
         } catch (error) {
             this.notifications.serverError(error);
@@ -19,7 +19,7 @@ export default class CustomerSessionService extends Service {
 
     async promiseCurrentCustomer() {
         try {
-            this.customer = await this.fetch.get('customers', { single: 1 }, { normalizeToEmberData: true, normalizeModelType: 'customer' });
+            this.customer = await this.fetch.get('customers', { single: 1, user: this.currentUser.id }, { normalizeToEmberData: true, normalizeModelType: 'customer' });
             this.currentUser['customer'] = this.customer;
         } catch (error) {
             this.notifications.serverError(error);
