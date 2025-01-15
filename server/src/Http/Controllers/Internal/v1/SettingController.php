@@ -6,22 +6,31 @@ use Fleetbase\Http\Controllers\Controller;
 use Fleetbase\Models\Setting;
 use Fleetbase\Support\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
     public function getSettings()
     {
-        $customerPortalConfig = Setting::lookupFromCompany('customer-portal-config');
-        $accessUrlSlug        = data_get($customerPortalConfig, 'accessUrlSlug');
-        if (!$accessUrlSlug) {
-            $accessUrlSlug        = $this->_createDefaultAccessUrlSlug();
-            $customerPortalConfig = data_set($customerPortalConfig, 'accessUrlSlug', $accessUrlSlug);
+        $company = Auth::getCompany();
+
+        try {
+            $customerPortalConfig = Setting::lookupFromCompany('customer-portal-config', []);
+            $accessUrlSlug        = data_get($customerPortalConfig, 'accessUrlSlug');
+            if (!$accessUrlSlug) {
+                $accessUrlSlug        = $this->_createDefaultAccessUrlSlug();
+                $customerPortalConfig = data_set($customerPortalConfig, 'accessUrlSlug', $accessUrlSlug);
+            }
+
+            $customerPortalConfig = data_set($customerPortalConfig, 'accessUrlSlugValidation', $this->_validateAccessUrlSlug($accessUrlSlug));
+
+            return response()->json($customerPortalConfig);
+        } catch (\Exception $e) {
+            Log::error('Unable to load customer portal config:', [$e]);
+
+            return response()->json(['accessUrlSlug' => $company->slug]);
         }
-
-        $customerPortalConfig = data_set($customerPortalConfig, 'accessUrlSlugValidation', $this->_validateAccessUrlSlug($accessUrlSlug));
-
-        return response()->json($customerPortalConfig);
     }
 
     public function saveSettings(Request $request)
@@ -70,9 +79,10 @@ class SettingController extends Controller
         $customerPortalConfigs = Setting::where('key', 'LIKE', '%customer-portal-config')->where('key', 'NOT LIKE', "%{$companyUuid}%")->get();
         $slugs                 = [];
         foreach ($customerPortalConfigs as $customerPortalConfig) {
-            $accessUrlSlug = data_get($customerPortalConfig, 'value.accessUrlSlug');
-            if (is_string($accessUrlSlug) && !empty($accessUrlSlug)) {
-                $slugs[] = $accessUrlSlug;
+            $value              = is_string($customerPortalConfig->value) ? json_decode($customerPortalConfig->value) : $customerPortalConfig->value;
+            $otherAccessUrlSlug = data_get($value, 'accessUrlSlug');
+            if (is_string($otherAccessUrlSlug) && !empty($otherAccessUrlSlug)) {
+                $slugs[] = $otherAccessUrlSlug;
             }
         }
 
