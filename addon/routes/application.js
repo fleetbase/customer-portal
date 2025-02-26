@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import removeBootLoader from '@fleetbase/console/utils/remove-boot-loader';
 
 export default class ApplicationRoute extends Route {
     @service store;
@@ -36,6 +37,17 @@ export default class ApplicationRoute extends Route {
      */
     model() {
         return this.store.findRecord('brand', 1);
+    }
+
+    /**
+     * Remove boot loader if not authenticated.
+     *
+     * @memberof ApplicationRoute
+     */
+    afterModel() {
+        if (!this.session.isAuthenticated) {
+            removeBootLoader();
+        }
     }
 
     /**

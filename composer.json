@@ -1,6 +1,6 @@
 {
     "name": "fleetbase/customer-portal-api",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "Extendable Customer Portal for Fleetbase",
     "keywords": [
         "fleetbase",

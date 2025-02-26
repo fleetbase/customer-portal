@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import removeBootLoader from '@fleetbase/console/utils/remove-boot-loader';
 import '@fleetbase/leaflet-routing-machine';
 
 export default class PortalRoute extends Route {
@@ -8,6 +9,7 @@ export default class PortalRoute extends Route {
     @service session;
     @service customerSession;
     @service hostRouter;
+    @service notifications;
 
     @action loading(transition) {
         this.universe.callHooks('customer-portal:portal:loading', this.session, this.hostRouter, transition);
@@ -27,7 +29,17 @@ export default class PortalRoute extends Route {
         if (this.session.isAuthenticated) {
             await this.universe.booting();
             await this.session.promiseCurrentUser(transition);
-            return this.customerSession.promiseCurrentCustomer();
+            try {
+                const customer = await this.customerSession.promiseCurrentCustomer();
+                return customer;
+            } catch (err) {
+                this.session.invalidateWithLoader();
+                this.notifications.error('No customer found for user account.');
+            }
         }
+    }
+
+    afterModel() {
+        removeBootLoader();
     }
 }
