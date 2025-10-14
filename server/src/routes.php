@@ -28,14 +28,13 @@ Route::prefix(config('customer-portal.api.routing.prefix', 'customer-portal'))->
                     ['prefix' => 'v1', 'namespace' => 'v1', 'middleware' => ['fleetbase.protected']],
                     function ($router) {
                         $router->group(
-                            ['prefix' => 'settings', 'middleware' => [Spatie\ResponseCache\Middlewares\DoNotCacheResponse::class]],
+                            ['prefix' => 'settings', 'middleware' => []],
                             function ($router) {
                                 $router->get('config', 'SettingController@getSettings');
                                 $router->post('config', 'SettingController@saveSettings');
                                 $router->post('validate-access-url', 'SettingController@validateAccessUrlSlug');
                             }
                         );
-                        // $router->fleetbaseRoutes('resource');
                     }
                 );
             }
