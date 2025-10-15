@@ -112,7 +112,7 @@ export default class PortalAuthLoginController extends Controller {
                 return this.session.store
                     .persist({ identity })
                     .then(() => {
-                        return this.hostRouter.transitionTo('customer-portal.two-fa', { queryParams: { token: twoFaSession } }).then(() => {
+                        return this.hostRouter.transitionTo('customer-portal.portal-auth.two-fa', { queryParams: { token: twoFaSession } }).then(() => {
                             this.reset('success');
                         });
                     })
@@ -124,6 +124,7 @@ export default class PortalAuthLoginController extends Controller {
                     });
             }
         } catch (error) {
+            this.reset('error');
             return this.notifications.serverError(error);
         }
 
