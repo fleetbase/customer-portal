@@ -5,14 +5,15 @@ import removeBootLoader from '@fleetbase/console/utils/remove-boot-loader';
 import '@fleetbase/leaflet-routing-machine';
 
 export default class PortalRoute extends Route {
-    @service universe;
+    @service('universe/hook-service') hookService;
+    @service('universe/extension-manager') extensionManager;
     @service session;
     @service customerSession;
     @service hostRouter;
     @service notifications;
 
     @action loading(transition) {
-        this.universe.callHooks('customer-portal:portal:loading', this.session, this.hostRouter, transition);
+        this.hookService.execute('customer-portal:portal:loading', this.session, this.hostRouter, transition);
     }
 
     /**
@@ -23,11 +24,12 @@ export default class PortalRoute extends Route {
      * @memberof PortalRoute
      */
     async beforeModel(transition) {
+        console.log('[CustomerPortal: PortalRoute: beforeModel]', ...arguments);
         this.session.requireAuthentication(transition, 'customer-portal.portal-auth.login');
-        this.universe.callHooks('customer-portal:portal:before-model', this.session, this.hostRouter, transition);
+        this.hookService.execute('customer-portal:portal:before-model', this.session, this.hostRouter, transition);
 
         if (this.session.isAuthenticated) {
-            await this.universe.booting();
+            await this.extensionManager.waitForBoot();
             await this.session.promiseCurrentUser(transition);
             try {
                 const customer = await this.customerSession.promiseCurrentCustomer();
