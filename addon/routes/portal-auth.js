@@ -13,7 +13,6 @@ export default class PortalAuthRoute extends Route {
      * @void
      */
     beforeModel(transition) {
-        console.log('[CustomerPortal: PortalAuthRoute: beforeModel]', ...arguments);
         this.session.prohibitAuthentication('customer-portal.portal');
         this.hookService.execute('customer-portal:auth:before-model', this.session, this.hostRouter, transition);
     }

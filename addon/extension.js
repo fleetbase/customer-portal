@@ -2,10 +2,10 @@ import { MenuItem, ExtensionComponent, Hook } from '@fleetbase/ember-core/contra
 
 export default {
     setupExtension(app, universe) {
-        const hookService = universe.getService('universe/hook-service');
-        const menuService = universe.getService('universe/menu-service');
-        const widgetService = universe.getService('universe/widget-service');
-        const registryService = universe.getService('universe/registry-service');
+        const hookService = universe.getService('hook');
+        const menuService = universe.getService('menu');
+        const widgetService = universe.getService('widget');
+        const registryService = universe.getService('registry');
 
         // Register hook to catch urls and load customer portal
         hookService.registerHook(
@@ -47,13 +47,8 @@ export default {
                 wrapperClass: 'btn-block py-1 border dark:border-gray-700 border-gray-200 hover:opacity-50',
                 onClick: async () => {
                     const router = app.lookup('service:router');
-                    console.log('[router]', router);
                     if (router) {
-                        try {
-                            await router.transitionTo('customer-portal.portal-auth.login');
-                        } catch (err) {
-                            console.error(err);
-                        }
+                        router.transitionTo('customer-portal.portal-auth.login');
                     }
                 },
             })
@@ -76,7 +71,5 @@ export default {
                 },
             })
         );
-
-        console.log('[menuService]', menuService);
-    },
+    }
 };

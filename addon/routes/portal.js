@@ -24,7 +24,6 @@ export default class PortalRoute extends Route {
      * @memberof PortalRoute
      */
     async beforeModel(transition) {
-        console.log('[CustomerPortal: PortalRoute: beforeModel]', ...arguments);
         this.session.requireAuthentication(transition, 'customer-portal.portal-auth.login');
         this.hookService.execute('customer-portal:portal:before-model', this.session, this.hostRouter, transition);
 
