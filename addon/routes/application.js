@@ -47,7 +47,6 @@ export default class ApplicationRoute extends Route {
      */
     afterModel() {
         if (!this.session.isAuthenticated) removeBootLoader();
-    
     }
 
     /**
