@@ -2,6 +2,7 @@
 
 namespace Fleetbase\CustomerPortal\Http\Controllers\Internal\v1;
 
+use Fleetbase\CustomerPortal\Services\PortalConfigService;
 use Fleetbase\Http\Controllers\Controller;
 use Fleetbase\Models\Setting;
 use Fleetbase\Support\Auth;
@@ -11,6 +12,10 @@ use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
+    public function __construct(protected PortalConfigService $portalConfig)
+    {
+    }
+
     public function getSettings()
     {
         $company = Auth::getCompany();
@@ -25,7 +30,7 @@ class SettingController extends Controller
 
             $customerPortalConfig = data_set($customerPortalConfig, 'accessUrlSlugValidation', $this->_validateAccessUrlSlug($accessUrlSlug));
 
-            return response()->json($customerPortalConfig);
+            return response()->json($this->portalConfig->adminConfig($customerPortalConfig));
         } catch (\Exception $e) {
             Log::error('Unable to load customer portal config:', [$e]);
 
@@ -35,10 +40,10 @@ class SettingController extends Controller
 
     public function saveSettings(Request $request)
     {
-        $customerPortalConfig = $request->array('customerPortalConfig');
+        $customerPortalConfig = $this->portalConfig->sanitize($request->array('customerPortalConfig'));
         Setting::configureCompany('customer-portal-config', $customerPortalConfig);
 
-        return response()->json($customerPortalConfig);
+        return response()->json($this->portalConfig->adminConfig($customerPortalConfig));
     }
 
     public function validateAccessUrlSlug(Request $request)

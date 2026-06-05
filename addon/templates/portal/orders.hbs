@@ -1,0 +1,15 @@
+<Portal::ContentWrapper class="portal-page-card portal-order-page-card">
+    <Portal::Order::Workspace
+        @orders={{this.model.orders}}
+        @view={{this.view}}
+        @query={{this.query}}
+        @isTableView={{this.isTableView}}
+        @selectedOrder={{this.selectedOrder}}
+        @onSearch={{this.search}}
+        @onSwitchView={{this.switchView}}
+        @onReload={{this.reloadOrders}}
+        @isReloading={{this.customerPortalOrderActions.loadOrders.isRunning}}
+    >
+        {{outlet}}
+    </Portal::Order::Workspace>
+</Portal::ContentWrapper>

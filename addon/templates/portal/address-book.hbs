@@ -1,0 +1,56 @@
+<Portal::ContentWrapper class="portal-page-card portal-table-page-card">
+    <div class="portal-section-header">
+        <div>
+            <div class="portal-section-eyebrow">Saved locations</div>
+            <h1>Address Book</h1>
+            <p>Manage pickup, dropoff, billing, and recurring delivery locations for this customer account.</p>
+        </div>
+        <Button @type="primary" @icon="plus" @text="New Place" @onClick={{this.createPlace}} @wrapperClass="portal-order-panel-action-button" />
+    </div>
+
+    <div class="portal-table-panel mt-5">
+        <table class="portal-table address-book-table w-full">
+            <thead>
+                <tr>
+                    <th class="text-left">Place</th>
+                    <th class="text-left">Address</th>
+                    <th class="text-left">Phone</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.places as |place|}}
+                    <tr>
+                        <td>
+                            <div class="font-semibold">{{or place.name place.public_id}}</div>
+                            {{#if place.name}}
+                                <div class="text-xs text-gray-500 dark:text-gray-400">{{n-a place.public_id}}</div>
+                            {{/if}}
+                        </td>
+                        <td>{{place-address place showTitle=false}}</td>
+                        <td>{{n-a place.phone}}</td>
+                        <td>
+                            <div class="flex items-center justify-end space-x-2">
+                                <Button @icon="pencil" @size="xs" @onClick={{fn this.editPlace place}} @helpText="Edit place" />
+                                <Button @type="danger" @icon="trash" @size="xs" @onClick={{fn this.deletePlace place}} @helpText="Remove place" />
+                            </div>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr>
+                        <td colspan="4">
+                            <div class="portal-empty-state portal-table-empty-state">
+                                <div class="portal-empty-state-icon">
+                                    <FaIcon @icon="location-dot" />
+                                </div>
+                                <div class="portal-empty-state-title">No saved places yet</div>
+                                <p>Add frequently used pickup and delivery locations so order creation is faster.</p>
+                                <Button @type="primary" @icon="plus" @text="New Place" @onClick={{this.createPlace}} @wrapperClass="portal-order-panel-action-button" />
+                            </div>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</Portal::ContentWrapper>

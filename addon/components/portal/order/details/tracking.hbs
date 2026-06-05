@@ -1,0 +1,78 @@
+<ContentPanel @title="Tracking" @prefixTitleRight={{@resource.tracking}} @open={{true}} @wrapperClass="bordered-top">
+    {{#if this.shouldShowLiveEta}}
+        <div class="tracking-intelligence portal-tracking-intelligence mb-4">
+            <div class="tracking-intelligence__eta-grid">
+                <div class="tracking-intelligence-cell tracking-intelligence-cell--accent">
+                    <div class="tracking-intelligence-cell__label">
+                        Current ETA
+                        <span class="tracking-intelligence-tag">Live</span>
+                    </div>
+                    <div class="tracking-intelligence-cell__value">
+                        {{#if this.activeEtaSeconds}}
+                            {{format-duration this.activeEtaSeconds}}
+                        {{else if this.completionEtaAt}}
+                            {{format-date-fns this.completionEtaAt "d MMM HH:mm"}}
+                        {{else}}
+                            Pending
+                        {{/if}}
+                    </div>
+                    <div class="tracking-intelligence-cell__sub">Estimated from the latest delivery route information.</div>
+                </div>
+                <div class="tracking-intelligence-cell">
+                    <div class="tracking-intelligence-cell__label">Remaining Route</div>
+                    <div class="tracking-intelligence-cell__value">
+                        {{#if this.remainingDuration}}
+                            {{format-duration this.remainingDuration}}
+                        {{else}}
+                            -
+                        {{/if}}
+                    </div>
+                    <div class="tracking-intelligence-cell__sub">
+                        {{#if this.remainingDistance}}
+                            {{format-meters this.remainingDistance}} remaining
+                        {{else}}
+                            Distance will appear once tracking is available.
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+
+            {{#if this.activeStop}}
+                <div class="tracking-intelligence-destination">
+                    <div class="tracking-intelligence-destination__marker">•</div>
+                    <div class="min-w-0 flex-1">
+                        <div class="tracking-intelligence-destination__label">Current stop</div>
+                        <div class="tracking-intelligence-destination__address">{{n-a this.activeStop.address}}</div>
+                        <div class="tracking-intelligence-destination__eta">
+                            ETA:
+                            <strong>{{if this.activeEtaSeconds (format-duration this.activeEtaSeconds) "Pending"}}</strong>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if this.confidencePercent}}
+                <div class="tracking-intelligence-confidence">
+                    <div class="tracking-intelligence-confidence__label">ETA confidence</div>
+                    <div class="tracking-intelligence-confidence__value">{{this.confidencePercent}}%</div>
+                </div>
+            {{/if}}
+
+            <div class="tracking-intelligence-footer">
+                <span>Updated {{n-a (format-date-fns this.updatedAt "d MMM HH:mm")}}</span>
+            </div>
+        </div>
+    {{else}}
+        <div class="portal-tracking-state">
+            <div class="portal-tracking-state-icon">
+                <FaIcon @icon={{this.lifecycleMessage.icon}} />
+            </div>
+            <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="portal-empty-state-title">{{this.lifecycleMessage.title}}</div>
+                </div>
+                <p>{{this.lifecycleMessage.body}}</p>
+            </div>
+        </div>
+    {{/if}}
+</ContentPanel>

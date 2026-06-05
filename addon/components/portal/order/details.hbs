@@ -1,0 +1,24 @@
+<Layout::Resource::Panel
+    @resource={{this.order}}
+    @headerComponent={{component "portal/order/panel-header" resource=this.order}}
+    @actionButtons={{this.actionButtons}}
+    @onPressCancel={{this.close}}
+    @headerClass="no-bottom-border"
+    @bodyClass="no-scroll portal-order-details-panel-body"
+    @width="530px"
+    class="portal-order-panel-overlay"
+>
+    <div class="details-wrapper scrollable">
+        <Portal::Order::Details::Activity @resource={{this.order}} />
+        <Portal::Order::Details::Details @resource={{this.order}} />
+        <Portal::Order::Details::ServiceRate @resource={{this.order}} />
+        <Portal::Order::Details::Tracking @resource={{this.order}} />
+        <Portal::Order::Details::Route @resource={{this.order}} />
+        <Portal::Order::Details::Payload @resource={{this.order}} />
+        <Portal::Order::Details::Proof @resource={{this.order}} />
+        <Portal::Order::Details::Documents @resource={{this.order}} />
+        <Portal::Order::Details::CustomFields @resource={{this.order}} />
+        <Portal::Order::Details::Notes @resource={{this.order}} />
+        <Spacer @height="200px" />
+    </div>
+</Layout::Resource::Panel>

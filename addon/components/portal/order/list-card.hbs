@@ -1,0 +1,53 @@
+<LinkTo @route="portal.orders.details" @model={{this.identifier}} class="portal-order-card" ...attributes>
+    <div class="portal-order-card-main">
+        <div class="portal-order-card-topline">
+            <div class="portal-order-card-title">
+                <div class="font-semibold truncate">{{this.trackingNumber}}</div>
+                <div class="portal-order-card-subtitle">{{n-a (smart-humanize @order.type)}}</div>
+            </div>
+            <Badge @status={{@order.status}} />
+        </div>
+
+        <div class="portal-order-card-progress {{this.progressClass}}">
+            <span></span>
+        </div>
+
+        <div class="portal-order-card-route">
+            <div class="portal-order-card-stop">
+                <div class="portal-order-card-stop-marker pickup">1</div>
+                <div class="min-w-0">
+                    <div class="portal-order-card-stop-label">Pickup</div>
+                    <div class="portal-order-card-stop-address">{{n-a this.originAddress}}</div>
+                </div>
+            </div>
+
+            {{#if this.isMultiStop}}
+                <div class="portal-order-card-stop compact">
+                    <div class="portal-order-card-stop-marker middle">+</div>
+                    <div class="min-w-0">
+                        <div class="portal-order-card-stop-label">Waypoints</div>
+                        <div class="portal-order-card-stop-address">{{this.middleStopCount}} additional {{if (eq this.middleStopCount 1) "stop" "stops"}}</div>
+                    </div>
+                </div>
+            {{/if}}
+
+            <div class="portal-order-card-stop">
+                <div class="portal-order-card-stop-marker dropoff">{{this.stopCount}}</div>
+                <div class="min-w-0">
+                    <div class="portal-order-card-stop-label">{{if (eq this.destination.type "return") "Return" "Dropoff"}}</div>
+                    <div class="portal-order-card-stop-address">{{n-a this.destinationAddress}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="portal-order-card-meta">
+            <span><FaIcon @icon="calendar" /> {{n-a (format-date-fns (or @order.scheduled_at @order.created_at) "MMM d, HH:mm")}}</span>
+            {{#if this.hasTrackingMeta}}
+                <span>
+                    <FaIcon @icon="route" />
+                    {{#if this.etaLabel}}{{this.etaLabel}}{{else}}{{this.distanceLabel}}{{/if}}
+                </span>
+            {{/if}}
+        </div>
+    </div>
+</LinkTo>

@@ -1,0 +1,20 @@
+<ContentPanel @title="Activity" @open={{true}} @wrapperClass="bordered-top">
+    <div class="portal-activity-list">
+        {{#each this.activities as |status|}}
+            <div class="portal-activity-row {{if status.isCurrent 'is-current'}}">
+                <div class="portal-activity-marker">
+                    <FaIcon @icon={{if status.isCurrent "location-dot" "circle"}} @size="xs" />
+                </div>
+                <div class="portal-activity-content">
+                    <div class="flex items-center gap-2">
+                        <div class="font-semibold leading-5">{{smart-humanize status.status}}</div>
+                    </div>
+                    <div class="portal-activity-details">{{n-a status.details}}</div>
+                </div>
+                <span class="portal-activity-date">{{n-a (format-date-fns status.created_at "yyyy-MM-dd HH:mm")}}</span>
+            </div>
+        {{else}}
+            <div class="portal-empty-state compact">No activity yet.</div>
+        {{/each}}
+    </div>
+</ContentPanel>

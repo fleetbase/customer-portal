@@ -1,0 +1,156 @@
+<ContentPanel @title="Route" @open={{true}} @actionButtons={{this.actionButtons}} @wrapperClass="bordered-top">
+    <div class="flex items-center justify-between mb-4">
+        <Toggle @isToggled={{@draft.isMultipleDropoffOrder}} @onToggle={{this.toggleMultiDrop}} @label="Multiple dropoff order" />
+    </div>
+    {{#if @draft.isMultipleDropoffOrder}}
+        <DragSortList class="multi-drop-select-container overflow-visible" @items={{@draft.payload.waypoints}} @dragEndAction={{this.sortWaypoints}} as |waypoint index|>
+            {{#let (get this.waypointRouteStops index) as |stop|}}
+                <div class="portal-order-waypoint {{if stop.required 'portal-order-waypoint-required'}} border rounded-md px-3 py-2 shadow-sm border-gray-300 dark:border-gray-900 mb-3">
+                    {{#if stop.required}}
+                        <div class="portal-order-waypoint-required-tab">Required</div>
+                    {{/if}}
+                    <div class="flex items-start justify-between">
+                        <div class="portal-order-waypoint-marker grip-cursor">
+                            <FaIcon @icon="grip-lines" @prefix="fas" class="text-gray-400" />
+                            <span class="index-count portal-order-route-stop-badge" style={{stop.badgeStyle}}>{{stop.label}}</span>
+                        </div>
+
+                        <div class="flex-1 flex-col px-3">
+                            <InputGroup @name={{concat "Waypoint " (add index 1)}} class="mb-2">
+                                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                                    <PowerSelect
+                                        @options={{this.places}}
+                                        @search={{perform this.searchPlaces}}
+                                        @searchEnabled={{true}}
+                                        @selected={{waypoint.place}}
+                                        @onChange={{fn this.setWaypoint index}}
+                                        @placeholder={{concat "Select waypoint " (add index 1)}}
+                                        @allowClear={{true}}
+                                        @triggerClass="form-select form-input"
+                                        @renderInPlace={{true}}
+                                        as |place|
+                                    >
+                                        {{place-address place}}
+                                    </PowerSelect>
+                                </div>
+                            </InputGroup>
+
+                            <div class="flex flex-row items-center space-x-4 text-sm mt-2">
+                                <div class={{if (eq waypoint.type "pickup") "is-checked"}}>
+                                    <div class="flex flex-row items-center">
+                                        <RadioButton
+                                            @radioClass="focus:ring-blue-500 h-4 w-4 text-blue-500"
+                                            @radioId={{concat "portal_waypoint_" index "_pickup"}}
+                                            @value="pickup"
+                                            @groupValue={{waypoint.type}}
+                                            @name={{concat "portal_waypoint_" index "_type"}}
+                                            @changed={{fn this.setWaypointType index}}
+                                        />
+                                        <label for={{concat "portal_waypoint_" index "_pickup"}} class="ml-2">Pickup</label>
+                                    </div>
+                                </div>
+                                <div class={{if (eq waypoint.type "dropoff") "is-checked"}}>
+                                    <div class="flex flex-row items-center">
+                                        <RadioButton
+                                            @radioClass="focus:ring-blue-500 h-4 w-4 text-blue-500"
+                                            @radioId={{concat "portal_waypoint_" index "_dropoff"}}
+                                            @value="dropoff"
+                                            @groupValue={{waypoint.type}}
+                                            @name={{concat "portal_waypoint_" index "_type"}}
+                                            @changed={{fn this.setWaypointType index}}
+                                        />
+                                        <label for={{concat "portal_waypoint_" index "_dropoff"}} class="ml-2">Dropoff</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="portal-order-waypoint-actions flex items-center space-x-2">
+                            {{#if waypoint.place}}
+                                <Button @icon="pencil" @size="sm" @onClick={{fn this.openEditPlaceForm "waypoint" waypoint.place index}} @helpText="Edit address" />
+                            {{/if}}
+                            {{#unless stop.required}}
+                                <Button @type="danger" @icon="trash" @size="sm" @onClick={{fn this.removeWaypoint index}} />
+                            {{/unless}}
+                        </div>
+                    </div>
+                </div>
+            {{/let}}
+        </DragSortList>
+    {{else}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <InputGroup>
+                <div class="flex items-center justify-between mb-1">
+                    <label class="text-xs font-semibold dark:text-gray-100">
+                        Pickup
+                        <span class="text-red-500">*</span>
+                    </label>
+                    {{#if @draft.payload.pickup}}
+                        <a href="javascript:;" class="portal-order-edit-link" {{on "click" (fn this.openEditPlaceForm "pickup" @draft.payload.pickup)}}>Edit</a>
+                    {{/if}}
+                </div>
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.places}}
+                        @search={{perform this.searchPlaces}}
+                        @searchEnabled={{true}}
+                        @selected={{@draft.payload.pickup}}
+                        @onChange={{fn this.setPayloadPlace "pickup"}}
+                        @placeholder="Select pickup place"
+                        @allowClear={{true}}
+                        @triggerClass="form-select form-input"
+                        @renderInPlace={{true}}
+                        as |place|
+                    >
+                        {{place-address place}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup>
+                <div class="flex items-center justify-between mb-1">
+                    <label class="text-xs font-semibold dark:text-gray-100">
+                        Dropoff
+                        <span class="text-red-500">*</span>
+                    </label>
+                    {{#if @draft.payload.dropoff}}
+                        <a href="javascript:;" class="portal-order-edit-link" {{on "click" (fn this.openEditPlaceForm "dropoff" @draft.payload.dropoff)}}>Edit</a>
+                    {{/if}}
+                </div>
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.places}}
+                        @search={{perform this.searchPlaces}}
+                        @searchEnabled={{true}}
+                        @selected={{@draft.payload.dropoff}}
+                        @onChange={{fn this.setPayloadPlace "dropoff"}}
+                        @placeholder="Select dropoff place"
+                        @allowClear={{true}}
+                        @triggerClass="form-select form-input"
+                        @renderInPlace={{true}}
+                        as |place|
+                    >
+                        {{place-address place}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+            <InputGroup @name="Return">
+                <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                    <PowerSelect
+                        @options={{this.places}}
+                        @search={{perform this.searchPlaces}}
+                        @searchEnabled={{true}}
+                        @selected={{@draft.payload.return}}
+                        @onChange={{fn this.setPayloadPlace "return"}}
+                        @placeholder="Select return place"
+                        @allowClear={{true}}
+                        @triggerClass="form-select form-input"
+                        @renderInPlace={{true}}
+                        as |place|
+                    >
+                        {{place-address place}}
+                    </PowerSelect>
+                </div>
+            </InputGroup>
+        </div>
+    {{/if}}
+</ContentPanel>

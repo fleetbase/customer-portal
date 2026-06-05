@@ -1,0 +1,25 @@
+<ContentPanel @title="Details" @open={{true}} @wrapperClass="bordered-top">
+    <div class="grid grid-cols-1 gap-3">
+        <InputGroup @name="Order Type" @required={{true}}>
+            <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                <PowerSelect @options={{@orderConfigs}} @selected={{@draft.orderConfig}} @onChange={{this.setOrderConfig}} @placeholder="Select order type" @triggerClass="form-select form-input" @renderInPlace={{true}} as |orderConfig|>
+                    <div class="text-sm">
+                        <div class="font-semibold normalize-in-trigger">{{orderConfig.name}}</div>
+                        <div class="hide-from-trigger">{{n-a orderConfig.description}}</div>
+                    </div>
+                </PowerSelect>
+            </div>
+        </InputGroup>
+        <InputGroup @name="Scheduled At">
+            <Input @value={{@draft.scheduledAt}} @type="datetime-local" class="form-input w-full" {{on "input" (fn this.setInput "scheduledAt")}} />
+        </InputGroup>
+        <InputGroup>
+            <Toggle @label="Require proof of delivery" @isToggled={{@draft.podRequired}} @onToggle={{this.togglePodRequired}} />
+        </InputGroup>
+        {{#if @draft.podRequired}}
+            <InputGroup @name="Proof Method">
+                <Select class="w-full" @options={{this.podOptions}} @value={{@draft.podMethod}} @onSelect={{this.setPodMethod}} @placeholder="Select proof method" />
+            </InputGroup>
+        {{/if}}
+    </div>
+</ContentPanel>

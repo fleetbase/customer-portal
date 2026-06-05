@@ -1,0 +1,63 @@
+<div class="portal-order-workspace {{if this.showTable 'is-table'}} {{if this.hasPanel 'has-panel'}} {{if this.isCreating 'is-creating'}}">
+    <div class="portal-section-header portal-order-workspace-header">
+        <div>
+            <div class="portal-section-eyebrow">Orders</div>
+            <h1>Orders</h1>
+            <p>Track deliveries, review route activity, and create new delivery requests.</p>
+        </div>
+        <div class="portal-order-workspace-actions">
+            <div class="portal-order-view-toggle" role="group" aria-label="Order view">
+                <Button
+                    @icon="map"
+                    @text="Map"
+                    @type={{unless this.showTable "primary"}}
+                    @size="sm"
+                    @onClick={{fn @onSwitchView "map"}}
+                    @wrapperClass="portal-order-view-toggle-item"
+                />
+                <Button
+                    @icon="table"
+                    @text="Table"
+                    @type={{if this.showTable "primary"}}
+                    @size="sm"
+                    @onClick={{fn @onSwitchView "table"}}
+                    @wrapperClass="portal-order-view-toggle-item"
+                />
+            </div>
+            <Button @icon="rotate" @onClick={{this.reloadOrders}} @isLoading={{@isReloading}} />
+            <Button @icon="plus" @type="primary" @text="New Order" @onClick={{this.createOrder}} />
+        </div>
+    </div>
+
+    {{#if this.showTable}}
+        <Portal::Order::Workspace::Table @orders={{@orders}} @query={{@query}} @onSearch={{@onSearch}} />
+    {{else}}
+        <div class="portal-order-map-stage">
+            <Portal::Order::Workspace::Map @orders={{@orders}} @selectedOrder={{@selectedOrder}} @draft={{this.customerPortalOrderCreation.draft}} />
+            {{#unless this.isViewingDetails}}
+                <aside class="portal-order-list-panel">
+                    <div class="portal-order-list-panel-header">
+                        <div>
+                            <div class="portal-section-eyebrow">Order List</div>
+                            <h2>Recent Orders</h2>
+                        </div>
+                    </div>
+                    <Input @value={{@query}} class="form-input w-full" placeholder="Search orders" {{on "input" this.search}} />
+                    <div class="portal-order-list-panel-body">
+                        {{#each @orders as |order|}}
+                            <Portal::Order::ListCard @order={{order}} />
+                        {{else}}
+                            <div class="portal-empty-state compact">
+                                <div class="portal-empty-state-title">No orders yet</div>
+                                <p>Create a delivery request when you are ready.</p>
+                            </div>
+                        {{/each}}
+                    </div>
+                </aside>
+            {{/unless}}
+            <div class="portal-order-route-panel {{unless this.hasPanel 'is-empty'}}">
+                {{yield}}
+            </div>
+        </div>
+    {{/if}}
+</div>

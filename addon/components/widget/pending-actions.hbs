@@ -1,0 +1,48 @@
+<div class="portal-dashboard-widget portal-list-widget" ...attributes>
+    <div class="portal-widget-header">
+        <div>
+            <div class="portal-widget-title">Pending Actions</div>
+            <div class="portal-widget-subtitle">Items that may need attention</div>
+        </div>
+        <FaIcon @icon="circle-exclamation" />
+    </div>
+    <div class="portal-widget-body">
+        {{#if this.load.isRunning}}
+            <div class="portal-widget-empty"><Spinner /></div>
+        {{else if this.error}}
+            <div class="portal-widget-empty danger">{{this.error}}</div>
+        {{else}}
+            {{#each this.rows as |action|}}
+                {{#if action.route}}
+                    {{#if action.model}}
+                        <LinkTo @route={{action.route}} @model={{action.model}} class="portal-widget-list-row portal-widget-action-row">
+                            <div class="min-w-0">
+                                <div class="font-semibold truncate">{{action.title}}</div>
+                                <div class="text-xs text-gray-500 truncate">{{action.description}}</div>
+                            </div>
+                            <FaIcon @icon={{action.icon}} class="portal-widget-action-icon" />
+                        </LinkTo>
+                    {{else}}
+                        <LinkTo @route={{action.route}} class="portal-widget-list-row portal-widget-action-row">
+                            <div class="min-w-0">
+                                <div class="font-semibold truncate">{{action.title}}</div>
+                                <div class="text-xs text-gray-500 truncate">{{action.description}}</div>
+                            </div>
+                            <FaIcon @icon={{action.icon}} class="portal-widget-action-icon" />
+                        </LinkTo>
+                    {{/if}}
+                {{else}}
+                    <div class="portal-widget-list-row portal-widget-action-row">
+                        <div class="min-w-0">
+                            <div class="font-semibold truncate">{{action.title}}</div>
+                            <div class="text-xs text-gray-500 truncate">{{action.description}}</div>
+                        </div>
+                        <FaIcon @icon={{action.icon}} class="portal-widget-action-icon" />
+                    </div>
+                {{/if}}
+            {{else}}
+                <div class="portal-widget-empty">Nothing needs attention right now.</div>
+            {{/each}}
+        {{/if}}
+    </div>
+</div>

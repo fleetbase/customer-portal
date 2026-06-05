@@ -2,10 +2,22 @@
 
 namespace Fleetbase\CustomerPortal\Providers;
 
+use Fleetbase\FleetOps\Models\Issue;
+use Fleetbase\FleetOps\Providers\FleetOpsServiceProvider;
+use Fleetbase\Ledger\Providers\LedgerServiceProvider;
+use Fleetbase\Models\Comment;
 use Fleetbase\Providers\CoreServiceProvider;
 
 if (!class_exists(CoreServiceProvider::class)) {
-    throw new \Exception('Extension cannot be loaded without `fleetbase/core-api` installed!');
+    throw new \Exception('Customer Portal cannot be loaded without `fleetbase/core-api` installed!');
+}
+
+if (!class_exists(FleetOpsServiceProvider::class)) {
+    throw new \Exception('Customer Portal cannot be loaded without `fleetbase/fleetops-api` installed!');
+}
+
+if (!class_exists(LedgerServiceProvider::class)) {
+    throw new \Exception('Customer Portal cannot be loaded without `fleetbase/ledger-api` installed!');
 }
 
 /**
@@ -18,7 +30,10 @@ class CustomerPortalServiceProvider extends CoreServiceProvider
      *
      * @var array
      */
-    public $observers = [];
+    public $observers = [
+        Comment::class => \Fleetbase\CustomerPortal\Observers\CommentObserver::class,
+        Issue::class   => \Fleetbase\CustomerPortal\Observers\IssueObserver::class,
+    ];
 
     /**
      * Register any application services.

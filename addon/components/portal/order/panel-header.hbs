@@ -1,0 +1,42 @@
+<div class="px-4 py-2">
+    <div class="flex flex-1 flex-row items-start justify-between">
+        <div class="flex flex-row space-x-3 min-w-0">
+            <div class="pt-1 flex-shrink-0">
+                <div class="rounded-md bg-white p-1">
+                    {{#if this.qrCode}}
+                        <img src={{concat "data:image/png;base64," this.qrCode}} class="w-12 h-12" alt={{this.trackingNumber}} />
+                    {{else}}
+                        <div class="w-12 h-12 flex items-center justify-center text-blue-500">
+                            <FaIcon @icon="qrcode" />
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="flex flex-col min-w-0">
+                <div class="font-semibold truncate">{{this.trackingNumber}}</div>
+                <div class="flex flex-row flex-wrap gap-1">
+                    <Badge @status={{@resource.status}} />
+                    {{#if @resource.dispatched_at}}
+                        <Badge @status="dispatched">{{concat "Dispatched at " this.dispatchedAt}}</Badge>
+                    {{/if}}
+                </div>
+                <div class="mt-1">
+                    <div class="text-xs text-gray-400 dark:text-gray-500">Date Created: {{this.createdAt}}</div>
+                    <div class="text-xs text-gray-400 dark:text-gray-500">Type: {{smart-humanize @resource.type}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="next-view-header-right">
+            <Layout::Resource::Panel::HeaderActions
+                @resource={{@resource}}
+                @saveTask={{@saveTask}}
+                @saveOptions={{@saveOptions}}
+                @saveDisabled={{@saveDisabled}}
+                @pojoResource={{@pojoResource}}
+                @authSchema={{@authSchema}}
+                @actionButtons={{@actionButtons}}
+                @onPressCancel={{@onPressCancel}}
+            />
+        </div>
+    </div>
+</div>

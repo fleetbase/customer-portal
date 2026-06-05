@@ -1,3 +1,34 @@
-<Portal::ContentWrapper>
-    <Dashboard @defaultDashboardId="customer-portal" @showPanelWhenZeroWidgets={{false}} class="flex items-center justify-between" />
-</Portal::ContentWrapper>
+<div class="portal-dashboard-page">
+    <div class="portal-dashboard-hero">
+        <div>
+            <div class="portal-dashboard-eyebrow">{{this.accountTypeLabel}}</div>
+            <h1>Welcome, {{this.customerName}}</h1>
+            <p>Track deliveries, invoices, documents, and support activity from one customer workspace.</p>
+        </div>
+        <div class="portal-dashboard-quick-actions">
+            <LinkTo @route="portal.support" class="portal-quick-link primary">
+                <FaIcon @icon="headset" />
+                <span>New Support Ticket</span>
+            </LinkTo>
+            <LinkTo @route="portal.billing" class="portal-quick-link">
+                <FaIcon @icon="file-invoice-dollar" />
+                <span>View Billing</span>
+            </LinkTo>
+            <LinkTo @route="portal.documents" class="portal-quick-link">
+                <FaIcon @icon="folder-open" />
+                <span>Documents</span>
+            </LinkTo>
+        </div>
+    </div>
+
+    <Dashboard
+        @defaultDashboardId="customer-portal-overview-v2"
+        @defaultDashboardName="Overview"
+        @showPanelWhenZeroWidgets={{true}}
+        @stickyHeader={{true}}
+        @leftHeaderWrapperClass="portal-dashboard-title"
+        @rightHeaderWrapperClass="portal-dashboard-actions"
+        @createWrapperClass="portal-dashboard-create-wrapper"
+        class="portal-dashboard-grid"
+    />
+</div>

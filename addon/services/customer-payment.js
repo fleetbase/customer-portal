@@ -1,17 +1,12 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { later } from '@ember/runloop';
 import config from 'ember-get-config';
 
-const STRIPE_JS_INITIALIZE_DELAY_MS = 900;
+let stripeJsPromise;
+
 export default class CustomerPaymentService extends Service {
     @tracked stripe;
     @tracked loaded = false;
-
-    constructor() {
-        super(...arguments);
-        this.loadAndInitialize();
-    }
 
     async initEmbeddedCheckout() {
         if (!this.stripe) {
@@ -30,54 +25,72 @@ export default class CustomerPaymentService extends Service {
     }
 
     createStripeInstance(options = {}) {
-        this.stripe = Stripe(config.stripe.publishableKey, options);
+        const publishableKey = config.stripe?.publishableKey;
+
+        if (!publishableKey) {
+            throw new Error('Stripe is not configured for customer portal payments.');
+        }
+
+        if (typeof window === 'undefined' || typeof window.Stripe !== 'function') {
+            throw new Error('Stripe could not be loaded. Please refresh and try again.');
+        }
+
+        this.stripe = window.Stripe(publishableKey, options);
+        this.loaded = true;
+
         return this.stripe;
     }
 
-    async loadAndInitialize() {
-        return new Promise((resolve) => {
-            this.load(() => {
-                resolve(this.createStripeInstance());
-            });
-        });
+    async loadAndInitialize(options = {}) {
+        await this.load();
+
+        return this.createStripeInstance(options);
     }
 
-    load(callback = null) {
-        const stripeJs = document.querySelector('script[data-stripe-js="loaded"]');
-        if (stripeJs) {
-            later(
-                this,
-                () => {
-                    if (typeof callback === 'function') {
-                        callback();
-                    }
-                },
-                STRIPE_JS_INITIALIZE_DELAY_MS
-            );
-            return;
+    async load() {
+        if (typeof window !== 'undefined' && typeof window.Stripe === 'function') {
+            this.loaded = true;
+            return window.Stripe;
         }
 
-        // Create a new script element
-        const script = document.createElement('script');
-        script.src = 'https://js.stripe.com/v3/';
-        script.async = true;
+        if (!config.stripe?.publishableKey) {
+            this.loaded = false;
+            throw new Error('Stripe is not configured for customer portal payments.');
+        }
 
-        // Use a data attribute to mark that the script is loaded
-        script.setAttribute('data-stripe-js', 'loaded');
-        script.onload = () => {
-            this.loaded = true;
-            later(
-                this,
-                () => {
-                    if (typeof callback === 'function') {
-                        callback();
-                    }
-                },
-                STRIPE_JS_INITIALIZE_DELAY_MS
-            );
-        };
+        if (stripeJsPromise) {
+            await stripeJsPromise;
+            this.loaded = typeof window.Stripe === 'function';
+            return window.Stripe;
+        }
 
-        // Append the script to the document's head
-        document.head.appendChild(script);
+        stripeJsPromise = new Promise((resolve, reject) => {
+            const existingScript = document.querySelector('script[data-stripe-js="loaded"]');
+            const script = existingScript ?? document.createElement('script');
+
+            script.onload = () => {
+                if (typeof window.Stripe === 'function') {
+                    resolve(window.Stripe);
+                } else {
+                    reject(new Error('Stripe could not be loaded. Please refresh and try again.'));
+                }
+            };
+            script.onerror = () => {
+                stripeJsPromise = null;
+                reject(new Error('Stripe could not be loaded. Please check your connection and try again.'));
+            };
+
+            if (!existingScript) {
+                script.src = 'https://js.stripe.com/v3/';
+                script.async = true;
+                script.setAttribute('data-stripe-js', 'loaded');
+                document.head.appendChild(script);
+            }
+        });
+
+        await stripeJsPromise;
+        this.loaded = typeof window.Stripe === 'function';
+
+        return window.Stripe;
     }
 }

@@ -7,11 +7,12 @@ export default class CustomerSessionService extends Service {
     @service fetch;
     @service notifications;
     @tracked customer = {};
+    @tracked account = {};
+    @tracked accounts = [];
 
     @task *loadCustomer() {
         try {
-            this.customer = yield this.fetch.get('customers', { single: 1, user: this.currentUser.id }, { normalizeToEmberData: true, normalizeModelType: 'customer' });
-            this.currentUser['customer'] = this.customer;
+            yield this.promiseCurrentCustomer();
         } catch (error) {
             this.notifications.serverError(error);
         }
@@ -19,10 +20,18 @@ export default class CustomerSessionService extends Service {
 
     async promiseCurrentCustomer() {
         try {
-            this.customer = await this.fetch.get('customers', { single: 1, user: this.currentUser.id }, { normalizeToEmberData: true, normalizeModelType: 'customer' });
+            const portalAccount = await this.fetch.get('account', {}, { namespace: 'customer-portal/int/v1' });
+            this.customer = portalAccount.customer ?? portalAccount.account ?? {};
+            this.account = portalAccount.account ?? this.customer;
+            this.accounts = portalAccount.accounts ?? [];
             this.currentUser['customer'] = this.customer;
+            this.currentUser['customerAccount'] = this.account;
         } catch (error) {
-            this.notifications.serverError(error);
+            this.customer = await this.fetch.get('customers', { single: 1, user: this.currentUser.id }, { normalizeToEmberData: true, normalizeModelType: 'customer' });
+            this.account = this.customer;
+            this.accounts = this.customer ? [this.customer] : [];
+            this.currentUser['customer'] = this.customer;
+            this.currentUser['customerAccount'] = this.account;
         }
     }
 
@@ -30,8 +39,21 @@ export default class CustomerSessionService extends Service {
         return this.customer;
     }
 
+    getAccount() {
+        return this.account || this.customer;
+    }
+
+    get accountId() {
+        return this.get('uuid') || this.get('id');
+    }
+
+    get accountType() {
+        return this.get('customer_type') || this.get('type') || 'contact';
+    }
+
     get(key, defaultValue = null) {
-        const value = this.customer[key];
+        const source = this.account || this.customer || {};
+        const value = source[key] ?? this.customer?.[key];
         if (value === undefined) {
             return defaultValue;
         }

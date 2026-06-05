@@ -1,0 +1,15 @@
+<div class="portal-dashboard-widget portal-kpi-tile portal-kpi-accent-indigo" ...attributes>
+    <div class="portal-kpi-content">
+        <div class="min-w-0">
+            <div class="portal-kpi-label">Completed Orders</div>
+            {{#if this.load.isRunning}}
+                <Spinner class="mt-3" />
+            {{else if this.error}}
+                <div class="portal-widget-error">{{this.error}}</div>
+            {{else}}
+                <div class="portal-kpi-value">{{this.total}}</div>
+            {{/if}}
+        </div>
+        <div class="portal-kpi-icon"><FaIcon @icon="circle-check" /></div>
+    </div>
+</div>

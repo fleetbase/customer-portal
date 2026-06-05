@@ -4,6 +4,8 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import pathToRoute from '@fleetbase/ember-core/utils/path-to-route';
 
+const CUSTOMER_PORTAL_NAMESPACE = 'customer-portal/int/v1';
+
 export default class PortalAuthLoginController extends Controller {
     @controller('portal-auth.forgot-password') forgotPasswordController;
     @service notifications;
@@ -106,7 +108,7 @@ export default class PortalAuthLoginController extends Controller {
 
         // send request to check for 2fa
         try {
-            let { twoFaSession, isTwoFaEnabled } = await this.session.checkForTwoFactor(identity);
+            let { twoFaSession, isTwoFaEnabled } = await this.fetch.get('two-fa/check', { identity }, { namespace: CUSTOMER_PORTAL_NAMESPACE });
 
             if (isTwoFaEnabled) {
                 return this.session.store
@@ -130,7 +132,7 @@ export default class PortalAuthLoginController extends Controller {
 
         try {
             this.session.setRedirect('customer-portal.portal');
-            await this.session.authenticate('authenticator:fleetbase', { identity, password }, rememberMe);
+            await this.session.authenticate('authenticator:fleetbase', { identity, password }, rememberMe, 'auth/login', { namespace: CUSTOMER_PORTAL_NAMESPACE });
         } catch (error) {
             this.failedAttempts++;
 
