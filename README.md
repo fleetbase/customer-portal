@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-    <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/816371/603223730-29758609-3262-4692-9a7a-62305365be9b.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260605%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260605T040813Z&X-Amz-Expires=300&X-Amz-Signature=d7b2b01169fb732ee6321dd42ff0485fac0b9c45fdd56d9b3be714eb0c64e8b1&X-Amz-SignedHeaders=host&response-content-type=image%2Fwebp" alt="Fleetbase Customer Portal" width="960">
+    <img src="https://www.fleetbase.io/images/screenshots/customer-portal/customer-portal-dashboard.webp" alt="Fleetbase Customer Portal" width="960">
 </p>
 
 ## Overview
