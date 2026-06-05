@@ -1,27 +1,41 @@
 <Portal::Container>
-    <Portal::Main>
-        <Portal::Sidebar>
+    <div class="portal-topbar">
+        <div class="portal-topbar-account">
+            <div class="portal-account-mark">
+                <FaIcon @icon="building-user" />
+            </div>
+            <div class="min-w-0">
+                <div class="portal-account-eyebrow">{{this.accountTypeLabel}}</div>
+                <div class="portal-account-name">{{this.accountName}}</div>
+            </div>
+        </div>
+        <div class="portal-topbar-actions">
+            <LinkTo @route="portal.support" class="portal-header-link">
+                <FaIcon @icon="headset" />
+                <span>Support</span>
+            </LinkTo>
+            <LinkTo @route="portal.documents" class="portal-header-link hidden md:inline-flex">
+                <FaIcon @icon="folder-open" />
+                <span>Documents</span>
+            </LinkTo>
             <BasicDropdown class="portal-user-menu" @renderInPlace={{true}} as |dd|>
-                <dd.Trigger class="next-nav-item">
-                    <div class="flex flex-row">
-                        <div class="portal-user-avatar-container">
-                            <Image
-                                src={{this.currentUser.avatarUrl}}
-                                @fallbackSrc="https://s3.ap-southeast-1.amazonaws.com/flb-assets/static/no-avatar.png"
-                                alt={{this.currentUser.name}}
-                                class="portal-user-avatar"
-                            />
-                        </div>
-                        <div class="flex flex-col truncate">
-                            <div class="text-lg font-semibold">{{this.currentUser.name}}</div>
-                            <div class="text-xs truncate">{{this.currentUser.email}}</div>
-                        </div>
+                <dd.Trigger class="portal-user-trigger">
+                    <Image
+                        src={{this.currentUser.avatarUrl}}
+                        @fallbackSrc="https://s3.ap-southeast-1.amazonaws.com/flb-assets/static/no-avatar.png"
+                        alt={{this.currentUser.name}}
+                        class="portal-user-avatar"
+                    />
+                    <div class="hidden sm:flex flex-col min-w-0 text-left">
+                        <span class="portal-user-name">{{this.currentUser.name}}</span>
+                        <span class="portal-user-email">{{this.accountEmail}}</span>
                     </div>
+                    <FaIcon @icon="caret-down" class="text-gray-400 text-xs" />
                 </dd.Trigger>
                 <dd.Content>
                     <div class="next-dd-menu">
                         <div class="px-1">
-                            <Layout::Sidebar::Item class="next-dd-item" @route="customer-portal.portal.account" @icon="gear">Account</Layout::Sidebar::Item>
+                            <Layout::Sidebar::Item class="next-dd-item" @route="customer-portal.portal.settings.account" @icon="gear">Account Settings</Layout::Sidebar::Item>
                         </div>
                         <Layout::Header::DarkModeToggle />
                         <div class="next-dd-menu-seperator"></div>
@@ -31,7 +45,23 @@
                     </div>
                 </dd.Content>
             </BasicDropdown>
-            <Layout::Sidebar::Item @route="customer-portal.portal.home" @icon="home">Dashboard</Layout::Sidebar::Item>
+        </div>
+    </div>
+    <Portal::Main>
+        <Portal::Sidebar>
+            <div class="portal-nav-group">
+                <div class="portal-nav-label">Workspace</div>
+                <Layout::Sidebar::Item @route="customer-portal.portal.home" @icon="home">Dashboard</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.orders" @icon="boxes-packing">Orders</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.billing" @icon="file-invoice-dollar">Billing</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.support" @icon="headset">Support</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.documents" @icon="folder-open">Documents</Layout::Sidebar::Item>
+            </div>
+            <div class="portal-nav-group">
+                <div class="portal-nav-label">Preferences</div>
+                <Layout::Sidebar::Item @route="customer-portal.portal.address-book" @icon="address-book">Address Book</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.notifications" @icon="bell">Notifications</Layout::Sidebar::Item>
+            </div>
             <RegistryYield @type="menu" @registry="customer-portal:sidebar" as |menuItem|>
                 <Layout::Sidebar::Item
                     @onClick={{fn this.universe.transitionMenuItem "customer-portal.portal.virtual" menuItem}}

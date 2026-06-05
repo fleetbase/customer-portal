@@ -1,0 +1,30 @@
+<Portal::ContentWrapper class="portal-page-card">
+    <div class="portal-section-header">
+        <div>
+            <div class="portal-section-eyebrow">Communication settings</div>
+            <h1>Notification Preferences</h1>
+            <p>Choose which customer portal events should be saved as communication preferences for this account.</p>
+        </div>
+    </div>
+    <InfoBlock @type="info" @icon="circle-info" class="mt-4">
+        These preferences are stored on your portal account. Delivery of actual event notifications depends on operator notification rules configured in Fleetbase.
+    </InfoBlock>
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-5">
+        {{#each this.preferenceGroups as |group|}}
+            <ContentPanel @title={{group.title}} @open={{true}} @wrapperClass="bordered-classic">
+                <p class="portal-panel-copy">{{group.description}}</p>
+                <div class="space-y-2">
+                    {{#each group.items as |item|}}
+                        <label class="portal-toggle-row">
+                            <Input @type="checkbox" @checked={{item.enabled}} class="form-checkbox" {{on "change" (fn this.setPreference item.key)}} />
+                            <span>{{item.label}}</span>
+                        </label>
+                    {{/each}}
+                </div>
+            </ContentPanel>
+        {{/each}}
+    </div>
+    <div class="mt-4">
+        <Button @type="primary" @icon="save" @text="Save Preferences" @onClick={{perform this.savePreferences}} @isLoading={{this.savePreferences.isRunning}} />
+    </div>
+</Portal::ContentWrapper>

@@ -1,0 +1,164 @@
+<Portal::ContentWrapper class="portal-page-card portal-support-ticket-page">
+    {{#if this.issue}}
+        <div class="portal-ticket-header">
+            <div class="portal-ticket-header-main">
+                <LinkTo @route="portal.support" class="portal-ticket-back-link">
+                    <FaIcon @icon="arrow-left" />
+                    <span>Back to Support</span>
+                </LinkTo>
+                <div class="portal-section-eyebrow">Support Center</div>
+                <h1>{{this.title}}</h1>
+                <div class="portal-ticket-badge-row">
+                    <Badge @status={{this.issue.status}} @text={{this.statusLabel}} />
+                    <Badge @status={{this.issue.priority}} @text={{this.priorityLabel}} />
+                    <span class="portal-ticket-id">{{this.ticketNumber}}</span>
+                </div>
+                {{#if this.hasIssueTags}}
+                    <div class="portal-ticket-tag-row">
+                        {{#each this.issueTags as |tag|}}
+                            <Badge @status="info" @text={{tag}} @hideStatusDot={{true}} />
+                        {{/each}}
+                    </div>
+                {{/if}}
+            </div>
+            <div class="portal-ticket-header-dates">
+                <div>
+                    <span>Created</span>
+                    <strong>{{n-a (format-date-fns this.issue.created_at "MMM d, yyyy HH:mm")}}</strong>
+                </div>
+                <div>
+                    <span>Last updated</span>
+                    <strong>{{n-a (format-date-fns this.issue.updated_at "MMM d, yyyy HH:mm")}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="portal-ticket-layout">
+            <main class="portal-ticket-conversation">
+                <article class="portal-ticket-message portal-ticket-message-original">
+                    <div class="portal-ticket-avatar" aria-hidden="true">{{this.reporterInitials}}</div>
+                    <div class="portal-ticket-message-content">
+                        <div class="portal-ticket-message-meta">
+                            <div>
+                                <div class="portal-ticket-message-author">{{this.reporterName}}</div>
+                                {{#if this.reporterEmail}}
+                                    <div class="portal-ticket-message-subtitle">{{this.reporterEmail}}</div>
+                                {{/if}}
+                            </div>
+                            <time>{{n-a (format-date-fns this.issue.created_at "MMM d, yyyy 'at' h:mm a")}}</time>
+                        </div>
+                        <div class="portal-ticket-report">{{n-a this.issue.report}}</div>
+
+                        {{#if this.hasIssueAttachments}}
+                            <div class="portal-ticket-attachments">
+                                <div class="portal-ticket-attachments-title">{{this.issueAttachments.length}} {{if (eq this.issueAttachments.length 1) "Attachment" "Attachments"}}</div>
+                                <div class="portal-ticket-attachment-grid">
+                                    {{#each this.issueAttachments as |file|}}
+                                        <File @file={{file}} @onDownload={{this.downloadFile}} />
+                                    {{/each}}
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div>
+                </article>
+
+                <section class="portal-ticket-thread">
+                    <div class="portal-ticket-thread-header">
+                        <div>
+                            <div class="portal-ticket-section-title">Correspondence</div>
+                            <p>Reply here to keep every update attached to this support ticket.</p>
+                        </div>
+                    </div>
+
+                    <CommentThread
+                        @subject={{this.issue}}
+                        @subjectType="fleet-ops:issue"
+                        @comments={{this.comments}}
+                        @onReloadComments={{this.reloadComments}}
+                        @onPublishComment={{this.publishComment}}
+                        @onPublishReply={{this.publishReply}}
+                        @onUpdateComment={{this.updateComment}}
+                        @onDeleteComment={{this.deleteComment}}
+                        class="portal-support-comment-thread"
+                    />
+
+                    {{#unless this.hasComments}}
+                        <div class="portal-ticket-no-replies">
+                            <FaIcon @icon="comments" />
+                            <span>No replies yet. The support team response will appear here.</span>
+                        </div>
+                    {{/unless}}
+                </section>
+            </main>
+
+            <aside class="portal-ticket-meta-rail">
+                <div class="portal-ticket-meta-section">
+                    <div class="portal-ticket-section-title">Ticket Details</div>
+                    <dl>
+                        <div>
+                            <dt>Ticket</dt>
+                            <dd>{{this.ticketNumber}}</dd>
+                        </div>
+                        <div>
+                            <dt>Status</dt>
+                            <dd><Badge @status={{this.issue.status}} @text={{this.statusLabel}} /></dd>
+                        </div>
+                        <div>
+                            <dt>Priority</dt>
+                            <dd><Badge @status={{this.issue.priority}} @text={{this.priorityLabel}} /></dd>
+                        </div>
+                        {{#if this.relatedOrderLabel}}
+                            <div>
+                                <dt>Related order</dt>
+                                <dd>
+                                    {{#if this.hasRelatedOrderDetails}}
+                                        <LinkTo @route="portal.orders.details" @model={{this.relatedOrderId}} class="portal-ticket-related-order-link">
+                                            <FaIcon @icon="box" />
+                                            <span>{{this.relatedOrderLabel}}</span>
+                                        </LinkTo>
+                                    {{else}}
+                                        {{this.relatedOrderLabel}}
+                                    {{/if}}
+                                </dd>
+                            </div>
+                        {{/if}}
+                        <div>
+                            <dt>Tags</dt>
+                            <dd>
+                                {{#if this.hasIssueTags}}
+                                    <div class="portal-ticket-meta-tags">
+                                        {{#each this.issueTags as |tag|}}
+                                            <Badge @status="info" @text={{tag}} @hideStatusDot={{true}} />
+                                        {{/each}}
+                                    </div>
+                                {{else}}
+                                    None
+                                {{/if}}
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div class="portal-ticket-meta-section">
+                    <div class="portal-ticket-section-title">Timeline</div>
+                    <dl>
+                        <div>
+                            <dt>Created</dt>
+                            <dd>{{n-a (format-date-fns this.issue.created_at "MMM d, yyyy HH:mm")}}</dd>
+                        </div>
+                        <div>
+                            <dt>Last updated</dt>
+                            <dd>{{n-a (format-date-fns this.issue.updated_at "MMM d, yyyy HH:mm")}}</dd>
+                        </div>
+                    </dl>
+                </div>
+            </aside>
+        </div>
+    {{else}}
+        <div class="portal-empty-state">
+            <div class="portal-empty-state-icon"><FaIcon @icon="headset" /></div>
+            <div class="portal-empty-state-title">Ticket not found</div>
+            <p>This support ticket could not be loaded or is no longer available for this account.</p>
+        </div>
+    {{/if}}
+</Portal::ContentWrapper>

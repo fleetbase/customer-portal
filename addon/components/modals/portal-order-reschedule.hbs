@@ -1,0 +1,7 @@
+<Modal::Default @modalIsOpened={{@modalIsOpened}} @options={{@options}} @confirm={{@onConfirm}} @decline={{@onDecline}}>
+    <div class="modal-body-container">
+        <InputGroup @name="New delivery time" @helpText="Choose the preferred delivery date and time for this order.">
+            <DateTimeInput @value={{@options.reschedule.scheduled_at}} @onChange={{fn (mut @options.reschedule.scheduled_at)}} placeholder="Select date and time" class="w-full form-input" />
+        </InputGroup>
+    </div>
+</Modal::Default>

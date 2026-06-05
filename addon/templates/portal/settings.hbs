@@ -1,0 +1,15 @@
+<div class="portal-content-wrapper">
+    <div class="portal-settings-header">
+        <div>
+            <div class="portal-section-eyebrow">Settings</div>
+            <h1 class="text-lg font-bold">Account Settings</h1>
+        </div>
+    </div>
+
+    <div class="portal-settings-tabs">
+        <LinkTo @route="portal.settings.account" class="portal-settings-tab">Account</LinkTo>
+        <LinkTo @route="portal.settings.members" class="portal-settings-tab">Members</LinkTo>
+    </div>
+
+    {{outlet}}
+</div>

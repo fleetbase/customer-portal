@@ -7,7 +7,7 @@
                         <Spinner />
                     </div>
                 {{else}}
-                    <InputGroup @name="Customer Portal Access" @helpText="Input a URL slug where your customer portal can be accessed.">
+                    <InputGroup @name="Customer Portal Access" @helpText="Input a URL slug where your customer portal can be accessed." @wrapperClass="mb-4">
                         <CustomerPortalUrlInput
                             @value={{this.accessUrlSlug}}
                             @placeholder="Your Customer Portal URL"
@@ -19,15 +19,65 @@
                             <InfoBlock @type="danger" @size="sm" @icon="triangle-exclamation" @text={{this.accessUrlSlugValidation.message}} class="mt-2" />
                         {{/unless}}
                     </InputGroup>
+                    <InputGroup @name="Available Order Types" @helpText="Choose which order types customers can create from the portal. Deselect all to disable customer order creation." @wrapperClass="mb-4">
+                        <div class="space-y-1">
+                            {{#each this.orderConfigs as |orderConfig|}}
+                                <Checkbox @value={{includes orderConfig.uuid this.enabledOrderConfigIds}} @onChange={{fn this.toggleOrderConfig orderConfig}}>
+                                    <span class="font-semibold">{{orderConfig.name}}</span>
+                                    {{#if orderConfig.key}}
+                                        <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">{{orderConfig.key}}</span>
+                                    {{/if}}
+                                </Checkbox>
+                            {{else}}
+                                <InfoBlock @type="warning" @size="sm" @text="No order types are available for this organization." />
+                            {{/each}}
+                        </div>
+                    </InputGroup>
+                    <InputGroup @name="Quoteable Service Rates" @helpText="Choose which service rates can be queried when customers request quotes. Deselect all to return no service quotes." @wrapperClass="mb-4">
+                        <div class="space-y-1">
+                            {{#each this.serviceRates as |serviceRate|}}
+                                <Checkbox @value={{includes serviceRate.uuid this.enabledServiceRateIds}} @onChange={{fn this.toggleServiceRate serviceRate}}>
+                                    <span class="font-semibold">{{or serviceRate.service_name serviceRate.name serviceRate.public_id}}</span>
+                                    {{#if serviceRate.currency}}
+                                        <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">{{serviceRate.currency}}</span>
+                                    {{/if}}
+                                </Checkbox>
+                            {{else}}
+                                <InfoBlock @type="warning" @size="sm" @text="No service rates are available for this organization." />
+                            {{/each}}
+                        </div>
+                    </InputGroup>
+                    <InputGroup @name="Enable Stripe Payments" @wrapperClass="mb-4">
+                        <Toggle
+                            @isToggled={{this.paymentsEnabled}}
+                            @onToggle={{this.togglePayments}}
+                            @label="Require Stripe checkout when a customer selects a service quote"
+                        />
+                        <div class="space-y-2 mt-4">
+                            {{#unless this.paymentsOnboardCompleted}}
+                                <InfoBlock @type="warning" @icon="triangle-exclamation">
+                                    <span>Stripe onboarding must be completed before customer portal payments can be enabled.</span>
+                                    <Button @text="Complete Payments Onboarding" @onClick={{transition-to "console.fleet-ops.settings.payments.onboard"}} @wrapperClass="mt-2" />
+                                </InfoBlock>
+                            {{/unless}}
+                            <InfoBlock
+                                @type={{if this.isStripeEnabled "success" "warning"}}
+                                @icon={{if this.isStripeEnabled "check" "triangle-exclamation"}}
+                                @text={{if this.isStripeEnabled "Stripe is configured." "Stripe is not configured. The system administrator must configure Stripe before customer payments can be accepted."}}
+                            />
+                        </div>
+                    </InputGroup>
                 {{/if}}
-                <Button
-                    @type="primary"
-                    @icon="save"
-                    @text="Save Settings"
-                    @onClick={{perform this.saveConfig}}
-                    @isLoading={{or this.saveConfig.isRunning this.setAccessUrlSlug.isRunning}}
-                    @disabled={{or (not this.accessUrlSlug) (not this.accessUrlSlugValidation.valid)}}
-                />
+                <div class="mt-2">
+                    <Button
+                        @type="primary"
+                        @icon="save"
+                        @text="Save Settings"
+                        @onClick={{perform this.saveConfig}}
+                        @isLoading={{or this.saveConfig.isRunning this.setAccessUrlSlug.isRunning}}
+                        @disabled={{this.saveDisabled}}
+                    />
+                </div>
             </ContentPanel>
             <RegistryYield @registry="customer-portal:admin-settings" as |Component|>
                 <Component @context={{this}} />

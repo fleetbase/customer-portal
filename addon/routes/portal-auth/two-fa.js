@@ -1,6 +1,8 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
+const CUSTOMER_PORTAL_NAMESPACE = 'customer-portal/int/v1';
+
 export default class PortalAuthTwoFaRoute extends Route {
     @service fetch;
     @service notifications;
@@ -31,11 +33,11 @@ export default class PortalAuthTwoFaRoute extends Route {
         return this.session.store.restore().then(({ identity }) => {
             if (!identity) {
                 this.notifications.error('2FA failed to initialize.');
-                return this.router.transitionTo('auth.login');
+                return this.router.transitionTo('customer-portal.portal-auth.login');
             }
 
             return this.fetch
-                .post('two-fa/validate', { token, identity, clientToken })
+                .post('two-fa/validate', { token, identity, clientToken }, { namespace: CUSTOMER_PORTAL_NAMESPACE })
                 .then(({ clientToken, expired }) => {
                     // handle when code expired
                     if (expired === true) {
@@ -51,7 +53,7 @@ export default class PortalAuthTwoFaRoute extends Route {
                 })
                 .catch((error) => {
                     this.notifications.serverError(error);
-                    return this.router.transitionTo('auth.login');
+                    return this.router.transitionTo('customer-portal.portal-auth.login');
                 });
         });
     }
@@ -74,13 +76,8 @@ export default class PortalAuthTwoFaRoute extends Route {
 
     invalidateTwoFaSession(token, identity) {
         this.notifications.error('2FA authentication session has expired.');
-        return this.fetch
-            .post('two-fa/invalidate', {
-                token,
-                identity,
-            })
-            .then(() => {
-                return this.router.transitionTo('auth.login');
-            });
+        return this.fetch.post('two-fa/invalidate', { token, identity }, { namespace: CUSTOMER_PORTAL_NAMESPACE }).then(() => {
+            return this.router.transitionTo('customer-portal.portal-auth.login');
+        });
     }
 }

@@ -1,0 +1,50 @@
+<div class="portal-order-table-mode">
+    <div class="portal-table-toolbar">
+        <Input @value={{@query}} class="form-input w-full" placeholder="Search orders" {{on "input" this.search}} />
+    </div>
+    <div class="next-table-wrapper no-scroll h-auto table-fluid portal-table-panel">
+        <table class="table table-fixed portal-table">
+            <thead>
+                <tr>
+                    <th class="text-left">Order</th>
+                    <th class="text-left">Status</th>
+                    <th class="text-left">Scheduled</th>
+                    <th class="text-left">Created</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each @orders as |order|}}
+                    <tr>
+                        <td>
+                            <div class="font-semibold truncate">{{or order.tracking_number.tracking_number order.public_id order.id}}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{n-a (humanize order.type)}}</div>
+                        </td>
+                        <td><Badge @status={{order.status}} /></td>
+                        <td>{{n-a (format-date-fns order.scheduled_at "yyyy-MM-dd HH:mm")}}</td>
+                        <td>{{n-a (format-date-fns order.created_at "yyyy-MM-dd HH:mm")}}</td>
+                        <td>
+                            <div class="flex items-center justify-end space-x-2">
+                                <Button @size="xs" @icon="eye" @onClick={{transition-to "portal.orders.details" (or order.public_id order.id)}} @helpText="View order" />
+                            </div>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr>
+                        <td colspan="5">
+                            <div class="portal-empty-state portal-table-empty-state">
+                                <div class="portal-empty-state-icon"><FaIcon @icon="boxes-packing" /></div>
+                                <div class="portal-empty-state-title">No orders yet</div>
+                                <p>Create a new order when you are ready to request a delivery.</p>
+                                <LinkTo @route="portal.orders.new" class="portal-quick-link primary">
+                                    <FaIcon @icon="plus" />
+                                    <span>Create Order</span>
+                                </LinkTo>
+                            </div>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

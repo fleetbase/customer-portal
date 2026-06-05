@@ -1,0 +1,44 @@
+{{#if this.hasPurchaseRate}}
+    <ContentPanel @title="Purchase Rate" @open={{true}} @wrapperClass="bordered-top">
+        <div class="portal-purchase-rate">
+            {{#if this.serviceName}}
+                <div class="portal-purchase-rate-service">{{this.serviceName}}</div>
+            {{/if}}
+
+            <div class="portal-purchase-rate-table">
+                <div class="portal-purchase-rate-heading">
+                    <span>Breakdown</span>
+                    <span>{{this.currency}}</span>
+                </div>
+
+                {{#each this.items as |item|}}
+                    <div class="portal-purchase-rate-row">
+                        <span>{{n-a item.details}}</span>
+                        <span>{{format-currency item.amount this.currency}}</span>
+                    </div>
+                {{else}}
+                    <div class="portal-purchase-rate-empty">No purchase line items available.</div>
+                {{/each}}
+
+                <div class="portal-purchase-rate-summary">
+                    {{#if this.hasSubtotalAdjustment}}
+                        <div class="portal-purchase-rate-row">
+                            <span>Subtotal</span>
+                            <span>{{format-currency this.subtotalAmount this.currency}}</span>
+                        </div>
+                        {{#if this.taxAmount}}
+                            <div class="portal-purchase-rate-row">
+                                <span>Tax</span>
+                                <span>{{format-currency this.taxAmount this.currency}}</span>
+                            </div>
+                        {{/if}}
+                    {{/if}}
+                    <div class="portal-purchase-rate-row total">
+                        <span>Total</span>
+                        <span>{{format-currency this.totalAmount this.currency}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ContentPanel>
+{{/if}}

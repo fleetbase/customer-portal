@@ -1,0 +1,124 @@
+{{#if this.isCompanyAccount}}
+    <div class="portal-account-card">
+        <div class="portal-section-header mb-4">
+            <div>
+                <h2 class="text-base font-bold">Members</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Manage people who can access this company customer workspace.</p>
+            </div>
+            <Button @type="default" @size="sm" @icon="rotate" @helpText="Reload" @onClick={{perform this.loadPersonnel}} @isLoading={{this.loadPersonnel.isRunning}} />
+        </div>
+
+        <div class="portal-segmented-control mb-4">
+            <button type="button" class={{if this.isAddingExistingContact "active"}} {{on "click" (fn this.setPersonnelMode "existing")}}>
+                <FaIcon @icon="address-book" />
+                <span>Existing Contact</span>
+            </button>
+            <button type="button" class={{if this.isCreatingContact "active"}} {{on "click" (fn this.setPersonnelMode "new")}}>
+                <FaIcon @icon="user-plus" />
+                <span>New Contact</span>
+            </button>
+        </div>
+
+        <form class="portal-personnel-form" aria-label="Add member" {{on "submit" (perform this.addPersonnel)}}>
+            {{#if this.isAddingExistingContact}}
+                <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+                    <InputGroup @name="Contact" @wrapperClass="mb-0i">
+                        <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                            <PowerSelect
+                                @options={{this.availablePersonnelCandidates}}
+                                @selected={{this.selectedContact}}
+                                @onChange={{this.selectContact}}
+                                @placeholder="Select existing contact"
+                                @triggerClass="form-select form-input"
+                                as |contact|
+                            >
+                                <div class="min-w-0">
+                                    <div class="truncate font-semibold">{{contact.name}}</div>
+                                    <div class="truncate text-xs text-gray-500">{{n-a contact.email}}</div>
+                                </div>
+                            </PowerSelect>
+                        </div>
+                    </InputGroup>
+                    <InputGroup @name="Role" @wrapperClass="mb-0i">
+                        <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
+                            <PowerSelect
+                                @options={{this.roleOptions}}
+                                @selected={{this.selectedRole}}
+                                @onChange={{this.selectRole}}
+                                @placeholder="Select role"
+                                @triggerClass="form-select form-input"
+                                as |role|
+                            >
+                                <div class="font-semibold">{{role.label}}</div>
+                            </PowerSelect>
+                        </div>
+                    </InputGroup>
+                </div>
+            {{else}}
+                <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+                    <InputGroup @name="Name" @value={{this.personnelName}} @placeholder="Member name" @wrapperClass="mb-0i" />
+                    <InputGroup @name="Email" @type="email" @value={{this.personnelEmail}} @placeholder="email@example.com" @wrapperClass="mb-0i" />
+                </div>
+                <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+                    <InputGroup @name="Phone" @wrapperClass="mb-0i">
+                        <PhoneInput @value={{this.personnelPhone}} @onInput={{fn (mut this.personnelPhone)}} class="form-input w-full" />
+                    </InputGroup>
+                    <InputGroup @name="Role" @wrapperClass="mb-0i">
+                        <PowerSelect
+                            @options={{this.roleOptions}}
+                            @selected={{this.selectedRole}}
+                            @onChange={{this.selectRole}}
+                            @placeholder="Select role"
+                            @triggerClass="form-select form-input"
+                            as |role|
+                        >
+                            <div class="font-semibold">{{role.label}}</div>
+                        </PowerSelect>
+                    </InputGroup>
+                </div>
+            {{/if}}
+
+            <div class="portal-personnel-form-footer">
+                <Checkbox @value={{this.createLogin}} @onToggle={{this.toggleCreateLogin}}>Create login</Checkbox>
+                <Button
+                    @buttonType="submit"
+                    @type="primary"
+                    @icon="plus"
+                    @text="Add Member"
+                    @isLoading={{this.addPersonnel.isRunning}}
+                    @disabled={{not this.canAddPersonnel}}
+                />
+            </div>
+        </form>
+
+        <div class="portal-personnel-list">
+            {{#if this.loadPersonnel.isRunning}}
+                <div class="portal-widget-empty"><Spinner /></div>
+            {{else if this.hasPersonnel}}
+                {{#each this.personnels as |personnel|}}
+                    <div class="portal-personnel-row">
+                        <Image src={{personnel.photo_url}} @fallbackSrc={{config "defaultValues.contactImage"}} alt={{personnel.name}} class="portal-personnel-avatar" />
+                        <div class="min-w-0">
+                            <div class="portal-personnel-name">{{or personnel.name personnel.public_id}}</div>
+                            <div class="portal-personnel-meta">{{n-a personnel.email}} {{n-a personnel.phone}}</div>
+                        </div>
+                        <div class="portal-personnel-role">{{personnel.role}}</div>
+                        <Badge @status={{or personnel.status "active"}} />
+                        <Button @type="danger" @size="xs" @icon="trash" @text="Remove" @onClick={{perform this.removePersonnel personnel}} @isLoading={{this.removePersonnel.isRunning}} />
+                    </div>
+                {{/each}}
+            {{else}}
+                <div class="portal-widget-empty">No members added yet.</div>
+            {{/if}}
+        </div>
+    </div>
+{{else}}
+    <div class="portal-account-card">
+        <div class="portal-empty-state">
+            <FaIcon @icon="users" class="text-2xl text-blue-500" />
+            <div class="font-semibold text-gray-900 dark:text-gray-100">Add members with a company account</div>
+            <p>Convert your customer account to a company account to invite additional people into this workspace.</p>
+            <Button @type="primary" @icon="building" @text="Convert to Company Account" @onClick={{this.openConvertModal}} />
+        </div>
+    </div>
+{{/if}}

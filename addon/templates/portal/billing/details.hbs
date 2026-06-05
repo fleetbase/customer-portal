@@ -1,0 +1,113 @@
+<Portal::ContentWrapper class="portal-page-card portal-invoice-page-card">
+    <div class="portal-section-header">
+        <div>
+            <div class="portal-section-eyebrow">
+                <LinkTo @route="portal.billing.index" class="portal-muted-link">
+                    <FaIcon @icon="arrow-left" />
+                    Billing
+                </LinkTo>
+            </div>
+            <h1>{{n-a this.invoiceNumber}}</h1>
+            <p>Invoice details, line item preview, and payment status.</p>
+        </div>
+        <div class="portal-invoice-actions">
+            {{#if this.isPayable}}
+                <a href={{this.paymentUrl}} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                    <FaIcon @icon="arrow-up-right-from-square" class="mr-2" />
+                    <span>Open Payment Link</span>
+                </a>
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="portal-invoice-summary">
+        <div class="field-info-container">
+            <div class="field-name">Status</div>
+            <div class="field-value"><Badge @status={{this.invoice.status}} /></div>
+        </div>
+        <div class="field-info-container">
+            <div class="field-name">Invoice Date</div>
+            <div class="field-value">{{n-a (format-date-fns this.invoice.date "yyyy-MM-dd")}}</div>
+        </div>
+        <div class="field-info-container">
+            <div class="field-name">Due Date</div>
+            <div class="field-value">{{n-a (format-date-fns this.invoice.due_date "yyyy-MM-dd")}}</div>
+        </div>
+        <div class="field-info-container">
+            <div class="field-name">Balance</div>
+            <div class="field-value font-semibold">{{format-currency this.balanceAmount this.invoice.currency}}</div>
+        </div>
+    </div>
+
+    <div class="portal-invoice-preview">
+        <div class="portal-invoice-preview-header">
+            <div>
+                <div class="portal-section-eyebrow">Preview</div>
+                <h2>{{n-a this.invoiceNumber}}</h2>
+            </div>
+            <Badge @status={{this.invoice.status}} />
+        </div>
+
+        <div class="portal-invoice-table">
+            <div class="portal-invoice-table-heading">
+                <span>Description</span>
+                <span>Qty</span>
+                <span>Unit</span>
+                <span>Amount</span>
+            </div>
+            {{#each this.invoice.items as |item|}}
+                <div class="portal-invoice-table-row">
+                    <span>{{n-a item.description}}</span>
+                    <span>{{n-a item.quantity}}</span>
+                    <span>{{format-currency item.unit_price this.invoice.currency}}</span>
+                    <span>{{format-currency item.amount this.invoice.currency}}</span>
+                </div>
+            {{else}}
+                <div class="portal-empty-state compact">No line items recorded for this invoice.</div>
+            {{/each}}
+        </div>
+
+        <div class="portal-invoice-totals">
+            <div>
+                <span>Subtotal</span>
+                <span>{{format-currency this.subtotalAmount this.invoice.currency}}</span>
+            </div>
+            {{#if this.taxAmount}}
+                <div>
+                    <span>Tax</span>
+                    <span>{{format-currency this.taxAmount this.invoice.currency}}</span>
+                </div>
+            {{/if}}
+            <div class="total">
+                <span>Total</span>
+                <span>{{format-currency this.totalAmount this.invoice.currency}}</span>
+            </div>
+            <div>
+                <span>Paid</span>
+                <span>{{format-currency this.amountPaid this.invoice.currency}}</span>
+            </div>
+            <div>
+                <span>Balance Due</span>
+                <span>{{format-currency this.balanceAmount this.invoice.currency}}</span>
+            </div>
+        </div>
+
+        {{#if this.invoice.notes}}
+            <div class="portal-invoice-notes">
+                <div class="field-name">Notes</div>
+                <p>{{this.invoice.notes}}</p>
+            </div>
+        {{/if}}
+
+        {{#if this.orderIdentifier}}
+            <div class="portal-invoice-notes">
+                <div class="field-name">Order</div>
+                <p>
+                    <LinkTo @route="portal.orders.details" @model={{this.orderIdentifier}} class="portal-table-link">
+                        {{this.orderLabel}}
+                    </LinkTo>
+                </p>
+            </div>
+        {{/if}}
+    </div>
+</Portal::ContentWrapper>

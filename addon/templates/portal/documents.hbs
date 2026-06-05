@@ -1,0 +1,56 @@
+<Portal::ContentWrapper class="portal-page-card portal-table-page-card">
+    <div class="portal-section-header">
+        <div>
+            <div class="portal-section-eyebrow">Document Library</div>
+            <h1>Documents</h1>
+            <p>Download labels, PODs, photos, invoices, receipts, and order files.</p>
+        </div>
+    </div>
+    <div class="next-table-wrapper no-scroll h-auto table-fluid portal-table-panel mt-5">
+        <table class="table table-fixed portal-table">
+            <thead>
+                <tr>
+                    <th class="text-left">Document</th>
+                    <th class="text-left">Type</th>
+                    <th class="text-left">Order</th>
+                    <th class="text-left">Created</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.model.documents as |document|}}
+                    <tr>
+                        <td class="font-semibold">{{or document.original_filename document.name document.public_id}}</td>
+                        <td>{{n-a (humanize document.type)}}</td>
+                        <td>{{n-a (or document.order_tracking_number document.order_public_id)}}</td>
+                        <td>{{n-a (format-date-fns document.created_at "yyyy-MM-dd")}}</td>
+                        <td>
+                            <div class="portal-table-actions justify-end">
+                                {{#if document.url}}
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <span class="btn-wrapper inline-flex rounded-md shadow-sm">
+                                            <a href={{document.url}} target="_blank" rel="noopener noreferrer" class="btn btn-default btn-xs"><FaIcon @icon="eye" /></a>
+                                        </span>
+                                        <Button @size="xs" @icon="download" @onClick={{fn this.downloadDocument document}} />
+                                    </div>
+                                {{else}}
+                                    <span class="text-xs text-gray-500">Unavailable</span>
+                                {{/if}}
+                            </div>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr>
+                        <td colspan="5">
+                            <div class="portal-empty-state portal-table-empty-state">
+                                <div class="portal-empty-state-icon"><FaIcon @icon="folder-open" /></div>
+                                <div class="portal-empty-state-title">No documents yet</div>
+                                <p>Labels, PODs, photos, invoices, receipts, and order files will appear here when they become available.</p>
+                            </div>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</Portal::ContentWrapper>

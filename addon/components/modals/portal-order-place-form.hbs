@@ -1,0 +1,57 @@
+<Modal::Default @modalIsOpened={{@modalIsOpened}} @options={{@options}} @confirm={{@onConfirm}} @decline={{@onDecline}}>
+    <div class="modal-body-container">
+        <div class="grid grid-cols-3 gap-2 text-xs dark:text-gray-100 no-input-group-padding">
+            <InputGroup @name="Name" @wrapperClass="col-span-3">
+                <Input @value={{this.place.name}} @type="text" class="w-full form-input" placeholder="Name" />
+            </InputGroup>
+
+            <InputGroup @name="Street 1" @value={{this.place.street1}} @wrapperClass="col-span-3">
+                <div class="portal-place-lookup">
+                    <Input
+                        @value={{this.place.street1}}
+                        @type="text"
+                        class="w-full form-input"
+                        placeholder="Street 1"
+                        autocomplete="off"
+                        {{on "input" this.searchStreet}}
+                    />
+
+                    {{#if this.lookupPlaces.isRunning}}
+                        <div class="portal-place-lookup-menu">
+                            <div class="portal-place-lookup-empty">Searching addresses...</div>
+                        </div>
+                    {{else if this.hasLookupResults}}
+                        <div class="portal-place-lookup-menu">
+                            {{#each this.lookupResults as |result|}}
+                                <button type="button" class="portal-place-lookup-option" {{on "click" (fn this.onAutocomplete result)}}>
+                                    <div class="font-semibold truncate">{{or result.name result.street1 result.address}}</div>
+                                    <div class="text-xs text-gray-400 truncate">{{or result.address result.street1}}</div>
+                                </button>
+                            {{/each}}
+                        </div>
+                    {{/if}}
+                </div>
+            </InputGroup>
+
+            <InputGroup @name="Street 2" @autocomplete="nope" @value={{this.place.street2}} @wrapperClass="col-span-3" />
+            <InputGroup @name="Neighborhood" @autocomplete="nope" @value={{this.place.neighborhood}} />
+            <InputGroup @name="Building" @autocomplete="nope" @value={{this.place.building}} />
+            <InputGroup @name="Security Access Code" @autocomplete="nope" @value={{this.place.security_access_code}} />
+            <InputGroup @name="Postal Code" @autocomplete="nope" @value={{this.place.postal_code}} />
+            <InputGroup @name="City" @autocomplete="nope" @value={{this.place.city}} />
+            <InputGroup @name="State" @autocomplete="nope" @value={{this.place.province}} />
+
+            <InputGroup @name="Country" @wrapperClass="col-span-2">
+                <CountrySelect class="w-full form-input form-select form-datalist" @value={{this.place.country}} @onChange={{fn (mut this.place.country)}} placeholder="Country" />
+            </InputGroup>
+
+            <InputGroup @name="Coordinates" @wrapperClass="col-span-2">
+                <ModelCoordinatesInput @model={{this.place}} @autocomplete="all" @onInputReady={{fn (mut this.coordinatesInput)}} />
+            </InputGroup>
+
+            <InputGroup @name="Phone" @wrapperClass="col-span-2">
+                <PhoneInput @value={{this.place.phone}} @autocomplete="nope" @onInput={{fn (mut this.place.phone)}} class="form-input w-full" />
+            </InputGroup>
+        </div>
+    </div>
+</Modal::Default>

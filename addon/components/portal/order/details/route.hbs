@@ -1,0 +1,14 @@
+<ContentPanel @title="Route" @open={{true}} @wrapperClass="bordered-top">
+    {{#if this.hasRouteSummaryLine}}
+        <div class="mb-3 flex items-center justify-between gap-3 text-xs">
+            <div class="font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">All Stops - {{this.routeStopsCount}}</div>
+            <div class="flex min-w-0 items-center gap-2 font-semibold text-gray-700 dark:text-gray-200">
+                <span>{{if this.hasTrackingDistance (format-meters this.trackerData.route.distance_m) "-"}}</span>
+                <span class="text-gray-300 dark:text-gray-600">-</span>
+                <span>{{if this.trackingDurationSeconds (format-duration this.trackingDurationSeconds) "-"}}</span>
+            </div>
+        </div>
+    {{/if}}
+
+    <Portal::Order::RouteList @order={{@resource}} @eta={{@resource.eta}} />
+</ContentPanel>

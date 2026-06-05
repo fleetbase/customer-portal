@@ -1,0 +1,66 @@
+<div class="portal-dashboard-widget portal-list-widget" ...attributes>
+    <div class="portal-widget-header">
+        <div>
+            <div class="portal-widget-title">Recent Orders</div>
+            <div class="portal-widget-subtitle">Latest shipments for this account</div>
+        </div>
+        <FaIcon @icon="clock-rotate-left" />
+    </div>
+    <div class="portal-widget-body">
+        {{#if this.load.isRunning}}
+            <div class="portal-widget-empty"><Spinner /></div>
+        {{else if this.error}}
+            <div class="portal-widget-empty danger">{{this.error}}</div>
+        {{else}}
+            {{#each this.rows as |row|}}
+                <LinkTo @route="portal.orders.details" @model={{row.identifier}} class="portal-widget-order-card">
+                    <div class="portal-widget-order-card-header">
+                        <div class="portal-widget-order-card-title">{{row.trackingNumber}}</div>
+                        <Badge @status={{row.status}} />
+                    </div>
+
+                    <div class="portal-widget-order-route">
+                        <div class="portal-widget-order-stop">
+                            <div class="portal-widget-order-stop-marker pickup">1</div>
+                            <div class="portal-widget-order-stop-copy">
+                                <div class="portal-widget-order-stop-label">Pickup</div>
+                                <div class="portal-widget-order-stop-address">{{n-a row.pickupAddress}}</div>
+                            </div>
+                        </div>
+
+                        {{#if row.middleStopCount}}
+                            <div class="portal-widget-order-stop compact">
+                                <div class="portal-widget-order-stop-marker waypoint">+</div>
+                                <div class="portal-widget-order-stop-copy">
+                                    <div class="portal-widget-order-stop-label">Waypoints</div>
+                                    <div class="portal-widget-order-stop-address">{{row.middleStopCount}} additional {{if (eq row.middleStopCount 1) "stop" "stops"}}</div>
+                                </div>
+                            </div>
+                        {{/if}}
+
+                        <div class="portal-widget-order-stop">
+                            <div class="portal-widget-order-stop-marker dropoff">{{row.dropoffMarker}}</div>
+                            <div class="portal-widget-order-stop-copy">
+                                <div class="portal-widget-order-stop-label">{{row.dropoffLabel}}</div>
+                                <div class="portal-widget-order-stop-address">{{n-a row.dropoffAddress}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portal-widget-order-card-meta">
+                        <span><FaIcon @icon="box" /> {{n-a (smart-humanize row.type)}}</span>
+                        <span><FaIcon @icon="calendar" /> {{n-a (format-date-fns row.date "MMM d, HH:mm")}}</span>
+                        {{#if row.trackingMeta}}
+                            <span><FaIcon @icon="route" /> {{row.trackingMeta}}</span>
+                        {{/if}}
+                    </div>
+                </LinkTo>
+            {{else}}
+                <div class="portal-widget-empty">No recent orders.</div>
+            {{/each}}
+        {{/if}}
+        {{#if (gt this.rows.length 3)}}
+            <Spacer @height="50px" />
+        {{/if}}
+    </div>
+</div>

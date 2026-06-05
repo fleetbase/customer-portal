@@ -1,0 +1,22 @@
+<section class="portal-order-map" {{did-update this.syncRoutePreview @draft @selectedOrder}}>
+    <LeafletMap class="portal-order-leaflet" @lat={{this.center.latitude}} @lng={{this.center.longitude}} @zoom={{11}} @zoomControl={{false}} @scrollWheelZoom={{false}} @onLoad={{this.setupMap}} as |layers|>
+        <layers.tile @url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" />
+        {{#each this.markers key="id" as |place|}}
+            <layers.marker @lat={{place.latitude}} @lng={{place.longitude}} @icon={{place.icon}} as |marker|>
+                <marker.tooltip @permanent={{true}} @direction="top" @className="portal-order-route-marker-tooltip">
+                    <div class="text-xs font-semibold">{{place.label}}</div>
+                </marker.tooltip>
+                <marker.popup>
+                    <div class="portal-order-marker-type {{place.type}} text-xs font-semibold uppercase">{{place.label}}</div>
+                    <div class="text-sm font-semibold">{{n-a place.name}}</div>
+                    <div class="text-xs">{{place-address place}}</div>
+                    {{#if place.order}}
+                        <div class="text-xs mt-1">{{or place.order.tracking_number.tracking_number place.order.public_id place.order.id}}</div>
+                    {{else}}
+                        <div class="text-xs mt-1">New order route</div>
+                    {{/if}}
+                </marker.popup>
+            </layers.marker>
+        {{/each}}
+    </LeafletMap>
+</section>

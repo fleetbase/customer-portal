@@ -1,0 +1,76 @@
+<ContentPanel @title="Documents" @open={{true}} @wrapperClass="bordered-top">
+    <div class="space-y-2">
+        {{#if this.queueFile.isRunning}}
+            <div
+                class="dropzone w-full rounded-lg px-4 py-8 bg-gray-50 dark:bg-gray-900 bg-opacity-25 text-gray-900 dark:text-white text-center flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-indigo-500"
+            >
+                <div class="flex items-center justify-center py-5">
+                    <Spinner class="text-sm dark:text-gray-100" @loadingMessage="Uploading..." />
+                </div>
+            </div>
+        {{else}}
+            {{#let (file-queue name="customer-portal-order-files" onFileAdded=(perform this.queueFile) accept=(join "," this.acceptedFileTypes)) as |queue|}}
+                <FileDropzone @queue={{queue}} class="dropzone file-dropzone" as |dropzone|>
+                    {{#if dropzone.active}}
+                        {{#if dropzone.valid}}
+                            Drop files to attach them.
+                        {{else}}
+                            This file type is not supported.
+                        {{/if}}
+                    {{else if queue.files.length}}
+                        <div class="my-2">
+                            <FaIcon @icon="folder-open" class="text-indigo-500 mr-2" />
+                            {{pluralize queue.files.length "file"}}
+                            ready to upload
+                        </div>
+                        <div class="my-2">({{queue.progress}}%)</div>
+                    {{else}}
+                        <h4 class="font-semibold">
+                            <FaIcon @icon="folder-open" @size="lg" class="text-indigo-500 mr-2" />
+                            Attach order documents
+                        </h4>
+                        <div>
+                            {{#if dropzone.supported}}
+                                <p class="text-sm my-5">Drop labels, packing slips, reference photos, or supporting documents here.</p>
+                            {{/if}}
+                            <FileUpload
+                                @name="customer-portal-order-files"
+                                @for="customer-portal-order-files"
+                                @accept={{join "," this.acceptedFileTypes}}
+                                @multiple={{true}}
+                                @onFileAdded={{perform this.queueFile}}
+                            >
+                                <a tabindex={{0}} class="btn btn-magic cursor-pointer ml-1">Select files</a>
+                            </FileUpload>
+                        </div>
+                    {{/if}}
+                </FileDropzone>
+            {{/let}}
+            {{#if this.uploadQueue}}
+                <div class="mx-0.5">
+                    <div class="flex items-center justify-between">
+                        <span class="leading-6 text-sm font-semibold dark:text-gray-100">Upload queue</span>
+                    </div>
+                    <div class="space-y-2 mb-2">
+                        {{#each this.uploadQueue as |file|}}
+                            <div class="flex items-center justify-between bg-blue-100 border border-blue-800 dark:border-blue-800 py-1.5 shadow-sm rounded-lg px-4">
+                                <div class="text-xs text-blue-900 truncate">{{truncate-filename file.name 50}}</div>
+                                <div class="flex items-center text-sm">
+                                    <Spinner class="text-blue-900 mr-2" />
+                                    <span class="font-bold text-blue-900">{{round file.progress}}%</span>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            {{/if}}
+            {{#if this.files}}
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {{#each this.files as |file|}}
+                        <File @file={{file}} @onDelete={{perform this.removeFile}} />
+                    {{/each}}
+                </div>
+            {{/if}}
+        {{/if}}
+    </div>
+</ContentPanel>

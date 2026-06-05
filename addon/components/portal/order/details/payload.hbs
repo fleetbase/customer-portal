@@ -1,0 +1,40 @@
+<ContentPanel @title="Payload" @open={{true}} @wrapperClass="bordered-top">
+    {{#if @resource.payload.entities.length}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+            {{#each @resource.payload.entities as |entity|}}
+                <div class="rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-3 shadow-sm">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="font-semibold text-sm truncate dark:text-gray-100">{{n-a entity.name "Unnamed item"}}</div>
+                            <div class="text-xs text-gray-400 dark:text-gray-500 truncate">{{n-a entity.description "No description"}}</div>
+                        </div>
+                        {{#if entity.type}}
+                            <Badge @status="info" @hideStatusDot={{true}}>{{smart-humanize entity.type}}</Badge>
+                        {{/if}}
+                    </div>
+                    <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                        <div class="field-info-container">
+                            <div class="field-name">Weight</div>
+                            <div class="field-value">{{if entity.weight (concat entity.weight " " entity.weight_unit) "-"}}</div>
+                        </div>
+                        <div class="field-info-container">
+                            <div class="field-name">Dimensions</div>
+                            <div class="field-value">
+                                {{#if entity.length}}
+                                    {{entity.length}} x {{entity.width}} x {{entity.height}} {{entity.dimensions_unit}}
+                                {{else}}
+                                    -
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="portal-empty-state compact">
+            <div class="portal-empty-state-title">No items</div>
+            <p>No payload items were added to this order.</p>
+        </div>
+    {{/if}}
+</ContentPanel>

@@ -1,0 +1,19 @@
+<div class="contents" {{did-insert this.initialize}} {{did-update this.refreshServiceQuotes this.quoteRevision}}>
+    <Overlay @position="right" @noBackdrop={{true}} @fullHeight={{true}} @width="500px" @isOpen={{true}} @overlayClass="portal-order-panel-overlay" as |overlay|>
+        <Overlay::Header @overlay={{overlay}} @title="New Order" @onPressCancel={{this.cancel}}>
+            <:actions>
+                <Button @icon="check" @type="primary" @text="Create" @onClick={{this.submit}} @isLoading={{this.customerPortalOrderActions.createOrder.isRunning}} @disabled={{not this.canSubmit}} />
+            </:actions>
+        </Overlay::Header>
+        <Overlay::Body @wrapperClass="portal-order-overlay-body">
+            <Portal::Order::Form::Details @draft={{this.draft}} @orderConfigs={{@model.orderConfigs}} />
+            <Portal::Order::Form::CustomFields @draft={{this.draft}} />
+            <Portal::Order::Form::Route @draft={{this.draft}} @places={{@model.places}} />
+            <Portal::Order::Form::Payload @draft={{this.draft}} />
+            <Portal::Order::Form::ServiceRate @draft={{this.draft}} @isLoading={{this.customerPortalOrderActions.loadServiceQuotes.isRunning}} @canQuote={{this.canQuote}} />
+            <Portal::Order::Form::Documents @draft={{this.draft}} />
+            <Portal::Order::Form::Notes @draft={{this.draft}} />
+            <Spacer @height="200px" />
+        </Overlay::Body>
+    </Overlay>
+</div>

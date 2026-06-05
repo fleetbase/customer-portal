@@ -3,6 +3,8 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
+const CUSTOMER_PORTAL_NAMESPACE = 'customer-portal/int/v1';
+
 /**
  * Controller responsible for handling two-factor authentication.
  * @class AuthTwoFaController
@@ -109,18 +111,22 @@ export default class PortalAuthTwoFaController extends Controller {
             }
 
             // Call the backend API to verify the entered verification code
-            const { authToken } = await this.fetch.post('two-fa/verify', {
-                token,
-                code: verificationCode,
-                clientToken,
-                identity,
-            });
+            const { authToken } = await this.fetch.post(
+                'two-fa/verify',
+                {
+                    token,
+                    code: verificationCode,
+                    clientToken,
+                    identity,
+                },
+                { namespace: CUSTOMER_PORTAL_NAMESPACE }
+            );
 
             // If verification is successful, transition to the desired route
             this.notifications.success(this.intl.t('auth.two-fa.verify-code.verification-successful-notification'));
 
             // authenticate user
-            return this.session.authenticate('authenticator:fleetbase', { authToken }).then(() => {
+            return this.session.manuallyAuthenticate(authToken).then(() => {
                 return this.router.transitionTo('customer-portal.portal');
             });
         } catch (error) {
@@ -145,10 +151,7 @@ export default class PortalAuthTwoFaController extends Controller {
 
         try {
             const { identity, token } = this;
-            const { clientToken } = await this.fetch.post('two-fa/resend', {
-                identity,
-                token,
-            });
+            const { clientToken } = await this.fetch.post('two-fa/resend', { identity, token }, { namespace: CUSTOMER_PORTAL_NAMESPACE });
 
             if (clientToken) {
                 this.clientToken = clientToken;
@@ -172,14 +175,9 @@ export default class PortalAuthTwoFaController extends Controller {
      * @memberof AuthTwoFaController
      */
     @action cancelTwoFactor() {
-        return this.fetch
-            .post('two-fa/invalidate', {
-                identity: this.identity,
-                token: this.token,
-            })
-            .then(() => {
-                return this.router.transitionTo('customer-portal.portal-auth.login');
-            });
+        return this.fetch.post('two-fa/invalidate', { identity: this.identity, token: this.token }, { namespace: CUSTOMER_PORTAL_NAMESPACE }).then(() => {
+            return this.router.transitionTo('customer-portal.portal-auth.login');
+        });
     }
 
     /**
