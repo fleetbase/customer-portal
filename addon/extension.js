@@ -41,7 +41,7 @@ export default {
             'auth:login',
             new MenuItem({
                 title: 'Customer Portal',
-                route: 'customer-portal.login',
+                route: 'customer-portal.portal-auth.login',
                 icon: 'person',
                 type: 'link',
                 wrapperClass: 'btn-block py-1 border dark:border-gray-700 border-gray-200 hover:opacity-50',

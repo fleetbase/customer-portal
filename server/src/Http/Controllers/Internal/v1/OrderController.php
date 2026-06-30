@@ -299,6 +299,7 @@ class OrderController extends Controller
             'type'                   => 'dispatch',
             'direction'              => Transaction::DIRECTION_CREDIT,
             'status'                 => Transaction::STATUS_SUCCESS,
+            'settlement_status'      => Transaction::SETTLEMENT_STATUS_UNPAID,
         ]);
 
         $purchaseRate->serviceQuote?->items?->each(function ($serviceQuoteItem) use ($transaction) {
