@@ -1,16 +1,16 @@
 <div class="portal-order-table-mode">
     <div class="portal-table-toolbar">
-        <Input @value={{@query}} class="form-input w-full" placeholder="Search orders" {{on "input" this.search}} />
+        <Input @value={{@query}} class="form-input w-full" placeholder={{t "portal.orders.search-placeholder"}} {{on "input" this.search}} />
     </div>
     <div class="next-table-wrapper no-scroll h-auto table-fluid portal-table-panel">
         <table class="table table-fixed portal-table">
             <thead>
                 <tr>
-                    <th class="text-left">Order</th>
-                    <th class="text-left">Status</th>
-                    <th class="text-left">Scheduled</th>
-                    <th class="text-left">Created</th>
-                    <th class="text-right">Actions</th>
+                    <th class="text-left">{{t "portal.orders.table.order"}}</th>
+                    <th class="text-left">{{t "portal.orders.table.status"}}</th>
+                    <th class="text-left">{{t "portal.orders.table.scheduled"}}</th>
+                    <th class="text-left">{{t "portal.orders.table.created"}}</th>
+                    <th class="text-right">{{t "portal.orders.table.actions"}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +25,7 @@
                         <td>{{n-a (format-date-fns order.created_at "yyyy-MM-dd HH:mm")}}</td>
                         <td>
                             <div class="flex items-center justify-end space-x-2">
-                                <Button @size="xs" @icon="eye" @onClick={{transition-to "portal.orders.details" (or order.public_id order.id)}} @helpText="View order" />
+                                <Button @size="xs" @icon="eye" @onClick={{transition-to "portal.orders.details" (or order.public_id order.id)}} @helpText={{t "portal.orders.table.view-order"}} />
                             </div>
                         </td>
                     </tr>
@@ -34,11 +34,11 @@
                         <td colspan="5">
                             <div class="portal-empty-state portal-table-empty-state">
                                 <div class="portal-empty-state-icon"><FaIcon @icon="boxes-packing" /></div>
-                                <div class="portal-empty-state-title">No orders yet</div>
-                                <p>Create a new order when you are ready to request a delivery.</p>
+                                <div class="portal-empty-state-title">{{t "portal.orders.no-orders"}}</div>
+                                <p>{{t "portal.orders.empty-table-desc"}}</p>
                                 <LinkTo @route="portal.orders.new" class="portal-quick-link primary">
                                     <FaIcon @icon="plus" />
-                                    <span>Create Order</span>
+                                    <span>{{t "portal.orders.create-order"}}</span>
                                 </LinkTo>
                             </div>
                         </td>

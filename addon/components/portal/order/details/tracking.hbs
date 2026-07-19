@@ -1,11 +1,11 @@
-<ContentPanel @title="Tracking" @prefixTitleRight={{@resource.tracking}} @open={{true}} @wrapperClass="bordered-top">
+<ContentPanel @title={{t "portal.orders.tracking.tracking"}} @prefixTitleRight={{@resource.tracking}} @open={{true}} @wrapperClass="bordered-top">
     {{#if this.shouldShowLiveEta}}
         <div class="tracking-intelligence portal-tracking-intelligence mb-4">
             <div class="tracking-intelligence__eta-grid">
                 <div class="tracking-intelligence-cell tracking-intelligence-cell--accent">
                     <div class="tracking-intelligence-cell__label">
-                        Current ETA
-                        <span class="tracking-intelligence-tag">Live</span>
+                        {{t "portal.orders.tracking.current-eta"}}
+                        <span class="tracking-intelligence-tag">{{t "portal.orders.tracking.live"}}</span>
                     </div>
                     <div class="tracking-intelligence-cell__value">
                         {{#if this.activeEtaSeconds}}
@@ -13,13 +13,13 @@
                         {{else if this.completionEtaAt}}
                             {{format-date-fns this.completionEtaAt "d MMM HH:mm"}}
                         {{else}}
-                            Pending
+                            {{t "portal.orders.tracking.pending"}}
                         {{/if}}
                     </div>
-                    <div class="tracking-intelligence-cell__sub">Estimated from the latest delivery route information.</div>
+                    <div class="tracking-intelligence-cell__sub">{{t "portal.orders.tracking.eta-desc"}}</div>
                 </div>
                 <div class="tracking-intelligence-cell">
-                    <div class="tracking-intelligence-cell__label">Remaining Route</div>
+                    <div class="tracking-intelligence-cell__label">{{t "portal.orders.tracking.remaining-route"}}</div>
                     <div class="tracking-intelligence-cell__value">
                         {{#if this.remainingDuration}}
                             {{format-duration this.remainingDuration}}
@@ -29,9 +29,9 @@
                     </div>
                     <div class="tracking-intelligence-cell__sub">
                         {{#if this.remainingDistance}}
-                            {{format-meters this.remainingDistance}} remaining
+                            {{t "portal.orders.tracking.remaining-distance" distance=(format-meters this.remainingDistance)}}
                         {{else}}
-                            Distance will appear once tracking is available.
+                            {{t "portal.orders.tracking.distance-pending"}}
                         {{/if}}
                     </div>
                 </div>
@@ -41,11 +41,11 @@
                 <div class="tracking-intelligence-destination">
                     <div class="tracking-intelligence-destination__marker">•</div>
                     <div class="min-w-0 flex-1">
-                        <div class="tracking-intelligence-destination__label">Current stop</div>
+                        <div class="tracking-intelligence-destination__label">{{t "portal.orders.tracking.current-stop"}}</div>
                         <div class="tracking-intelligence-destination__address">{{n-a this.activeStop.address}}</div>
                         <div class="tracking-intelligence-destination__eta">
-                            ETA:
-                            <strong>{{if this.activeEtaSeconds (format-duration this.activeEtaSeconds) "Pending"}}</strong>
+                            {{t "portal.orders.tracking.eta"}}
+                            <strong>{{if this.activeEtaSeconds (format-duration this.activeEtaSeconds) (t "portal.orders.tracking.pending")}}</strong>
                         </div>
                     </div>
                 </div>
@@ -53,13 +53,13 @@
 
             {{#if this.confidencePercent}}
                 <div class="tracking-intelligence-confidence">
-                    <div class="tracking-intelligence-confidence__label">ETA confidence</div>
+                    <div class="tracking-intelligence-confidence__label">{{t "portal.orders.tracking.eta-confidence"}}</div>
                     <div class="tracking-intelligence-confidence__value">{{this.confidencePercent}}%</div>
                 </div>
             {{/if}}
 
             <div class="tracking-intelligence-footer">
-                <span>Updated {{n-a (format-date-fns this.updatedAt "d MMM HH:mm")}}</span>
+                <span>{{t "portal.orders.tracking.updated" time=(n-a (format-date-fns this.updatedAt "d MMM HH:mm"))}}</span>
             </div>
         </div>
     {{else}}

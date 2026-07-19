@@ -1,6 +1,8 @@
 import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
 
 export default class PortalOrderDetailsTrackingComponent extends Component {
+    @service intl;
     get normalizedStatus() {
         return String(this.args.resource?.status ?? '').toLowerCase();
     }
@@ -29,8 +31,8 @@ export default class PortalOrderDetailsTrackingComponent extends Component {
         if (this.isDispatchedWaitingStart) {
             return {
                 icon: 'truck-ramp-box',
-                title: 'Your order has been dispatched',
-                body: 'The delivery team has accepted this order. Live ETA appears once the route is started.',
+                title: this.intl.t('portal.orders.tracking.dispatched-title'),
+                body: this.intl.t('portal.orders.tracking.dispatched-body'),
                 status: 'dispatched',
             };
         }
@@ -38,16 +40,16 @@ export default class PortalOrderDetailsTrackingComponent extends Component {
         if (this.isCreatedWaitingDispatch) {
             return {
                 icon: 'clipboard-check',
-                title: 'Your order has not started yet',
-                body: 'The request has been received and is waiting for dispatch. Tracking updates will appear here as the order moves.',
+                title: this.intl.t('portal.orders.tracking.not-started-title'),
+                body: this.intl.t('portal.orders.tracking.not-started-body'),
                 status: 'created',
             };
         }
 
         return {
             icon: 'location-crosshairs',
-            title: 'Tracking is not available yet',
-            body: 'Live ETA and route progress will appear as soon as movement data is available for this order.',
+            title: this.intl.t('portal.orders.tracking.unavailable-title'),
+            body: this.intl.t('portal.orders.tracking.unavailable-body'),
             status: this.normalizedStatus || 'pending',
         };
     }

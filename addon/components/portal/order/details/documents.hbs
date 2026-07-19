@@ -1,11 +1,11 @@
-<ContentPanel @title="Documents" @open={{true}} @wrapperClass="bordered-top">
+<ContentPanel @title={{t "portal.orders.details.documents"}} @open={{true}} @wrapperClass="bordered-top">
     <div class="space-y-3">
         {{#if this.queueFile.isRunning}}
             <div
                 class="dropzone w-full rounded-lg px-4 py-8 bg-gray-50 dark:bg-gray-900 bg-opacity-25 text-gray-900 dark:text-white text-center flex flex-col items-center justify-center border-2 border-dashed border-gray-200 dark:border-indigo-500"
             >
                 <div class="flex items-center justify-center py-5">
-                    <Spinner class="text-sm dark:text-gray-100" @loadingMessage="Uploading..." />
+                    <Spinner class="text-sm dark:text-gray-100" @loadingMessage={{t "portal.orders.details.uploading"}} />
                 </div>
             </div>
         {{else}}
@@ -13,25 +13,25 @@
                 <FileDropzone @queue={{queue}} class="dropzone file-dropzone" as |dropzone|>
                     {{#if dropzone.active}}
                         {{#if dropzone.valid}}
-                            Drop files to attach them.
+                            {{t "portal.orders.details.drop-to-attach"}}
                         {{else}}
-                            This file type is not supported.
+                            {{t "portal.orders.details.file-type-unsupported"}}
                         {{/if}}
                     {{else if queue.files.length}}
                         <div class="my-2">
                             <FaIcon @icon="folder-open" class="text-indigo-500 mr-2" />
                             {{pluralize queue.files.length "file"}}
-                            ready to upload
+                            {{t "portal.orders.details.ready-to-upload"}}
                         </div>
                         <div class="my-2">({{queue.progress}}%)</div>
                     {{else}}
                         <h4 class="font-semibold">
                             <FaIcon @icon="folder-open" @size="lg" class="text-indigo-500 mr-2" />
-                            Upload documents
+                            {{t "portal.orders.details.upload-documents"}}
                         </h4>
                         <div>
                             {{#if dropzone.supported}}
-                                <p class="text-sm my-5">Drop files here to add labels, receipts, delivery documents, or supporting files to this order.</p>
+                                <p class="text-sm my-5">{{t "portal.orders.details.upload-desc"}}</p>
                             {{/if}}
                             <FileUpload
                                 @name="customer-portal-order-detail-files"
@@ -40,7 +40,7 @@
                                 @multiple={{true}}
                                 @onFileAdded={{perform this.queueFile}}
                             >
-                                <a tabindex={{0}} class="btn btn-magic cursor-pointer ml-1">Select files</a>
+                                <a tabindex={{0}} class="btn btn-magic cursor-pointer ml-1">{{t "portal.orders.details.select-files"}}</a>
                             </FileUpload>
                         </div>
                     {{/if}}
@@ -51,7 +51,7 @@
         {{#if this.uploadQueue}}
             <div class="mx-0.5">
                 <div class="flex items-center justify-between">
-                    <span class="leading-6 text-sm font-semibold dark:text-gray-100">Upload queue</span>
+                    <span class="leading-6 text-sm font-semibold dark:text-gray-100">{{t "portal.orders.details.upload-queue"}}</span>
                 </div>
                 <div class="space-y-2 mb-2">
                     {{#each this.uploadQueue as |file|}}
@@ -78,8 +78,8 @@
                 <div class="flex items-center justify-center border border-dashed border-gray-300 dark:border-gray-600 p-6 rounded-xl bg-gray-50 dark:bg-gray-800">
                     <div class="text-center">
                         <FaIcon @icon="folder-open" @size="2x" class="text-gray-400 mb-2" />
-                        <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">No documents yet</div>
-                        <div class="text-xs text-gray-500 dark:text-gray-500 mt-1">Labels, receipts, and order files will show up here when available.</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">{{t "portal.orders.details.no-documents"}}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-500 mt-1">{{t "portal.orders.details.no-documents-desc"}}</div>
                     </div>
                 </div>
             </div>

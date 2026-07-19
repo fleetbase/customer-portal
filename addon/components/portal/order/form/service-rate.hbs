@@ -1,8 +1,8 @@
 {{#if this.shouldShowPanel}}
-    <ContentPanel @title="Service" @open={{true}} @wrapperClass="bordered-top">
+    <ContentPanel @title={{t "portal.orders.form.service"}} @open={{true}} @wrapperClass="bordered-top">
         {{#if @isLoading}}
             <div class="portal-empty-state compact">
-                <Spinner @loadingMessage="Loading service quotes..." />
+                <Spinner @loadingMessage={{t "portal.orders.form.loading-quotes"}} />
             </div>
         {{else if this.hasQuoteOptions}}
             <div class="radio-group-condensed -space-y-px">
@@ -32,7 +32,7 @@
                                 <table class="table table-fixed flex-1">
                                     <thead>
                                         <tr>
-                                            <th class="text-left">Breakdown</th>
+                                            <th class="text-left">{{t "portal.orders.details.breakdown"}}</th>
                                             <th class="text-right">{{serviceQuote.currency}}</th>
                                         </tr>
                                     </thead>
@@ -49,7 +49,7 @@
                                         {{/each}}
                                         <tr class="border-b-0">
                                             <td class="border-b-0">
-                                                <span class="font-semibold">Total</span>
+                                                <span class="font-semibold">{{t "portal.orders.details.total"}}</span>
                                             </td>
                                             <td class="border-b-0 text-right">
                                                 <span class="font-semibold">{{format-currency serviceQuote.amount serviceQuote.currency}}</span>
@@ -64,13 +64,13 @@
             </div>
         {{else if @canQuote}}
             <div class="portal-empty-state compact">
-                <div class="portal-empty-state-title">No service quotes</div>
-                <p>No available service rates matched this order.</p>
+                <div class="portal-empty-state-title">{{t "portal.orders.form.no-quotes"}}</div>
+                <p>{{t "portal.orders.form.no-quotes-desc"}}</p>
             </div>
         {{else}}
             <div class="portal-empty-state compact">
-                <div class="portal-empty-state-title">Add route details</div>
-                <p>Select an order type, pickup, and dropoff to view service quotes.</p>
+                <div class="portal-empty-state-title">{{t "portal.orders.form.add-route-details"}}</div>
+                <p>{{t "portal.orders.form.add-route-details-desc"}}</p>
             </div>
         {{/if}}
     </ContentPanel>

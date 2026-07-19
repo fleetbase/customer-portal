@@ -12,11 +12,11 @@
         <div class="portal-topbar-actions">
             <LinkTo @route="portal.support" class="portal-header-link">
                 <FaIcon @icon="headset" />
-                <span>Support</span>
+                <span>{{t "portal.header.support"}}</span>
             </LinkTo>
             <LinkTo @route="portal.documents" class="portal-header-link hidden md:inline-flex">
                 <FaIcon @icon="folder-open" />
-                <span>Documents</span>
+                <span>{{t "portal.header.documents"}}</span>
             </LinkTo>
             <LocaleSelectorTray />
             <BasicDropdown class="portal-user-menu" @renderInPlace={{true}} as |dd|>
@@ -36,12 +36,12 @@
                 <dd.Content>
                     <div class="next-dd-menu">
                         <div class="px-1">
-                            <Layout::Sidebar::Item class="next-dd-item" @route="customer-portal.portal.settings.account" @icon="gear">Account Settings</Layout::Sidebar::Item>
+                            <Layout::Sidebar::Item class="next-dd-item" @route="customer-portal.portal.settings.account" @icon="gear">{{t "portal.user-menu.account-settings"}}</Layout::Sidebar::Item>
                         </div>
                         <Layout::Header::DarkModeToggle />
                         <div class="next-dd-menu-seperator"></div>
                         <div class="px-1">
-                            <Layout::Sidebar::Item class="next-dd-item" @onClick={{this.invalidateSession}} @icon="person-running">Logout</Layout::Sidebar::Item>
+                            <Layout::Sidebar::Item class="next-dd-item" @onClick={{this.invalidateSession}} @icon="person-running">{{t "portal.user-menu.logout"}}</Layout::Sidebar::Item>
                         </div>
                     </div>
                 </dd.Content>
@@ -51,17 +51,17 @@
     <Portal::Main>
         <Portal::Sidebar>
             <div class="portal-nav-group">
-                <div class="portal-nav-label">Workspace</div>
-                <Layout::Sidebar::Item @route="customer-portal.portal.home" @icon="home">Dashboard</Layout::Sidebar::Item>
-                <Layout::Sidebar::Item @route="customer-portal.portal.orders" @icon="boxes-packing">Orders</Layout::Sidebar::Item>
-                <Layout::Sidebar::Item @route="customer-portal.portal.billing" @icon="file-invoice-dollar">Billing</Layout::Sidebar::Item>
-                <Layout::Sidebar::Item @route="customer-portal.portal.support" @icon="headset">Support</Layout::Sidebar::Item>
-                <Layout::Sidebar::Item @route="customer-portal.portal.documents" @icon="folder-open">Documents</Layout::Sidebar::Item>
+                <div class="portal-nav-label">{{t "portal.nav.workspace"}}</div>
+                <Layout::Sidebar::Item @route="customer-portal.portal.home" @icon="home">{{t "portal.nav.dashboard"}}</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.orders" @icon="boxes-packing">{{t "portal.nav.orders"}}</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.billing" @icon="file-invoice-dollar">{{t "portal.nav.billing"}}</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.support" @icon="headset">{{t "portal.nav.support"}}</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.documents" @icon="folder-open">{{t "portal.nav.documents"}}</Layout::Sidebar::Item>
             </div>
             <div class="portal-nav-group">
-                <div class="portal-nav-label">Preferences</div>
-                <Layout::Sidebar::Item @route="customer-portal.portal.address-book" @icon="address-book">Address Book</Layout::Sidebar::Item>
-                <Layout::Sidebar::Item @route="customer-portal.portal.notifications" @icon="bell">Notifications</Layout::Sidebar::Item>
+                <div class="portal-nav-label">{{t "portal.nav.preferences"}}</div>
+                <Layout::Sidebar::Item @route="customer-portal.portal.address-book" @icon="address-book">{{t "portal.nav.address-book"}}</Layout::Sidebar::Item>
+                <Layout::Sidebar::Item @route="customer-portal.portal.notifications" @icon="bell">{{t "portal.nav.notifications"}}</Layout::Sidebar::Item>
             </div>
             <RegistryYield @type="menu" @registry="customer-portal:sidebar" as |menuItem|>
                 <Layout::Sidebar::Item
