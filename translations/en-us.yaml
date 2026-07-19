@@ -1,2 +1,12 @@
 starter:
   extension-name: Starter
+
+portal:
+  home:
+    welcome: "Welcome, {name}"
+    hero-subtitle: "Track deliveries, invoices, documents, and support activity from one customer workspace."
+    new-support-ticket: "New Support Ticket"
+    view-billing: "View Billing"
+    documents: "Documents"
+    company-workspace: "Company customer workspace"
+    customer-workspace: "Customer workspace"

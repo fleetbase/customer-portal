@@ -1,0 +1,12 @@
+starter:
+  extension-name: Стартер
+
+portal:
+  home:
+    welcome: "Добро пожаловать, {name}"
+    hero-subtitle: "Отслеживайте доставки, счета, документы и активность техподдержки в едином рабочем пространстве."
+    new-support-ticket: "Новый запрос в поддержку"
+    view-billing: "Просмотр счетов"
+    documents: "Документы"
+    company-workspace: "Рабочее пространство клиента компании"
+    customer-workspace: "Рабочее пространство клиента"
