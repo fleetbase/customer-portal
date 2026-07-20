@@ -1,7 +1,7 @@
 <div class="portal-dashboard-widget portal-kpi-tile portal-kpi-accent-green" ...attributes>
     <div class="portal-kpi-content">
         <div class="min-w-0">
-            <div class="portal-kpi-label">Unpaid Invoices</div>
+            <div class="portal-kpi-label">{{t "portal.widgets.unpaid-invoices.title"}}</div>
             {{#if this.load.isRunning}}
                 <Spinner />
             {{else if this.error}}
@@ -13,3 +13,4 @@
         <div class="portal-kpi-icon"><FaIcon @icon="file-invoice-dollar" /></div>
     </div>
 </div>
+

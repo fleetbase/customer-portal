@@ -1,7 +1,7 @@
 <div class="portal-dashboard-widget portal-kpi-tile portal-kpi-accent-blue" ...attributes>
     <div class="portal-kpi-content">
         <div class="min-w-0">
-            <div class="portal-kpi-label">Active Orders</div>
+            <div class="portal-kpi-label">{{t "portal.widgets.active-orders.title"}}</div>
             {{#if this.load.isRunning}}
                 <Spinner />
             {{else if this.error}}
@@ -13,3 +13,4 @@
         <div class="portal-kpi-icon"><FaIcon @icon="boxes-packing" /></div>
     </div>
 </div>
+

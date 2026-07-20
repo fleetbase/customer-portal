@@ -1,20 +1,20 @@
 <Portal::ContentWrapper class="portal-page-card portal-table-page-card">
     <div class="portal-section-header">
         <div>
-            <div class="portal-section-eyebrow">Billing Center</div>
-            <h1>Billing</h1>
-            <p>View invoices, balances, receipts, and payment status.</p>
+            <div class="portal-section-eyebrow">{{t "portal.billing.eyebrow"}}</div>
+            <h1>{{t "portal.billing.title"}}</h1>
+            <p>{{t "portal.billing.subtitle"}}</p>
         </div>
     </div>
     <div class="next-table-wrapper no-scroll h-auto table-fluid portal-table-panel mt-5">
         <table class="table table-fixed portal-table">
             <thead>
                 <tr>
-                    <th class="text-left">Invoice</th>
-                    <th class="text-left">Order</th>
-                    <th class="text-left">Due</th>
-                    <th class="text-left">Status</th>
-                    <th class="text-right">Balance</th>
+                    <th class="text-left">{{t "portal.billing.table.invoice"}}</th>
+                    <th class="text-left">{{t "portal.billing.table.order"}}</th>
+                    <th class="text-left">{{t "portal.billing.table.due"}}</th>
+                    <th class="text-left">{{t "portal.billing.table.status"}}</th>
+                    <th class="text-right">{{t "portal.billing.table.balance"}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,8 +43,8 @@
                         <td colspan="5">
                             <div class="portal-empty-state portal-table-empty-state">
                                 <div class="portal-empty-state-icon"><FaIcon @icon="file-invoice-dollar" /></div>
-                                <div class="portal-empty-state-title">No invoices yet</div>
-                                <p>Invoices, receipts, and balances will appear here when billing records are available for this account.</p>
+                                <div class="portal-empty-state-title">{{t "portal.billing.empty-title"}}</div>
+                                <p>{{t "portal.billing.empty-desc"}}</p>
                             </div>
                         </td>
                     </tr>
@@ -53,3 +53,4 @@
         </table>
     </div>
 </Portal::ContentWrapper>
+
