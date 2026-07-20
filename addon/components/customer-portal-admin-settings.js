@@ -9,6 +9,7 @@ import config from 'ember-get-config';
 export default class CustomerPortalAdminSettingsComponent extends Component {
     @service fetch;
     @service notifications;
+    @service intl;
     @tracked accessUrlSlug;
     @tracked accessUrlSlugValidation;
     @tracked orderConfigs = [];
@@ -63,7 +64,7 @@ export default class CustomerPortalAdminSettingsComponent extends Component {
             this.enabledServiceRateIds = config.enabledServiceRateIds ?? this.enabledServiceRateIds;
             this.paymentsEnabled = config.paymentsEnabled === true;
             this.paymentsOnboardCompleted = config.paymentsOnboardCompleted === true;
-            this.notifications.success('Customer portal settings saved.');
+            this.notifications.success(this.intl.t('portal.admin-settings.saved-success'));
         } catch (error) {
             this.notifications.serverError(error);
         }
@@ -90,12 +91,12 @@ export default class CustomerPortalAdminSettingsComponent extends Component {
     @action togglePayments(enabled) {
         if (enabled && !this.isStripeEnabled) {
             this.paymentsEnabled = false;
-            return this.notifications.warning('Stripe must be configured before customer portal payments can be enabled.');
+            return this.notifications.warning(this.intl.t('portal.admin-settings.stripe-required-warning'));
         }
 
         if (enabled && !this.paymentsOnboardCompleted) {
             this.paymentsEnabled = false;
-            return this.notifications.warning('Stripe onboarding must be completed before customer portal payments can be enabled.');
+            return this.notifications.warning(this.intl.t('portal.admin-settings.onboarding-required-warning'));
         }
 
         this.paymentsEnabled = enabled;
