@@ -175,6 +175,95 @@ portal:
       return: "Return"
       dropoff: "Dropoff"
 
+    entity-types:
+      entity:
+        label: "Entity"
+        description: "Standard generic entity representing an item."
+      parcel:
+        label: "Parcel"
+        description: "Standard parcel or package used by parcel-based pricing."
+      package:
+        label: "Package"
+        description: "Box, parcel, envelope, or general package."
+      product:
+        label: "Product"
+        description: "Sellable product or catalog item."
+      item:
+        label: "Item"
+        description: "Generic inventory item when no stronger type applies."
+      sku:
+        label: "SKU / Inventory Unit"
+        description: "Stock keeping unit or tracked inventory piece."
+      document:
+        label: "Document"
+        description: "Paperwork, labels, or documents."
+      envelope:
+        label: "Envelope"
+        description: "Flat document mailer or envelope."
+      box:
+        label: "Box"
+        description: "Single boxed shipment unit."
+      carton:
+        label: "Carton"
+        description: "Single carton, box, or case."
+      case:
+        label: "Case"
+        description: "Case-packed goods or packaged case."
+      bundle:
+        label: "Bundle"
+        description: "Bundled or strapped items shipped together."
+      bag:
+        label: "Bag"
+        description: "Bagged goods, sacks, or pouches."
+      tote:
+        label: "Tote"
+        description: "Reusable tote, bin, or container."
+      crate:
+        label: "Crate"
+        description: "Rigid crate or caged shipment unit."
+      pallet:
+        label: "Pallet"
+        description: "Palletized freight or grouped cargo."
+      container:
+        label: "Container"
+        description: "Containerized shipment or storage container."
+      freight:
+        label: "Freight"
+        description: "Loose freight or larger shipment unit."
+      cargo:
+        label: "Cargo"
+        description: "General cargo not classified more specifically."
+      equipment:
+        label: "Equipment"
+        description: "Tools, machines, or operational equipment."
+      machinery:
+        label: "Machinery"
+        description: "Industrial machinery or large mechanical unit."
+      asset:
+        label: "Asset"
+        description: "Tracked business asset or returnable item."
+      return:
+        label: "Return"
+        description: "Returned goods or reverse-logistics item."
+      sample:
+        label: "Sample"
+        description: "Sample item for trial, demo, or inspection."
+      spare_part:
+        label: "Spare Part"
+        description: "Replacement component or service part."
+      medical_supply:
+        label: "Medical Supply"
+        description: "Healthcare, lab, or medical delivery item."
+      food:
+        label: "Food"
+        description: "Prepared food, meal, or grocery item."
+      beverage:
+        label: "Beverage"
+        description: "Drink, liquid refreshment, or bottled shipment."
+      retail_goods:
+        label: "Retail Goods"
+        description: "General consumer or retail merchandise."
+
     form:
       details: "Details"
       order-type: "Order Type"

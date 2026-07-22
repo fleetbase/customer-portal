@@ -39,8 +39,8 @@ export default class PortalOrderFormPayloadComponent extends Component {
             { label: 'Retail Goods', value: 'retail_goods', description: 'General consumer or retail merchandise.' },
         ].map((type) => ({
             value: type.value,
-            label: this.intl.t(`portal.orders.entity-types.${type.value}.label`, { defaultValue: type.label }),
-            description: this.intl.t(`portal.orders.entity-types.${type.value}.description`, { defaultValue: type.description }),
+            label: this.intl.t(`portal.orders.entity-types.${type.value}.label`, { default: type.label }),
+            description: this.intl.t(`portal.orders.entity-types.${type.value}.description`, { default: type.description }),
         }));
     }
 
