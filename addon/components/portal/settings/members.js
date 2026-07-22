@@ -23,8 +23,8 @@ export default class PortalSettingsMembersComponent extends Component {
 
     get roleOptions() {
         return [
-            { label: this.intl.t('portal.settings.members.roles.admin'), value: 'admin' },
-            { label: this.intl.t('portal.settings.members.roles.member'), value: 'member' },
+            { label: this.intl.t('portal.members.roles.admin'), value: 'admin' },
+            { label: this.intl.t('portal.members.roles.member'), value: 'member' },
         ];
     }
 
@@ -179,7 +179,7 @@ export default class PortalSettingsMembersComponent extends Component {
             }
 
             this.clearPersonnelForm();
-            this.notifications.success(this.intl.t('portal.settings.members.member-added'));
+            this.notifications.success(this.intl.t('portal.members.member-added'));
         } catch (error) {
             this.notifications.serverError(error);
         }
@@ -190,7 +190,7 @@ export default class PortalSettingsMembersComponent extends Component {
             yield this.fetch.delete(`account/personnels/${personnel.id}`, {}, { namespace: 'customer-portal/int/v1' });
             this.personnels = this.personnels.filter((item) => item.id !== personnel.id);
             yield this.loadPersonnel.perform();
-            this.notifications.success(this.intl.t('portal.settings.members.member-removed'));
+            this.notifications.success(this.intl.t('portal.members.member-removed'));
         } catch (error) {
             this.notifications.serverError(error);
         }

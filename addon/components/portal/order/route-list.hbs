@@ -8,7 +8,7 @@
                 <div class="portal-route-stop-title">{{this.firstStop.title}}</div>
                 <div class="mb-2 flex flex-wrap items-center gap-1.5">
                     {{#if this.firstStop.statusCode}}<Badge @status={{this.firstStop.statusCode}} />{{/if}}
-                    {{#if this.firstStop.showCompletedFlagBadge}}<Badge @status="success" @hideStatusDot={{true}}>{{t "portal.orders.route-list.completed"}}</Badge>{{else if this.firstStop.active}}<Badge @status="indigo" @hideStatusDot={{true}}>{{t "portal.orders.route-list.current-stop"}}</Badge>{{/if}}
+                    {{#if this.firstStop.showCompletedFlagBadge}}<Badge @status="success" @hideStatusDot={{true}}>{{t "portal.modals.route-list.completed"}}</Badge>{{else if this.firstStop.active}}<Badge @status="indigo" @hideStatusDot={{true}}>{{t "portal.modals.route-list.current-stop"}}</Badge>{{/if}}
                     {{#if this.firstStop.etaSeconds}}<Badge @status="pending" @hideStatusDot={{true}}><span class="font-bold">{{t "portal.orders.tracking.eta"}}</span> {{format-duration this.firstStop.etaSeconds}}</Badge>{{/if}}
                 </div>
                 {{place-address this.firstStop.place}}
@@ -21,9 +21,9 @@
             <div class="px-3 py-2 w-full bg-yellow-200 text-yellow-900 rounded shadow-sm flex flex-col justify-center items-start mb-3">
                 <div class="flex flex-row items-center">
                     <FaIcon @icon="eye" class="mr-2 text-yellow-900" />
-                    <span class="font-bold">{{if this.isWaypointsCollapsed (t "portal.orders.route-list.expand") (t "portal.orders.route-list.collapse")}}</span>
+                    <span class="font-bold">{{if this.isWaypointsCollapsed (t "portal.modals.route-list.expand") (t "portal.modals.route-list.collapse")}}</span>
                 </div>
-                <div>{{t "portal.orders.route-list.more-stops" count=this.middleStops.length}}</div>
+                <div>{{t "portal.modals.route-list.more-stops" count=this.middleStops.length}}</div>
             </div>
         </Button>
         {{#unless this.isWaypointsCollapsed}}
@@ -36,7 +36,7 @@
                         <div class="portal-route-stop-title">{{stop.title}}</div>
                         <div class="mb-2 flex flex-wrap items-center gap-1.5">
                             {{#if stop.statusCode}}<Badge @status={{stop.statusCode}} />{{/if}}
-                            {{#if stop.showCompletedFlagBadge}}<Badge @status="success" @hideStatusDot={{true}}>{{t "portal.orders.route-list.completed"}}</Badge>{{else if stop.active}}<Badge @status="indigo" @hideStatusDot={{true}}>{{t "portal.orders.route-list.current-stop"}}</Badge>{{/if}}
+                            {{#if stop.showCompletedFlagBadge}}<Badge @status="success" @hideStatusDot={{true}}>{{t "portal.modals.route-list.completed"}}</Badge>{{else if stop.active}}<Badge @status="indigo" @hideStatusDot={{true}}>{{t "portal.modals.route-list.current-stop"}}</Badge>{{/if}}
                             {{#if stop.etaSeconds}}<Badge @status="pending" @hideStatusDot={{true}}><span class="font-bold">{{t "portal.orders.tracking.eta"}}</span> {{format-duration stop.etaSeconds}}</Badge>{{/if}}
                         </div>
                         {{place-address stop.place}}
@@ -54,7 +54,7 @@
                     <div class="portal-route-stop-title">{{stop.title}}</div>
                     <div class="mb-2 flex flex-wrap items-center gap-1.5">
                         {{#if stop.statusCode}}<Badge @status={{stop.statusCode}} />{{/if}}
-                        {{#if stop.showCompletedFlagBadge}}<Badge @status="success" @hideStatusDot={{true}}>{{t "portal.orders.route-list.completed"}}</Badge>{{else if stop.active}}<Badge @status="indigo" @hideStatusDot={{true}}>{{t "portal.orders.route-list.current-stop"}}</Badge>{{/if}}
+                        {{#if stop.showCompletedFlagBadge}}<Badge @status="success" @hideStatusDot={{true}}>{{t "portal.modals.route-list.completed"}}</Badge>{{else if stop.active}}<Badge @status="indigo" @hideStatusDot={{true}}>{{t "portal.modals.route-list.current-stop"}}</Badge>{{/if}}
                         {{#if stop.etaSeconds}}<Badge @status="pending" @hideStatusDot={{true}}><span class="font-bold">{{t "portal.orders.tracking.eta"}}</span> {{format-duration stop.etaSeconds}}</Badge>{{/if}}
                     </div>
                     {{place-address stop.place}}
@@ -72,7 +72,7 @@
                 <div class="portal-route-stop-title">{{this.lastStop.title}}</div>
                 <div class="mb-2 flex flex-wrap items-center gap-1.5">
                     {{#if this.lastStop.statusCode}}<Badge @status={{this.lastStop.statusCode}} />{{/if}}
-                    {{#if this.lastStop.showCompletedFlagBadge}}<Badge @status="success" @hideStatusDot={{true}}>{{t "portal.orders.route-list.completed"}}</Badge>{{else if this.lastStop.active}}<Badge @status="indigo" @hideStatusDot={{true}}>{{t "portal.orders.route-list.current-stop"}}</Badge>{{/if}}
+                    {{#if this.lastStop.showCompletedFlagBadge}}<Badge @status="success" @hideStatusDot={{true}}>{{t "portal.modals.route-list.completed"}}</Badge>{{else if this.lastStop.active}}<Badge @status="indigo" @hideStatusDot={{true}}>{{t "portal.modals.route-list.current-stop"}}</Badge>{{/if}}
                     {{#if this.lastStop.etaSeconds}}<Badge @status="pending" @hideStatusDot={{true}}><span class="font-bold">{{t "portal.orders.tracking.eta"}}</span> {{format-duration this.lastStop.etaSeconds}}</Badge>{{/if}}
                 </div>
                 {{place-address this.lastStop.place}}

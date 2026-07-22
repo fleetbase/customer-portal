@@ -96,7 +96,7 @@ export default class CustomerPortalAdminSettingsComponent extends Component {
 
         if (enabled && !this.paymentsOnboardCompleted) {
             this.paymentsEnabled = false;
-            return this.notifications.warning(this.intl.t('portal.admin-settings.onboarding-required-warning'));
+            return this.notifications.warning(this.intl.t('portal.admin-settings.stripe-onboarding-warning'));
         }
 
         this.paymentsEnabled = enabled;

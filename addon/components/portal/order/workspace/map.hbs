@@ -13,7 +13,7 @@
                     {{#if place.order}}
                         <div class="text-xs mt-1">{{or place.order.tracking_number.tracking_number place.order.public_id place.order.id}}</div>
                     {{else}}
-                        <div class="text-xs mt-1">{{t "portal.orders.route-list.new-order-route"}}</div>
+                        <div class="text-xs mt-1">{{t "portal.modals.route-list.new-order-route"}}</div>
                     {{/if}}
                 </marker.popup>
             </layers.marker>
