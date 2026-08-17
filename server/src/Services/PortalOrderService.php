@@ -16,24 +16,13 @@ class PortalOrderService
 {
     public function queryForAccount(array $context)
     {
-        $accountCustomerFilters = $this->accountCustomerFilters($context);
+        $accountCustomerUuids = $this->accountCustomerUuids($context);
 
+        // Fleet-Ops order creation paths can persist equivalent polymorphic types
+        // differently. The customer UUID is canonical; company scoping preserves
+        // tenant isolation without hiding orders because of a type representation.
         return Order::where('company_uuid', session('company'))
-            ->where(function ($query) use ($accountCustomerFilters) {
-                if (empty($accountCustomerFilters)) {
-                    $query->whereRaw('1 = 0');
-
-                    return;
-                }
-
-                foreach ($accountCustomerFilters as $filter) {
-                    $query->orWhere(function ($accountQuery) use ($filter) {
-                        $accountQuery
-                            ->where('customer_uuid', $filter['uuid'])
-                            ->where('customer_type', $filter['type']);
-                    });
-                }
-            })
+            ->whereIn('customer_uuid', $accountCustomerUuids)
             ->whereNull('deleted_at')
             ->withoutGlobalScopes();
     }
@@ -237,39 +226,28 @@ class PortalOrderService
         return $values;
     }
 
-    protected function accountCustomerFilters(array $context): array
+    protected function accountCustomerUuids(array $context): array
     {
-        $filters = collect();
+        $uuids = collect();
 
         if ($context['contact'] ?? null) {
-            $filters->push([
-                'uuid' => $context['contact']->uuid,
-                'type' => Utils::getMutationType($context['contact']),
-            ]);
+            $uuids->push($context['contact']->uuid);
         }
 
         if ($context['account'] ?? null) {
-            $filters->push([
-                'uuid' => $context['account']->uuid,
-                'type' => Utils::getMutationType($context['account']),
-            ]);
+            $uuids->push($context['account']->uuid);
         }
 
         foreach ($context['accounts'] ?? [] as $account) {
             $uuid = data_get($account, 'uuid');
-            $type = data_get($account, 'customer_type');
-
-            if ($uuid && $type) {
-                $filters->push([
-                    'uuid' => $uuid,
-                    'type' => Utils::getMutationType('fleet-ops:' . $type),
-                ]);
+            if ($uuid) {
+                $uuids->push($uuid);
             }
         }
 
-        return $filters
-            ->filter(fn ($filter) => filled($filter['uuid']) && filled($filter['type']))
-            ->unique(fn ($filter) => $filter['uuid'] . ':' . $filter['type'])
+        return $uuids
+            ->filter(fn ($uuid) => filled($uuid))
+            ->unique()
             ->values()
             ->all();
     }
