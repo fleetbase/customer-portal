@@ -1,4 +1,4 @@
-<ContentPanel @title="Proof of Delivery" @open={{true}} @wrapperClass="bordered-top">
+<ContentPanel @title={{t "portal.orders.details.proof-of-delivery"}} @open={{true}} @wrapperClass="bordered-top">
     {{#if this.hasProofs}}
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {{#each this.proofs as |proof|}}
@@ -27,8 +27,8 @@
             <div class="flex items-center justify-center border border-dashed border-gray-300 dark:border-gray-600 p-6 rounded-xl bg-gray-50 dark:bg-gray-800">
                 <div class="text-center">
                     <FaIcon @icon="camera-retro" @size="2x" class="text-gray-400 mb-2" />
-                    <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">No proof of delivery</div>
-                    <div class="text-xs text-gray-500 dark:text-gray-500 mt-1">Captured proof of delivery will show up here.</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">{{t "portal.orders.details.no-pod"}}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-500 mt-1">{{t "portal.orders.details.no-pod-desc"}}</div>
                 </div>
             </div>
         </div>

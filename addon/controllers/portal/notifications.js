@@ -16,25 +16,21 @@ const DEFAULT_PREFERENCES = {
     document_available: true,
 };
 
-const PREFERENCE_GROUPS = [
+const PREFERENCE_GROUPS_CONFIG = [
     {
-        title: 'Orders',
-        description: 'Operational updates while your shipments move through dispatch and delivery.',
+        key: 'orders',
         keys: ['order_created', 'order_dispatched', 'order_delayed', 'driver_nearby', 'order_delivered'],
     },
     {
-        title: 'Billing',
-        description: 'Invoice and payment status updates from your account ledger.',
+        key: 'billing',
         keys: ['invoice_due', 'invoice_paid'],
     },
     {
-        title: 'Support',
-        description: 'Updates when your customer support tickets change.',
+        key: 'support',
         keys: ['ticket_updated'],
     },
     {
-        title: 'Documents',
-        description: 'Alerts when labels, PODs, receipts, or related files are available.',
+        key: 'documents',
         keys: ['document_available'],
     },
 ];
@@ -42,6 +38,7 @@ const PREFERENCE_GROUPS = [
 export default class PortalNotificationsController extends Controller {
     @service fetch;
     @service notifications;
+    @service intl;
 
     @tracked preferences = { ...DEFAULT_PREFERENCES };
 
@@ -51,9 +48,10 @@ export default class PortalNotificationsController extends Controller {
     }
 
     get preferenceGroups() {
-        return PREFERENCE_GROUPS.map((group) => {
+        return PREFERENCE_GROUPS_CONFIG.map((group) => {
             return {
-                ...group,
+                title: this.intl.t(`portal.notifications.groups.${group.key}`),
+                description: this.intl.t(`portal.notifications.groups.${group.key}-desc`),
                 items: group.keys.map((key) => {
                     return {
                         key,
@@ -66,10 +64,7 @@ export default class PortalNotificationsController extends Controller {
     }
 
     preferenceLabel(key) {
-        return key
-            .split('_')
-            .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-            .join(' ');
+        return this.intl.t(`portal.notifications.labels.${key}`);
     }
 
     @action setPreference(key, event) {
@@ -80,9 +75,10 @@ export default class PortalNotificationsController extends Controller {
         try {
             const response = yield this.fetch.post('notification-preferences', { preferences: this.preferences }, { namespace: 'customer-portal/int/v1' });
             this.preferences = response.preferences ?? this.preferences;
-            this.notifications.success('Notification preferences saved.');
+            this.notifications.success(this.intl.t('portal.notifications.saved-success'));
         } catch (error) {
             this.notifications.serverError(error);
         }
     }
 }
+

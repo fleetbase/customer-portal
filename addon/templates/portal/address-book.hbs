@@ -1,21 +1,21 @@
 <Portal::ContentWrapper class="portal-page-card portal-table-page-card">
     <div class="portal-section-header">
         <div>
-            <div class="portal-section-eyebrow">Saved locations</div>
-            <h1>Address Book</h1>
-            <p>Manage pickup, dropoff, billing, and recurring delivery locations for this customer account.</p>
+            <div class="portal-section-eyebrow">{{t "portal.address-book.eyebrow"}}</div>
+            <h1>{{t "portal.address-book.title"}}</h1>
+            <p>{{t "portal.address-book.subtitle"}}</p>
         </div>
-        <Button @type="primary" @icon="plus" @text="New Place" @onClick={{this.createPlace}} @wrapperClass="portal-order-panel-action-button" />
+        <Button @type="primary" @icon="plus" @text={{t "portal.address-book.new-place"}} @onClick={{this.createPlace}} @wrapperClass="portal-order-panel-action-button" />
     </div>
 
     <div class="portal-table-panel mt-5">
         <table class="portal-table address-book-table w-full">
             <thead>
                 <tr>
-                    <th class="text-left">Place</th>
-                    <th class="text-left">Address</th>
-                    <th class="text-left">Phone</th>
-                    <th class="text-right">Actions</th>
+                    <th class="text-left">{{t "portal.address-book.table.place"}}</th>
+                    <th class="text-left">{{t "portal.address-book.table.address"}}</th>
+                    <th class="text-left">{{t "portal.address-book.table.phone"}}</th>
+                    <th class="text-right">{{t "portal.address-book.table.actions"}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,8 +31,8 @@
                         <td>{{n-a place.phone}}</td>
                         <td>
                             <div class="flex items-center justify-end space-x-2">
-                                <Button @icon="pencil" @size="xs" @onClick={{fn this.editPlace place}} @helpText="Edit place" />
-                                <Button @type="danger" @icon="trash" @size="xs" @onClick={{fn this.deletePlace place}} @helpText="Remove place" />
+                                <Button @icon="pencil" @size="xs" @onClick={{fn this.editPlace place}} @helpText={{t "portal.address-book.edit-place"}} />
+                                <Button @type="danger" @icon="trash" @size="xs" @onClick={{fn this.deletePlace place}} @helpText={{t "portal.address-book.remove-place"}} />
                             </div>
                         </td>
                     </tr>
@@ -43,9 +43,9 @@
                                 <div class="portal-empty-state-icon">
                                     <FaIcon @icon="location-dot" />
                                 </div>
-                                <div class="portal-empty-state-title">No saved places yet</div>
-                                <p>Add frequently used pickup and delivery locations so order creation is faster.</p>
-                                <Button @type="primary" @icon="plus" @text="New Place" @onClick={{this.createPlace}} @wrapperClass="portal-order-panel-action-button" />
+                                <div class="portal-empty-state-title">{{t "portal.address-book.empty-title"}}</div>
+                                <p>{{t "portal.address-book.empty-desc"}}</p>
+                                <Button @type="primary" @icon="plus" @text={{t "portal.address-book.new-place"}} @onClick={{this.createPlace}} @wrapperClass="portal-order-panel-action-button" />
                             </div>
                         </td>
                     </tr>
@@ -54,3 +54,4 @@
         </table>
     </div>
 </Portal::ContentWrapper>
+

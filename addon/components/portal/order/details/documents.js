@@ -16,6 +16,7 @@ export default class PortalOrderDetailsDocumentsComponent extends Component {
     @service fetch;
     @service modalsManager;
     @service notifications;
+    @service intl;
 
     @tracked files = [];
     @tracked uploadQueue = [];
@@ -71,7 +72,7 @@ export default class PortalOrderDetailsDocumentsComponent extends Component {
             return;
         }
 
-        this.notifications.info('This file is not available for download yet.');
+        this.notifications.info(this.intl.t('portal.orders.details.file-unavailable-download'));
     };
 
     syncOrder(order) {
@@ -112,7 +113,7 @@ export default class PortalOrderDetailsDocumentsComponent extends Component {
 
             if (!fileId) {
                 this.uploadQueue = this.uploadQueue.filter((queuedFile) => queuedFile !== file);
-                this.notifications.warning('Unable to attach this file to the order.');
+                this.notifications.warning(this.intl.t('portal.orders.details.unable-attach'));
                 return;
             }
 
@@ -120,7 +121,7 @@ export default class PortalOrderDetailsDocumentsComponent extends Component {
 
             this.syncOrder(order);
             this.uploadQueue = this.uploadQueue.filter((queuedFile) => queuedFile !== file);
-            this.notifications.success('File attached.');
+            this.notifications.success(this.intl.t('portal.orders.details.file-attached'));
         } catch (error) {
             debug(`Customer portal order document upload failed: ${error.message}`);
             this.uploadQueue = this.uploadQueue.filter((queuedFile) => queuedFile !== file);
@@ -130,9 +131,9 @@ export default class PortalOrderDetailsDocumentsComponent extends Component {
 
     @task *deleteFile(file) {
         yield this.modalsManager.confirm({
-            title: 'Delete file?',
-            body: 'This removes the file from this order.',
-            acceptButtonText: 'Delete',
+            title: this.intl.t('portal.orders.details.delete-title'),
+            body: this.intl.t('portal.orders.details.delete-body'),
+            acceptButtonText: this.intl.t('portal.orders.details.delete-button'),
             acceptButtonType: 'danger',
             confirm: async () => {
                 try {
@@ -140,14 +141,14 @@ export default class PortalOrderDetailsDocumentsComponent extends Component {
                     const fileId = identifierFor(file);
 
                     if (!fileId) {
-                        this.notifications.warning('Unable to identify this file.');
+                        this.notifications.warning(this.intl.t('portal.orders.details.unable-identify'));
                         return;
                     }
 
                     const order = await this.fetch.delete(`orders/${orderId}/files/${fileId}`, {}, ORDER_NORMALIZE_OPTIONS);
 
                     this.files = arrayFor(valueFor(order, 'files'));
-                    this.notifications.success('File removed.');
+                    this.notifications.success(this.intl.t('portal.orders.details.file-removed'));
                 } catch (error) {
                     this.notifications.serverError(error);
                 }

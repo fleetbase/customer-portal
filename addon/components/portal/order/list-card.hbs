@@ -16,7 +16,7 @@
             <div class="portal-order-card-stop">
                 <div class="portal-order-card-stop-marker pickup">1</div>
                 <div class="min-w-0">
-                    <div class="portal-order-card-stop-label">Pickup</div>
+                    <div class="portal-order-card-stop-label">{{t "portal.orders.list-card.pickup"}}</div>
                     <div class="portal-order-card-stop-address">{{n-a this.originAddress}}</div>
                 </div>
             </div>
@@ -25,8 +25,13 @@
                 <div class="portal-order-card-stop compact">
                     <div class="portal-order-card-stop-marker middle">+</div>
                     <div class="min-w-0">
-                        <div class="portal-order-card-stop-label">Waypoints</div>
-                        <div class="portal-order-card-stop-address">{{this.middleStopCount}} additional {{if (eq this.middleStopCount 1) "stop" "stops"}}</div>
+                        <div class="portal-order-card-stop-label">{{t "portal.orders.list-card.waypoints"}}</div>
+                        <div class="portal-order-card-stop-address">
+                            {{if (eq this.middleStopCount 1) 
+                                (t "portal.orders.list-card.additional-stop" count=this.middleStopCount) 
+                                (t "portal.orders.list-card.additional-stops" count=this.middleStopCount)
+                            }}
+                        </div>
                     </div>
                 </div>
             {{/if}}
@@ -34,7 +39,7 @@
             <div class="portal-order-card-stop">
                 <div class="portal-order-card-stop-marker dropoff">{{this.stopCount}}</div>
                 <div class="min-w-0">
-                    <div class="portal-order-card-stop-label">{{if (eq this.destination.type "return") "Return" "Dropoff"}}</div>
+                    <div class="portal-order-card-stop-label">{{if (eq this.destination.type "return") (t "portal.orders.list-card.return") (t "portal.orders.list-card.dropoff")}}</div>
                     <div class="portal-order-card-stop-address">{{n-a this.destinationAddress}}</div>
                 </div>
             </div>

@@ -7,13 +7,16 @@ export default class PortalController extends Controller {
     @service session;
     @service currentUser;
     @service customerSession;
+    @service intl;
 
     get accountName() {
         return this.customerSession.get('name') || this.currentUser.name;
     }
 
     get accountTypeLabel() {
-        return this.customerSession.accountType === 'vendor' ? 'Company account' : 'Customer account';
+        return this.customerSession.accountType === 'vendor'
+            ? this.intl.t('portal.account-type.company')
+            : this.intl.t('portal.account-type.customer');
     }
 
     get accountEmail() {

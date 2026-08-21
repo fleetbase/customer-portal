@@ -9,6 +9,7 @@ export default class PortalSettingsMembersComponent extends Component {
     @service fetch;
     @service modalsManager;
     @service notifications;
+    @service intl;
 
     @tracked personnels = [];
     @tracked personnelCandidates = [];
@@ -20,10 +21,12 @@ export default class PortalSettingsMembersComponent extends Component {
     @tracked personnelRole = 'member';
     @tracked createLogin = true;
 
-    roleOptions = [
-        { label: 'Admin', value: 'admin', description: 'Can manage account settings and personnel.' },
-        { label: 'Member', value: 'member', description: 'Can access the customer workspace.' },
-    ];
+    get roleOptions() {
+        return [
+            { label: this.intl.t('portal.members.roles.admin'), value: 'admin' },
+            { label: this.intl.t('portal.members.roles.member'), value: 'member' },
+        ];
+    }
 
     constructor() {
         super(...arguments);
@@ -176,7 +179,7 @@ export default class PortalSettingsMembersComponent extends Component {
             }
 
             this.clearPersonnelForm();
-            this.notifications.success('Personnel added.');
+            this.notifications.success(this.intl.t('portal.members.member-added'));
         } catch (error) {
             this.notifications.serverError(error);
         }
@@ -187,7 +190,7 @@ export default class PortalSettingsMembersComponent extends Component {
             yield this.fetch.delete(`account/personnels/${personnel.id}`, {}, { namespace: 'customer-portal/int/v1' });
             this.personnels = this.personnels.filter((item) => item.id !== personnel.id);
             yield this.loadPersonnel.perform();
-            this.notifications.success('Personnel removed.');
+            this.notifications.success(this.intl.t('portal.members.member-removed'));
         } catch (error) {
             this.notifications.serverError(error);
         }

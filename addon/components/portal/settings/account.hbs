@@ -40,17 +40,17 @@
     <div class="portal-account-card">
         <div class="portal-settings-row">
             <div>
-                <div class="portal-settings-row-title">Account type</div>
+                <div class="portal-settings-row-title">{{t "portal.settings.account.type"}}</div>
                 <div class="portal-settings-row-copy">
                     {{#if this.isContactAccount}}
-                        Personal customer account
+                        {{t "portal.settings.account.type-personal"}}
                     {{else}}
-                        Company account
+                        {{t "portal.settings.account.type-company"}}
                     {{/if}}
                 </div>
             </div>
             {{#if this.isContactAccount}}
-                <button type="button" class="portal-link-button" {{on "click" this.openConvertModal}}>Convert to Company Account</button>
+                <button type="button" class="portal-link-button" {{on "click" this.openConvertModal}}>{{t "portal.settings.account.convert-button"}}</button>
             {{/if}}
         </div>
     </div>
@@ -58,14 +58,14 @@
     <form class="portal-account-card" aria-label="Change password" {{on "submit" (perform this.changePassword)}}>
         <div class="portal-settings-row mb-4">
             <div>
-                <div class="portal-settings-row-title">Change password</div>
-                <div class="portal-settings-row-copy">Update the password used to sign in to this customer portal.</div>
+                <div class="portal-settings-row-title">{{t "portal.settings.account.change-password"}}</div>
+                <div class="portal-settings-row-copy">{{t "portal.settings.account.change-password-help"}}</div>
             </div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 text-xs dark:text-gray-100">
-            <InputGroup @name="Current Password" @type="password" @value={{this.currentPassword}} />
-            <InputGroup @name="New Password" @type="password" @value={{this.newPassword}} />
-            <InputGroup @name="Confirm New Password" @type="password" @value={{this.newPasswordConfirmation}} />
+            <InputGroup @name={{t "portal.settings.account.current-password"}} @type="password" @value={{this.currentPassword}} />
+            <InputGroup @name={{t "portal.settings.account.new-password"}} @type="password" @value={{this.newPassword}} />
+            <InputGroup @name={{t "portal.settings.account.confirm-new-password"}} @type="password" @value={{this.newPasswordConfirmation}} />
         </div>
         <div class="mt-3 flex items-center justify-end">
             <Button
@@ -73,7 +73,7 @@
                 @type="primary"
                 @size="lg"
                 @icon="lock"
-                @text="Change Password"
+                @text={{t "portal.settings.account.change-password-button"}}
                 @onClick={{perform this.changePassword}}
                 @isLoading={{not this.changePassword.isIdle}}
             />
