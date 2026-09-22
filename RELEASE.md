@@ -1,19 +1,10 @@
-> v0.0.13 ~ "Dispatcher-created orders are visible in the portal again"
+> v0.0.14 ~ "The Customer Portal in English and Russian, and a login button that matches the console"
 
 ---
 ## Highlights
-A customer could not see orders that a dispatcher had created for them. The portal matched orders on both the customer UUID **and** the polymorphic customer type, and Fleet-Ops persists that type differently depending on which path created the order — so a perfectly valid order was filtered out of the customer's own list.
 
-Orders are now matched on the customer UUID alone, which is canonical. Company scoping is unchanged, so tenant isolation is preserved: this widens what a customer can see of *their own* orders, not whose orders they can see.
-
----
-## Bug Fixes
-- Orders created by a dispatcher no longer disappear from the customer portal because of how their `customer_type` was recorded.
-
----
-## Under the hood
-- `PortalOrderService` replaces the per-filter `uuid` + `type` pair matching with a single `whereIn` on the customer UUID, removing the `1 = 0` short-circuit that produced an empty list whenever no filter could be built.
-- Added `PortalOrderServiceTest` covering the resolution paths.
+- **Internationalization** — every part of the portal now reads its text from translations instead of hardcoded strings: orders (workspace, creation forms, details), settings and team members, the dashboard and its widgets, support tickets, billing and invoices, the address book, documents, notifications, and sign-in and verification. Runtime text — validation errors, notifications, modal options — is translated too. Ships with complete English (en-us) and Russian (ru-ru) translations, 590+ keys each. Thanks to @spanchenko.
+- **Login page button** — the Customer Portal button on the console login page now uses ember-ui's `btn-auth` style, matching the console's "Continue with …" buttons in light and dark, hover included. With an ember-ui older than 0.4.3 it falls back to a plain default button.
 
 ---
 ## Need help?
