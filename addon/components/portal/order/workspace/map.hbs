@@ -1,6 +1,6 @@
 <section class="portal-order-map" {{did-update this.syncRoutePreview @draft @selectedOrder}}>
     <LeafletMap class="portal-order-leaflet" @lat={{this.center.latitude}} @lng={{this.center.longitude}} @zoom={{11}} @zoomControl={{false}} @scrollWheelZoom={{false}} @onLoad={{this.setupMap}} as |layers|>
-        <layers.tile @url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" />
+        <layers.tile @url={{this.tileUrl}} @attribution={{this.tileAttribution}} />
         {{#each this.markers key="id" as |place|}}
             <layers.marker @lat={{place.latitude}} @lng={{place.longitude}} @icon={{place.icon}} as |marker|>
                 <marker.tooltip @permanent={{true}} @direction="top" @className="portal-order-route-marker-tooltip">

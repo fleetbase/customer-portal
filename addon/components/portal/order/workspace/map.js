@@ -2,8 +2,19 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
+/**
+ * The keyless OpenStreetMap tile server, the same default Fleet-Ops uses. CARTO's
+ * `basemaps.cartocdn.com` raster tiles now require an API key and show an "API key
+ * required" watermark without one. OpenStreetMap's tile policy requires the attribution.
+ */
+export const ORDER_MAP_TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+export const ORDER_MAP_TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
 export default class PortalOrderWorkspaceMapComponent extends Component {
     @service customerPortalOrderRoutePreview;
+
+    tileUrl = ORDER_MAP_TILE_URL;
+    tileAttribution = ORDER_MAP_TILE_ATTRIBUTION;
 
     willDestroy() {
         super.willDestroy(...arguments);
