@@ -45,7 +45,7 @@ class IssueCommentCreated extends Notification implements ShouldQueue
 
     protected function customerPortalUrl(): string
     {
-        $customerPortalConfig = Setting::lookupFromCompany('customer-portal-config', []);
+        $customerPortalConfig = Setting::lookupForCompany($this->issue->company_uuid, 'customer-portal-config', []);
         $accessUrlSlug        = data_get($customerPortalConfig, 'accessUrlSlug', 'customer-portal');
 
         return Utils::consoleUrl(trim($accessUrlSlug, '/') . '/support/' . $this->issue->public_id);
