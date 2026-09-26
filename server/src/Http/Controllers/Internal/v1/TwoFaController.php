@@ -14,19 +14,18 @@ use Laravel\Sanctum\PersonalAccessToken;
 class TwoFaController extends Controller
 {
     /**
-     * Check customer two-factor authentication status.
+     * Retained for older portals, which call this before submitting the password.
+     *
+     * It used to start a 2FA session from the identity alone, which let the emailed/SMS
+     * code stand in for the password and revealed which accounts exist and have 2FA
+     * enabled. A 2FA session is now only started by `auth/login` once the password checks
+     * out, so this always reports 2FA as off and older portals continue to the password login.
      */
     public function checkTwoFactor(Request $request)
     {
-        $identity = $request->input('identity');
-        $this->resolveCustomerByIdentity($identity);
-
-        $twoFaSession   = TwoFactorAuth::createTwoFaSessionIfEnabled($identity);
-        $isTwoFaEnabled = $twoFaSession !== null;
-
         return response()->json([
-            'twoFaSession'   => $twoFaSession,
-            'isTwoFaEnabled' => $isTwoFaEnabled,
+            'twoFaSession'   => null,
+            'isTwoFaEnabled' => false,
         ]);
     }
 
