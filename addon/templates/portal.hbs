@@ -18,7 +18,7 @@
                 <FaIcon @icon="folder-open" />
                 <span>{{t "portal.header.documents"}}</span>
             </LinkTo>
-            <LocaleSelectorTray />
+            <LocaleSelectorTray class="portal-locale-selector" />
             <BasicDropdown class="portal-user-menu" @renderInPlace={{true}} as |dd|>
                 <dd.Trigger class="portal-user-trigger">
                     <Image

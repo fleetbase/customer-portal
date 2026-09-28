@@ -1,5 +1,5 @@
-starter:
-  extension-name: Starter
+customer-portal:
+  extension-name: Customer Portal
 
 auth:
   login:
