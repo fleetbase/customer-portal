@@ -274,6 +274,7 @@ body[data-theme='dark'].fleetbase-portal .portal-topbar {
 }
 
 .fleetbase-portal .portal-header-link,
+.fleetbase-portal .portal-locale-selector .next-org-button-trigger,
 .fleetbase-portal .portal-quick-link {
     display: inline-flex;
     align-items: center;
@@ -292,9 +293,14 @@ body[data-theme='dark'].fleetbase-portal .portal-topbar {
         color 0.15s ease;
 }
 
-.fleetbase-portal .portal-header-link {
+.fleetbase-portal .portal-header-link,
+.fleetbase-portal .portal-locale-selector .next-org-button-trigger {
     height: 2.25rem;
     padding: 0 0.75rem;
+}
+
+.fleetbase-portal .portal-locale-selector .next-org-button-trigger {
+    max-height: none;
 }
 
 .fleetbase-portal .portal-quick-link {
@@ -303,6 +309,8 @@ body[data-theme='dark'].fleetbase-portal .portal-topbar {
 }
 
 .fleetbase-portal .portal-header-link:hover,
+.fleetbase-portal .portal-locale-selector .next-org-button-trigger:hover,
+.fleetbase-portal .portal-locale-selector .next-org-button-trigger.is-open,
 .fleetbase-portal .portal-quick-link:hover {
     border-color: #bfdbfe;
     color: #1d4ed8;
@@ -322,6 +330,7 @@ body[data-theme='dark'].fleetbase-portal .portal-topbar {
 }
 
 body[data-theme='dark'].fleetbase-portal .portal-header-link,
+body[data-theme='dark'].fleetbase-portal .portal-locale-selector .next-org-button-trigger,
 body[data-theme='dark'].fleetbase-portal .portal-quick-link {
     border-color: #374151;
     color: #d1d5db;
@@ -329,6 +338,8 @@ body[data-theme='dark'].fleetbase-portal .portal-quick-link {
 }
 
 body[data-theme='dark'].fleetbase-portal .portal-header-link:hover,
+body[data-theme='dark'].fleetbase-portal .portal-locale-selector .next-org-button-trigger:hover,
+body[data-theme='dark'].fleetbase-portal .portal-locale-selector .next-org-button-trigger.is-open,
 body[data-theme='dark'].fleetbase-portal .portal-quick-link:hover {
     border-color: rgb(59 130 246 / 35%);
     color: #93c5fd;

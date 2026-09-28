@@ -5,6 +5,7 @@ import { task } from 'ember-concurrency';
 
 export default class WidgetPendingActionsComponent extends Component {
     @service fetch;
+    @service intl;
     @tracked actions = [];
     @tracked error;
 
@@ -20,7 +21,7 @@ export default class WidgetPendingActionsComponent extends Component {
             this.error = null;
         } catch {
             this.actions = [];
-            this.error = 'Unable to load pending actions.';
+            this.error = this.intl.t('portal.widgets.pending-actions.error');
         }
     }
 

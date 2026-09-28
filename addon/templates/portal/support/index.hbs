@@ -1,23 +1,23 @@
 <Portal::ContentWrapper class="portal-page-card portal-table-page-card">
     <div class="portal-section-header">
         <div>
-            <div class="portal-section-eyebrow">Support Center</div>
-            <h1>Support Tickets</h1>
-            <p>Track order, billing, document, and account support requests.</p>
+            <div class="portal-section-eyebrow">{{t "portal.support.eyebrow"}}</div>
+            <h1>{{t "portal.support.title"}}</h1>
+            <p>{{t "portal.support.subtitle"}}</p>
         </div>
         <LinkTo @route="portal.support.new" class="portal-quick-link primary">
             <FaIcon @icon="plus" />
-            <span>New Support Ticket</span>
+            <span>{{t "portal.support.new-ticket"}}</span>
         </LinkTo>
     </div>
     <div class="next-table-wrapper no-scroll h-auto table-fluid portal-table-panel mt-5">
         <table class="table table-fixed portal-table">
             <thead>
                 <tr>
-                    <th class="text-left">Ticket</th>
-                    <th class="text-left">Priority</th>
-                    <th class="text-left">Status</th>
-                    <th class="text-left">Updated</th>
+                    <th class="text-left">{{t "portal.support.table.ticket"}}</th>
+                    <th class="text-left">{{t "portal.support.table.priority"}}</th>
+                    <th class="text-left">{{t "portal.support.table.status"}}</th>
+                    <th class="text-left">{{t "portal.support.table.updated"}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,11 +38,11 @@
                         <td colspan="4">
                             <div class="portal-empty-state portal-table-empty-state">
                                 <div class="portal-empty-state-icon"><FaIcon @icon="headset" /></div>
-                                <div class="portal-empty-state-title">No support tickets yet</div>
-                                <p>Create a ticket when you need help with an order, invoice, document, or account question.</p>
+                                <div class="portal-empty-state-title">{{t "portal.support.empty-title"}}</div>
+                                <p>{{t "portal.support.empty-desc"}}</p>
                                 <LinkTo @route="portal.support.new" class="portal-quick-link primary">
                                     <FaIcon @icon="plus" />
-                                    <span>Create Ticket</span>
+                                    <span>{{t "portal.support.create-ticket"}}</span>
                                 </LinkTo>
                             </div>
                         </td>
@@ -52,3 +52,4 @@
         </table>
     </div>
 </Portal::ContentWrapper>
+

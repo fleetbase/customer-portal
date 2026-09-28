@@ -17,6 +17,7 @@ export default class PortalOrderFormComponent extends Component {
     @service modalsManager;
     @service notifications;
     @service urlSearchParams;
+    @service intl;
 
     @tracked lastQuotedRevision = null;
 
@@ -102,7 +103,7 @@ export default class PortalOrderFormComponent extends Component {
 
     @action async submit() {
         if (!this.canSubmit) {
-            return this.notifications.warning('Select an order type and at least two route stops before creating the order.');
+            return this.notifications.warning(this.intl.t('portal.orders.form.validation-warning'));
         }
 
         if (this.isPaymentRequired && !this.draft?.purchaseRate) {
@@ -111,7 +112,7 @@ export default class PortalOrderFormComponent extends Component {
 
         try {
             const order = await this.customerPortalOrderActions.createOrder.perform(this.draft);
-            this.notifications.success('Order created.');
+            this.notifications.success(this.intl.t('portal.orders.form.order-created'));
             this.customerPortalOrderCreation.reset();
             this.hostRouter.transitionTo('customer-portal.portal.orders.details', this.customerPortalOrderActions.identifier(order));
         } catch (error) {
@@ -133,7 +134,7 @@ export default class PortalOrderFormComponent extends Component {
                 this,
                 () => {
                     this.modalsManager.show('modals/service-quote-purchase-form', {
-                        title: `Complete Payment for ${this.draft.orderConfig?.name ?? 'Order'} Service`,
+                        title: this.intl.t('portal.orders.form.payment-title', { type: this.draft.orderConfig?.name ?? 'Order' }),
                         modalClass: 'service-quote-extension-purchase',
                         modalFooterClass: 'hidden-i',
                         serviceQuote,
@@ -147,7 +148,7 @@ export default class PortalOrderFormComponent extends Component {
                 100
             );
         } catch (error) {
-            this.notifications.serverError(error, 'Unable to initialize secure checkout. Please try again.');
+            this.notifications.serverError(error, this.intl.t('portal.orders.form.payment-failed'));
         }
     }
 
@@ -163,9 +164,9 @@ export default class PortalOrderFormComponent extends Component {
                 if (this.urlSearchParams.has('checkout_session_id') && this.urlSearchParams.has('service_quote')) {
                     await this.modalsManager.done();
                     this.modalsManager.show('modals/confirm-service-quote-purchase', {
-                        title: 'Finalizing Purchase',
+                        title: this.intl.t('portal.orders.form.finalizing-title'),
                         modalClass: 'finalize-service-quote-purchase',
-                        loadingMessage: 'Completing purchase do not refresh or exit window...',
+                        loadingMessage: this.intl.t('portal.orders.form.finalizing-message'),
                         modalFooterClass: 'hidden-i',
                         backdropClose: false,
                     });
@@ -185,7 +186,7 @@ export default class PortalOrderFormComponent extends Component {
 
         this.restoreDraftForServiceQuote(serviceQuoteId);
         if (this.selectedServiceQuoteId !== serviceQuoteId) {
-            this.notifications.error('Something went wrong trying to complete purchase.');
+            this.notifications.error(this.intl.t('portal.orders.form.payment-error'));
             return;
         }
 

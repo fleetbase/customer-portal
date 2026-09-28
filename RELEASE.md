@@ -1,11 +1,11 @@
-> v0.0.14 ~ "A login button that matches the console"
+> v0.0.15 ~ "Safer sign-in and correct ticket links"
 
 ---
 ## Highlights
 
-- **Login page button** — the Customer Portal button on the console login page now uses ember-ui's `btn-auth` style, matching the console's "Continue with …" buttons in light and dark, hover included.
-- **Fix: the order map said "API key required"**: the portal's order workspace map used CARTO tiles, which now need an API key. It uses OpenStreetMap's keyless tiles instead, as Fleet-Ops does, with OpenStreetMap's attribution shown.
-- **Dependencies** — `@fleetbase/ember-ui` is upgraded to `^0.4.3` (from `^0.3.39`), which provides the `btn-auth` style the login button uses; `@fleetbase/fleetops-data` to `^0.2.2` (from `^0.1.36`); `@fleetbase/ember-core` stays on `^0.3.24`, already the latest.
+- **Security: two-factor sign-in now requires the password first** — the portal login screen used to call `two-fa/check` before the password was sent, which could start a two-factor session from an identity alone and revealed whether an account existed or had 2FA enabled. `two-fa/check` no longer looks identities up or starts sessions; the login screen posts `auth/login` first and only moves to the 2FA step after the password is accepted.
+- **Fix: customer ticket links ignored the configured portal slug** — comment notification emails are queued, so there was no company in session and the links always used the default slug. They now read the slug from the issue's company.
+- **Dependencies** — `fleetbase/core-api` is now constrained to `>=1.6.65`, which provides `Setting::lookupForCompany()`.
 
 ---
 ## Need help?

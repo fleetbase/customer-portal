@@ -1,22 +1,22 @@
-<ContentPanel @title="Items" @open={{true}} @actionButtons={{this.actionButtons}} @wrapperClass="bordered-top">
+<ContentPanel @title={{t "portal.orders.form.items"}} @open={{true}} @actionButtons={{this.actionButtons}} @wrapperClass="bordered-top">
     <div class="space-y-3">
         {{#each @draft.payload.entities as |entity index|}}
             <div class="portal-order-item-card">
                 <div class="portal-order-item-card-header">
-                    <div class="font-semibold dark:text-gray-100">Item {{add index 1}}</div>
+                    <div class="font-semibold dark:text-gray-100">{{t "portal.orders.form.item" index=(add index 1)}}</div>
                     <Button @icon="trash" @type="danger" @size="xs" @onClick={{fn this.removeEntity entity}} />
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <InputGroup @name="Name">
-                        <Input @value={{entity.name}} class="form-input w-full" placeholder="Package, pallet, envelope" />
+                    <InputGroup @name={{t "portal.orders.form.name"}}>
+                        <Input @value={{entity.name}} class="form-input w-full" placeholder={{t "portal.orders.form.name-placeholder"}} />
                     </InputGroup>
-                    <InputGroup @name="Item Type">
+                    <InputGroup @name={{t "portal.orders.form.item-type"}}>
                         <div class="fleetbase-model-select fleetbase-power-select ember-model-select">
                             <PowerSelect
                                 @options={{this.entityTypes}}
                                 @selected={{find-by "value" entity.type this.entityTypes}}
                                 @onChange={{fn this.setEntityValue index "type"}}
-                                @placeholder="Select item type"
+                                @placeholder={{t "portal.orders.form.select-item-type"}}
                                 @triggerClass="form-select form-input"
                                 @renderInPlace={{true}}
                                 as |type|
@@ -28,20 +28,20 @@
                             </PowerSelect>
                         </div>
                     </InputGroup>
-                    <InputGroup @name="Description" @wrapperClass="col-span-2">
-                        <Textarea @value={{entity.description}} class="form-input w-full" rows={{2}} placeholder="Optional handling notes or item description" />
+                    <InputGroup @name={{t "portal.orders.form.description"}} @wrapperClass="col-span-2">
+                        <Textarea @value={{entity.description}} class="form-input w-full" rows={{2}} placeholder={{t "portal.orders.form.description-placeholder"}} />
                     </InputGroup>
-                    <InputGroup @name="Weight" @wrapperClass="col-span-2">
+                    <InputGroup @name={{t "portal.orders.form.weight"}} @wrapperClass="col-span-2">
                         <div class="grid grid-cols-3 gap-2">
                             <Input @value={{entity.weight}} @type="number" class="form-input w-full col-span-2" placeholder="0.00" />
                             <Select class="w-full" @options={{this.weightUnits}} @value={{entity.weight_unit}} @onSelect={{fn this.setEntityValue index "weight_unit"}} />
                         </div>
                     </InputGroup>
-                    <InputGroup @name="Dimensions" @wrapperClass="col-span-2">
+                    <InputGroup @name={{t "portal.orders.form.dimensions"}} @wrapperClass="col-span-2">
                         <div class="grid grid-cols-4 gap-2">
-                            <Input @value={{entity.length}} @type="number" class="form-input w-full" placeholder="Length" />
-                            <Input @value={{entity.width}} @type="number" class="form-input w-full" placeholder="Width" />
-                            <Input @value={{entity.height}} @type="number" class="form-input w-full" placeholder="Height" />
+                            <Input @value={{entity.length}} @type="number" class="form-input w-full" placeholder={{t "portal.orders.form.length"}} />
+                            <Input @value={{entity.width}} @type="number" class="form-input w-full" placeholder={{t "portal.orders.form.width"}} />
+                            <Input @value={{entity.height}} @type="number" class="form-input w-full" placeholder={{t "portal.orders.form.height"}} />
                             <Select class="w-full" @options={{this.dimensionUnits}} @value={{entity.dimensions_unit}} @onSelect={{fn this.setEntityValue index "dimensions_unit"}} />
                         </div>
                     </InputGroup>
@@ -49,8 +49,8 @@
             </div>
         {{else}}
             <div class="portal-empty-state compact">
-                <div class="portal-empty-state-title">No items added</div>
-                <p>Add items when the carrier needs package details, dimensions, or references.</p>
+                <div class="portal-empty-state-title">{{t "portal.orders.form.no-items"}}</div>
+                <p>{{t "portal.orders.form.no-items-desc"}}</p>
             </div>
         {{/each}}
     </div>

@@ -1,4 +1,4 @@
-<ContentPanel @title="Activity" @open={{true}} @wrapperClass="bordered-top">
+<ContentPanel @title={{t "portal.orders.details.activity"}} @open={{true}} @wrapperClass="bordered-top">
     <div class="portal-activity-list">
         {{#each this.activities as |status|}}
             <div class="portal-activity-row {{if status.isCurrent 'is-current'}}">
@@ -14,7 +14,7 @@
                 <span class="portal-activity-date">{{n-a (format-date-fns status.created_at "yyyy-MM-dd HH:mm")}}</span>
             </div>
         {{else}}
-            <div class="portal-empty-state compact">No activity yet.</div>
+            <div class="portal-empty-state compact">{{t "portal.orders.details.no-activity"}}</div>
         {{/each}}
     </div>
 </ContentPanel>
