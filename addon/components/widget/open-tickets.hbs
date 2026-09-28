@@ -1,7 +1,7 @@
 <div class="portal-dashboard-widget portal-kpi-tile portal-kpi-accent-amber" ...attributes>
     <div class="portal-kpi-content">
         <div class="min-w-0">
-            <div class="portal-kpi-label">Open Tickets</div>
+            <div class="portal-kpi-label">{{t "portal.widgets.open-tickets.title"}}</div>
             {{#if this.load.isRunning}}
                 <Spinner />
             {{else if this.error}}
@@ -13,3 +13,4 @@
         <div class="portal-kpi-icon"><FaIcon @icon="headset" /></div>
     </div>
 </div>
+

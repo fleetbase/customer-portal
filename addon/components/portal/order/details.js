@@ -11,6 +11,7 @@ export default class PortalOrderDetailsComponent extends Component {
     @service hostRouter;
     @service modalsManager;
     @service notifications;
+    @service intl;
 
     @tracked order = this.args.model?.order;
 
@@ -34,13 +35,13 @@ export default class PortalOrderDetailsComponent extends Component {
                 renderInPlace: true,
                 items: [
                     {
-                        text: 'View Label',
+                        text: this.intl.t('portal.orders.table.view-order'),
                         icon: 'file-invoice',
                         disabled: !this.labelUrl,
                         fn: this.viewLabel,
                     },
                     {
-                        text: 'Create Support Ticket',
+                        text: this.intl.t('portal.home.new-support-ticket'),
                         icon: 'headset',
                         fn: this.createSupportTicket,
                     },
@@ -48,7 +49,7 @@ export default class PortalOrderDetailsComponent extends Component {
                         separator: true,
                     },
                     {
-                        text: 'Reschedule',
+                        text: this.intl.t('portal.orders.details.reschedule-button'),
                         icon: 'calendar',
                         disabled: !this.canModify,
                         fn: this.openRescheduleModal,
@@ -57,7 +58,7 @@ export default class PortalOrderDetailsComponent extends Component {
                         separator: true,
                     },
                     {
-                        text: 'Cancel Order',
+                        text: this.intl.t('portal.orders.details.cancel-confirm-button'),
                         icon: 'ban',
                         class: 'text-danger',
                         disabled: !this.canModify,
@@ -74,7 +75,7 @@ export default class PortalOrderDetailsComponent extends Component {
 
     @action viewLabel() {
         if (!this.labelUrl) {
-            this.notifications.info('No label is available for this order yet.');
+            this.notifications.info(this.intl.t('portal.orders.details.no-label'));
             return;
         }
 
@@ -95,10 +96,10 @@ export default class PortalOrderDetailsComponent extends Component {
         };
 
         this.modalsManager.show('modals/portal-order-reschedule', {
-            title: 'Reschedule Order',
+            title: this.intl.t('portal.orders.details.reschedule-title'),
             modalClass: 'modal-md',
-            acceptButtonText: 'Reschedule',
-            declineButtonText: 'Cancel',
+            acceptButtonText: this.intl.t('portal.orders.details.reschedule-button'),
+            declineButtonText: this.intl.t('portal.orders.details.cancel-button'),
             reschedule,
             confirm: () => this.rescheduleOrder(reschedule.scheduled_at),
         });
@@ -106,9 +107,9 @@ export default class PortalOrderDetailsComponent extends Component {
 
     @action async confirmCancelOrder() {
         await this.modalsManager.confirm({
-            title: 'Cancel this order?',
-            body: 'This will cancel the delivery request for this order.',
-            acceptButtonText: 'Cancel Order',
+            title: this.intl.t('portal.orders.details.cancel-confirm-title'),
+            body: this.intl.t('portal.orders.details.cancel-confirm-body'),
+            acceptButtonText: this.intl.t('portal.orders.details.cancel-confirm-button'),
             acceptButtonType: 'danger',
             confirm: this.cancelOrder,
         });
@@ -117,7 +118,7 @@ export default class PortalOrderDetailsComponent extends Component {
     @action async cancelOrder() {
         try {
             this.order = await this.customerPortalOrderActions.cancelOrder.perform(this.order);
-            this.notifications.success('Order canceled.');
+            this.notifications.success(this.intl.t('portal.orders.details.order-canceled'));
         } catch (error) {
             this.notifications.serverError(error);
         }
@@ -125,13 +126,13 @@ export default class PortalOrderDetailsComponent extends Component {
 
     @action async rescheduleOrder(scheduledAt) {
         if (!scheduledAt) {
-            this.notifications.warning('Choose a new delivery time before rescheduling.');
+            this.notifications.warning(this.intl.t('portal.orders.details.choose-time'));
             return;
         }
 
         try {
             this.order = await this.customerPortalOrderActions.rescheduleOrder.perform(this.order, scheduledAt);
-            this.notifications.success('Order rescheduled.');
+            this.notifications.success(this.intl.t('portal.orders.details.order-rescheduled'));
         } catch (error) {
             this.notifications.serverError(error);
         }

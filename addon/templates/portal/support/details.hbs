@@ -4,9 +4,9 @@
             <div class="portal-ticket-header-main">
                 <LinkTo @route="portal.support" class="portal-ticket-back-link">
                     <FaIcon @icon="arrow-left" />
-                    <span>Back to Support</span>
+                    <span>{{t "portal.support.back-to-support"}}</span>
                 </LinkTo>
-                <div class="portal-section-eyebrow">Support Center</div>
+                <div class="portal-section-eyebrow">{{t "portal.support.eyebrow"}}</div>
                 <h1>{{this.title}}</h1>
                 <div class="portal-ticket-badge-row">
                     <Badge @status={{this.issue.status}} @text={{this.statusLabel}} />
@@ -23,11 +23,11 @@
             </div>
             <div class="portal-ticket-header-dates">
                 <div>
-                    <span>Created</span>
+                    <span>{{t "portal.support.details.created"}}</span>
                     <strong>{{n-a (format-date-fns this.issue.created_at "MMM d, yyyy HH:mm")}}</strong>
                 </div>
                 <div>
-                    <span>Last updated</span>
+                    <span>{{t "portal.support.details.last-updated"}}</span>
                     <strong>{{n-a (format-date-fns this.issue.updated_at "MMM d, yyyy HH:mm")}}</strong>
                 </div>
             </div>
@@ -51,7 +51,7 @@
 
                         {{#if this.hasIssueAttachments}}
                             <div class="portal-ticket-attachments">
-                                <div class="portal-ticket-attachments-title">{{this.issueAttachments.length}} {{if (eq this.issueAttachments.length 1) "Attachment" "Attachments"}}</div>
+                                <div class="portal-ticket-attachments-title">{{this.issueAttachments.length}} {{if (eq this.issueAttachments.length 1) (t "portal.support.details.attachment") (t "portal.support.details.attachments")}}</div>
                                 <div class="portal-ticket-attachment-grid">
                                     {{#each this.issueAttachments as |file|}}
                                         <File @file={{file}} @onDownload={{this.downloadFile}} />
@@ -65,8 +65,8 @@
                 <section class="portal-ticket-thread">
                     <div class="portal-ticket-thread-header">
                         <div>
-                            <div class="portal-ticket-section-title">Correspondence</div>
-                            <p>Reply here to keep every update attached to this support ticket.</p>
+                            <div class="portal-ticket-section-title">{{t "portal.support.details.correspondence"}}</div>
+                            <p>{{t "portal.support.details.correspondence-subtitle"}}</p>
                         </div>
                     </div>
 
@@ -85,7 +85,7 @@
                     {{#unless this.hasComments}}
                         <div class="portal-ticket-no-replies">
                             <FaIcon @icon="comments" />
-                            <span>No replies yet. The support team response will appear here.</span>
+                            <span>{{t "portal.support.details.no-replies"}}</span>
                         </div>
                     {{/unless}}
                 </section>
@@ -93,23 +93,23 @@
 
             <aside class="portal-ticket-meta-rail">
                 <div class="portal-ticket-meta-section">
-                    <div class="portal-ticket-section-title">Ticket Details</div>
+                    <div class="portal-ticket-section-title">{{t "portal.support.details.ticket-details"}}</div>
                     <dl>
                         <div>
-                            <dt>Ticket</dt>
+                            <dt>{{t "portal.support.details.ticket"}}</dt>
                             <dd>{{this.ticketNumber}}</dd>
                         </div>
                         <div>
-                            <dt>Status</dt>
+                            <dt>{{t "portal.support.details.status"}}</dt>
                             <dd><Badge @status={{this.issue.status}} @text={{this.statusLabel}} /></dd>
                         </div>
                         <div>
-                            <dt>Priority</dt>
+                            <dt>{{t "portal.support.details.priority"}}</dt>
                             <dd><Badge @status={{this.issue.priority}} @text={{this.priorityLabel}} /></dd>
                         </div>
                         {{#if this.relatedOrderLabel}}
                             <div>
-                                <dt>Related order</dt>
+                                <dt>{{t "portal.support.details.related-order"}}</dt>
                                 <dd>
                                     {{#if this.hasRelatedOrderDetails}}
                                         <LinkTo @route="portal.orders.details" @model={{this.relatedOrderId}} class="portal-ticket-related-order-link">
@@ -123,7 +123,7 @@
                             </div>
                         {{/if}}
                         <div>
-                            <dt>Tags</dt>
+                            <dt>{{t "portal.support.details.tags"}}</dt>
                             <dd>
                                 {{#if this.hasIssueTags}}
                                     <div class="portal-ticket-meta-tags">
@@ -132,7 +132,7 @@
                                         {{/each}}
                                     </div>
                                 {{else}}
-                                    None
+                                    {{t "portal.support.details.none"}}
                                 {{/if}}
                             </dd>
                         </div>
@@ -140,14 +140,14 @@
                 </div>
 
                 <div class="portal-ticket-meta-section">
-                    <div class="portal-ticket-section-title">Timeline</div>
+                    <div class="portal-ticket-section-title">{{t "portal.support.details.timeline"}}</div>
                     <dl>
                         <div>
-                            <dt>Created</dt>
+                            <dt>{{t "portal.support.details.created"}}</dt>
                             <dd>{{n-a (format-date-fns this.issue.created_at "MMM d, yyyy HH:mm")}}</dd>
                         </div>
                         <div>
-                            <dt>Last updated</dt>
+                            <dt>{{t "portal.support.details.last-updated"}}</dt>
                             <dd>{{n-a (format-date-fns this.issue.updated_at "MMM d, yyyy HH:mm")}}</dd>
                         </div>
                     </dl>
@@ -157,8 +157,9 @@
     {{else}}
         <div class="portal-empty-state">
             <div class="portal-empty-state-icon"><FaIcon @icon="headset" /></div>
-            <div class="portal-empty-state-title">Ticket not found</div>
-            <p>This support ticket could not be loaded or is no longer available for this account.</p>
+            <div class="portal-empty-state-title">{{t "portal.support.not-found-title"}}</div>
+            <p>{{t "portal.support.not-found-desc"}}</p>
         </div>
     {{/if}}
 </Portal::ContentWrapper>
+

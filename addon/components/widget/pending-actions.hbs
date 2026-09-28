@@ -1,8 +1,8 @@
 <div class="portal-dashboard-widget portal-list-widget" ...attributes>
     <div class="portal-widget-header">
         <div>
-            <div class="portal-widget-title">Pending Actions</div>
-            <div class="portal-widget-subtitle">Items that may need attention</div>
+            <div class="portal-widget-title">{{t "portal.widgets.pending-actions.title"}}</div>
+            <div class="portal-widget-subtitle">{{t "portal.widgets.pending-actions.subtitle"}}</div>
         </div>
         <FaIcon @icon="circle-exclamation" />
     </div>
@@ -41,8 +41,9 @@
                     </div>
                 {{/if}}
             {{else}}
-                <div class="portal-widget-empty">Nothing needs attention right now.</div>
+                <div class="portal-widget-empty">{{t "portal.widgets.pending-actions.empty"}}</div>
             {{/each}}
         {{/if}}
     </div>
 </div>
+

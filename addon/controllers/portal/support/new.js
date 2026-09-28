@@ -9,6 +9,7 @@ export default class PortalSupportNewController extends Controller {
     @service fetch;
     @service notifications;
     @service hostRouter;
+    @service intl;
 
     queryParams = ['order_id'];
 
@@ -64,7 +65,7 @@ export default class PortalSupportNewController extends Controller {
             );
 
             this.resetForm();
-            this.notifications.success('Support ticket created.');
+            this.notifications.success(this.intl.t('portal.support.ticket-created'));
             this.hostRouter.transitionTo('customer-portal.portal.support.index');
         } catch (error) {
             this.notifications.serverError(error);

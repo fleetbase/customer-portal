@@ -1,29 +1,29 @@
 <div class="portal-order-address-form">
     <div class="grid grid-cols-1 gap-3">
-        <InputGroup @name="Address Label">
-            <Input @value={{this.name}} class="form-input w-full" placeholder="Warehouse, office, home..." {{on "input" (fn this.setInput "name")}} />
+        <InputGroup @name={{t "portal.orders.form.address-label"}}>
+            <Input @value={{this.name}} class="form-input w-full" placeholder={{t "portal.orders.form.address-label-placeholder"}} {{on "input" (fn this.setInput "name")}} />
         </InputGroup>
 
-        <InputGroup @name="Street Address" @required={{true}}>
-            <Textarea @value={{this.street1}} class="form-input w-full" rows="3" placeholder="Enter the pickup or delivery address" {{on "input" (fn this.setInput "street1")}} />
+        <InputGroup @name={{t "portal.orders.form.street-address"}} @required={{true}}>
+            <Textarea @value={{this.street1}} class="form-input w-full" rows="3" placeholder={{t "portal.orders.form.street-address-placeholder"}} {{on "input" (fn this.setInput "street1")}} />
         </InputGroup>
 
-        <InputGroup @name="Contact Phone">
-            <Input @value={{this.phone}} class="form-input w-full" placeholder="Optional phone number" {{on "input" (fn this.setInput "phone")}} />
+        <InputGroup @name={{t "portal.orders.form.contact-phone"}}>
+            <Input @value={{this.phone}} class="form-input w-full" placeholder={{t "portal.orders.form.contact-phone-placeholder"}} {{on "input" (fn this.setInput "phone")}} />
         </InputGroup>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <InputGroup @name="Latitude">
-                <Input @value={{this.latitude}} class="form-input w-full" placeholder="Optional" {{on "input" (fn this.setInput "latitude")}} />
+            <InputGroup @name={{t "portal.orders.form.latitude"}}>
+                <Input @value={{this.latitude}} class="form-input w-full" placeholder={{t "portal.orders.form.optional"}} {{on "input" (fn this.setInput "latitude")}} />
             </InputGroup>
-            <InputGroup @name="Longitude">
-                <Input @value={{this.longitude}} class="form-input w-full" placeholder="Optional" {{on "input" (fn this.setInput "longitude")}} />
+            <InputGroup @name={{t "portal.orders.form.longitude"}}>
+                <Input @value={{this.longitude}} class="form-input w-full" placeholder={{t "portal.orders.form.optional"}} {{on "input" (fn this.setInput "longitude")}} />
             </InputGroup>
         </div>
     </div>
 
     <div class="flex items-center justify-end space-x-2 mt-4">
-        <Button @text="Cancel" @onClick={{@onCancel}} />
-        <Button @type="primary" @text="Save Address" @icon="check" @onClick={{this.save}} @isLoading={{@isSaving}} @disabled={{not this.canSave}} />
+        <Button @text={{t "portal.orders.form.cancel"}} @onClick={{@onCancel}} />
+        <Button @type="primary" @text={{t "portal.orders.form.save-address"}} @icon="check" @onClick={{this.save}} @isLoading={{@isSaving}} @disabled={{not this.canSave}} />
     </div>
 </div>

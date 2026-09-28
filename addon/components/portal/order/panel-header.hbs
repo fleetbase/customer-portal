@@ -17,12 +17,12 @@
                 <div class="flex flex-row flex-wrap gap-1">
                     <Badge @status={{@resource.status}} />
                     {{#if @resource.dispatched_at}}
-                        <Badge @status="dispatched">{{concat "Dispatched at " this.dispatchedAt}}</Badge>
+                        <Badge @status="dispatched">{{t "portal.orders.details.dispatched-at" time=this.dispatchedAt}}</Badge>
                     {{/if}}
                 </div>
                 <div class="mt-1">
-                    <div class="text-xs text-gray-400 dark:text-gray-500">Date Created: {{this.createdAt}}</div>
-                    <div class="text-xs text-gray-400 dark:text-gray-500">Type: {{smart-humanize @resource.type}}</div>
+                    <div class="text-xs text-gray-400 dark:text-gray-500">{{t "portal.orders.details.date-created" date=this.createdAt}}</div>
+                    <div class="text-xs text-gray-400 dark:text-gray-500">{{t "portal.orders.details.type-label" type=(smart-humanize @resource.type)}}</div>
                 </div>
             </div>
         </div>

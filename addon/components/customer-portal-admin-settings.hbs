@@ -1,16 +1,16 @@
 <Layout::Section::Body class="overflow-y-scroll h-full">
     <div class="container mx-auto h-screen">
         <div class="max-w-3xl mx-auto space-y-4">
-            <ContentPanel @title="Customer Portal Settings" @open={{true}} @wrapperClass="bordered-classic">
+            <ContentPanel @title={{t "portal.admin-settings.title"}} @open={{true}} @wrapperClass="bordered-classic">
                 {{#if this.getConfig.isRunning}}
                     <div class="mb-4">
                         <Spinner />
                     </div>
                 {{else}}
-                    <InputGroup @name="Customer Portal Access" @helpText="Input a URL slug where your customer portal can be accessed." @wrapperClass="mb-4">
+                    <InputGroup @name={{t "portal.admin-settings.access-url"}} @helpText={{t "portal.admin-settings.access-url-help"}} @wrapperClass="mb-4">
                         <CustomerPortalUrlInput
                             @value={{this.accessUrlSlug}}
-                            @placeholder="Your Customer Portal URL"
+                            @placeholder={{t "portal.admin-settings.access-url-placeholder"}}
                             @onChange={{perform this.setAccessUrlSlug}}
                             class="w-full"
                             disabled={{this.saveConfig.isRunning}}
@@ -19,7 +19,7 @@
                             <InfoBlock @type="danger" @size="sm" @icon="triangle-exclamation" @text={{this.accessUrlSlugValidation.message}} class="mt-2" />
                         {{/unless}}
                     </InputGroup>
-                    <InputGroup @name="Available Order Types" @helpText="Choose which order types customers can create from the portal. Deselect all to disable customer order creation." @wrapperClass="mb-4">
+                    <InputGroup @name={{t "portal.admin-settings.available-order-types"}} @helpText={{t "portal.admin-settings.available-order-types-help"}} @wrapperClass="mb-4">
                         <div class="space-y-1">
                             {{#each this.orderConfigs as |orderConfig|}}
                                 <Checkbox @value={{includes orderConfig.uuid this.enabledOrderConfigIds}} @onChange={{fn this.toggleOrderConfig orderConfig}}>
@@ -29,11 +29,11 @@
                                     {{/if}}
                                 </Checkbox>
                             {{else}}
-                                <InfoBlock @type="warning" @size="sm" @text="No order types are available for this organization." />
+                                <InfoBlock @type="warning" @size="sm" @text={{t "portal.admin-settings.no-order-types"}} />
                             {{/each}}
                         </div>
                     </InputGroup>
-                    <InputGroup @name="Quoteable Service Rates" @helpText="Choose which service rates can be queried when customers request quotes. Deselect all to return no service quotes." @wrapperClass="mb-4">
+                    <InputGroup @name={{t "portal.admin-settings.quoteable-service-rates"}} @helpText={{t "portal.admin-settings.quoteable-service-rates-help"}} @wrapperClass="mb-4">
                         <div class="space-y-1">
                             {{#each this.serviceRates as |serviceRate|}}
                                 <Checkbox @value={{includes serviceRate.uuid this.enabledServiceRateIds}} @onChange={{fn this.toggleServiceRate serviceRate}}>
@@ -43,27 +43,27 @@
                                     {{/if}}
                                 </Checkbox>
                             {{else}}
-                                <InfoBlock @type="warning" @size="sm" @text="No service rates are available for this organization." />
+                                <InfoBlock @type="warning" @size="sm" @text={{t "portal.admin-settings.no-service-rates"}} />
                             {{/each}}
                         </div>
                     </InputGroup>
-                    <InputGroup @name="Enable Stripe Payments" @wrapperClass="mb-4">
+                    <InputGroup @name={{t "portal.admin-settings.enable-stripe"}} @wrapperClass="mb-4">
                         <Toggle
                             @isToggled={{this.paymentsEnabled}}
                             @onToggle={{this.togglePayments}}
-                            @label="Require Stripe checkout when a customer selects a service quote"
+                            @label={{t "portal.admin-settings.stripe-label"}}
                         />
                         <div class="space-y-2 mt-4">
                             {{#unless this.paymentsOnboardCompleted}}
                                 <InfoBlock @type="warning" @icon="triangle-exclamation">
-                                    <span>Stripe onboarding must be completed before customer portal payments can be enabled.</span>
-                                    <Button @text="Complete Payments Onboarding" @onClick={{transition-to "console.fleet-ops.settings.payments.onboard"}} @wrapperClass="mt-2" />
+                                    <span>{{t "portal.admin-settings.stripe-onboarding-warning"}}</span>
+                                    <Button @text={{t "portal.admin-settings.complete-onboarding-button"}} @onClick={{transition-to "console.fleet-ops.settings.payments.onboard"}} @wrapperClass="mt-2" />
                                 </InfoBlock>
                             {{/unless}}
                             <InfoBlock
                                 @type={{if this.isStripeEnabled "success" "warning"}}
                                 @icon={{if this.isStripeEnabled "check" "triangle-exclamation"}}
-                                @text={{if this.isStripeEnabled "Stripe is configured." "Stripe is not configured. The system administrator must configure Stripe before customer payments can be accepted."}}
+                                @text={{if this.isStripeEnabled (t "portal.admin-settings.stripe-configured") (t "portal.admin-settings.stripe-not-configured")}}
                             />
                         </div>
                     </InputGroup>
@@ -72,7 +72,7 @@
                     <Button
                         @type="primary"
                         @icon="save"
-                        @text="Save Settings"
+                        @text={{t "portal.admin-settings.save-button"}}
                         @onClick={{perform this.saveConfig}}
                         @isLoading={{or this.saveConfig.isRunning this.setAccessUrlSlug.isRunning}}
                         @disabled={{this.saveDisabled}}
@@ -86,3 +86,4 @@
     </div>
     <Spacer @height="300px" />
 </Layout::Section::Body>
+

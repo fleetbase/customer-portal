@@ -1,20 +1,20 @@
 <Portal::ContentWrapper class="portal-page-card portal-table-page-card">
     <div class="portal-section-header">
         <div>
-            <div class="portal-section-eyebrow">Document Library</div>
-            <h1>Documents</h1>
-            <p>Download labels, PODs, photos, invoices, receipts, and order files.</p>
+            <div class="portal-section-eyebrow">{{t "portal.documents.eyebrow"}}</div>
+            <h1>{{t "portal.documents.title"}}</h1>
+            <p>{{t "portal.documents.subtitle"}}</p>
         </div>
     </div>
     <div class="next-table-wrapper no-scroll h-auto table-fluid portal-table-panel mt-5">
         <table class="table table-fixed portal-table">
             <thead>
                 <tr>
-                    <th class="text-left">Document</th>
-                    <th class="text-left">Type</th>
-                    <th class="text-left">Order</th>
-                    <th class="text-left">Created</th>
-                    <th class="text-right">Actions</th>
+                    <th class="text-left">{{t "portal.documents.table.document"}}</th>
+                    <th class="text-left">{{t "portal.documents.table.type"}}</th>
+                    <th class="text-left">{{t "portal.documents.table.order"}}</th>
+                    <th class="text-left">{{t "portal.documents.table.created"}}</th>
+                    <th class="text-right">{{t "portal.documents.table.actions"}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,7 +34,7 @@
                                         <Button @size="xs" @icon="download" @onClick={{fn this.downloadDocument document}} />
                                     </div>
                                 {{else}}
-                                    <span class="text-xs text-gray-500">Unavailable</span>
+                                    <span class="text-xs text-gray-500">{{t "portal.documents.unavailable"}}</span>
                                 {{/if}}
                             </div>
                         </td>
@@ -44,8 +44,8 @@
                         <td colspan="5">
                             <div class="portal-empty-state portal-table-empty-state">
                                 <div class="portal-empty-state-icon"><FaIcon @icon="folder-open" /></div>
-                                <div class="portal-empty-state-title">No documents yet</div>
-                                <p>Labels, PODs, photos, invoices, receipts, and order files will appear here when they become available.</p>
+                                <div class="portal-empty-state-title">{{t "portal.documents.empty-title"}}</div>
+                                <p>{{t "portal.documents.empty-desc"}}</p>
                             </div>
                         </td>
                     </tr>
@@ -54,3 +54,4 @@
         </table>
     </div>
 </Portal::ContentWrapper>
+

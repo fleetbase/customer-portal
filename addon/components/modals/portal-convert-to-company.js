@@ -6,6 +6,7 @@ export default class ModalsPortalConvertToCompanyComponent extends Component {
     @service customerSession;
     @service fetch;
     @service notifications;
+    @service intl;
 
     @tracked companyName;
     @tracked companyEmail;
@@ -22,8 +23,8 @@ export default class ModalsPortalConvertToCompanyComponent extends Component {
     }
 
     setupOptions() {
-        this.options.title = 'Convert to Company Account';
-        this.options.acceptButtonText = 'Convert Account';
+        this.options.title = this.intl.t('portal.modals.convert-to-company.title');
+        this.options.acceptButtonText = this.intl.t('portal.modals.convert-to-company.accept-button');
         this.options.confirm = async (modal) => {
             modal.startLoading();
 
@@ -38,7 +39,7 @@ export default class ModalsPortalConvertToCompanyComponent extends Component {
                     { namespace: 'customer-portal/int/v1' }
                 );
 
-                this.notifications.success('Company account created.');
+                this.notifications.success(this.intl.t('portal.modals.convert-to-company.success'));
 
                 if (typeof this.options.onConverted === 'function') {
                     this.options.onConverted();
