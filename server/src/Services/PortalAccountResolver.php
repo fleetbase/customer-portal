@@ -9,11 +9,15 @@ class PortalAccountResolver
 {
     public function resolve(): array
     {
-        $userUuid = session('user');
-        $contact  = Contact::where(['user_uuid' => $userUuid, 'type' => 'customer'])->first();
-        $vendors  = Vendor::whereHas('vendorPersonnel', function ($query) use ($userUuid) {
-            $query->where('status', 'active')->whereHas('contact', function ($contactQuery) use ($userUuid) {
-                $contactQuery->where('user_uuid', $userUuid)->where('type', 'customer');
+        $userUuid    = session('user');
+        $companyUuid = session('company');
+
+        // A user can be a customer of more than one company; only accounts in the
+        // session company may act as the portal account.
+        $contact  = Contact::where(['company_uuid' => $companyUuid, 'user_uuid' => $userUuid, 'type' => 'customer'])->first();
+        $vendors  = Vendor::where('company_uuid', $companyUuid)->whereHas('vendorPersonnel', function ($query) use ($userUuid, $companyUuid) {
+            $query->where('status', 'active')->whereHas('contact', function ($contactQuery) use ($userUuid, $companyUuid) {
+                $contactQuery->where('company_uuid', $companyUuid)->where('user_uuid', $userUuid)->where('type', 'customer');
             });
         })->get();
 

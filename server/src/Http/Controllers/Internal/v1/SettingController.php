@@ -58,17 +58,22 @@ class SettingController extends Controller
     {
         $company = Auth::getCompany();
         if ($company) {
-            $accessUrlSlug = Str::slug($company->name);
-            $numberPrefix  = 1;
-            while ($this->_validateAccessUrlSlug($accessUrlSlug)['valid'] === false) {
-                $accessUrlSlug = $accessUrlSlug + '-' + $numberPrefix;
-                $numberPrefix++;
-            }
-
-            return $accessUrlSlug;
+            return $this->_uniqueAccessUrlSlug(Str::slug($company->name));
         }
 
         return '';
+    }
+
+    private function _uniqueAccessUrlSlug(string $baseSlug): string
+    {
+        $accessUrlSlug = $baseSlug;
+        $numberSuffix  = 1;
+        while ($this->_validateAccessUrlSlug($accessUrlSlug)['valid'] === false) {
+            $accessUrlSlug = $baseSlug . '-' . $numberSuffix;
+            $numberSuffix++;
+        }
+
+        return $accessUrlSlug;
     }
 
     private function _validateAccessUrlSlug(string $accessUrlSlug = '')
