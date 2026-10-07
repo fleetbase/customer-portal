@@ -49,9 +49,10 @@ Route::prefix(config('customer-portal.api.routing.prefix', 'customer-portal'))->
                                 $router->group(
                                     ['prefix' => 'settings', 'middleware' => []],
                                     function ($router) {
-                                        $router->get('config', 'SettingController@getSettings');
-                                        $router->post('config', 'SettingController@saveSettings');
-                                        $router->post('validate-access-url', 'SettingController@validateAccessUrlSlug');
+                                        // Organization settings: console users only, never portal customers.
+                                        $router->get('config', 'SettingController@getSettings')->middleware(Fleetbase\CustomerPortal\Http\Middleware\PortalAdminGuard::class . ':view');
+                                        $router->post('config', 'SettingController@saveSettings')->middleware(Fleetbase\CustomerPortal\Http\Middleware\PortalAdminGuard::class . ':update');
+                                        $router->post('validate-access-url', 'SettingController@validateAccessUrlSlug')->middleware(Fleetbase\CustomerPortal\Http\Middleware\PortalAdminGuard::class . ':update');
                                     }
                                 );
                                 $router->get('account', 'AccountController@account');
