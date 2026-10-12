@@ -1,9 +1,11 @@
 <?php
 
 use Fleetbase\CustomerPortal\Services\PortalAccountResolver;
+use Illuminate\Container\Container;
 use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\SQLiteConnection;
+use Illuminate\Support\Facades\Facade;
 
 if (!function_exists('Fleetbase\Traits\config')) {
     eval('namespace Fleetbase\Traits; function config($key = null, $default = null) { return $key === "api.cache.enabled" ? false : $default; } function app($abstract = null) { return is_string($abstract) ? (new \ReflectionClass($abstract))->newInstanceWithoutConstructor() : null; }');
@@ -44,6 +46,13 @@ function customerPortalAccountResolverBoot(): SQLiteConnection
     $resolver   = new ConnectionResolver(['default' => $connection, 'mysql' => $connection]);
     $resolver->setDefaultConnection('mysql');
     EloquentModel::setConnectionResolver($resolver);
+
+    // core-api's Expandable::__call probes DB::connection() before forwarding dynamic
+    // calls; without a bound `db` it recurses until memory runs out.
+    $container = Container::getInstance();
+    $container->instance('db', $resolver);
+    Facade::setFacadeApplication($container);
+    Facade::clearResolvedInstance('db');
 
     $schema = $connection->getSchemaBuilder();
     $schema->create('contacts', function ($table) {

@@ -76,8 +76,8 @@ test('the organization settings routes are registered behind the admin guard', f
     $routes = file_get_contents(__DIR__ . '/../src/routes.php');
 
     foreach ([
-        "get('config', 'SettingController@getSettings')"                   => 'view',
-        "post('config', 'SettingController@saveSettings')"                 => 'update',
+        "get('config', 'SettingController@getSettings')"                         => 'view',
+        "post('config', 'SettingController@saveSettings')"                       => 'update',
         "post('validate-access-url', 'SettingController@validateAccessUrlSlug')" => 'update',
     ] as $route => $action) {
         expect($routes)->toContain($route . "->middleware(Fleetbase\\CustomerPortal\\Http\\Middleware\\PortalAdminGuard::class . ':" . $action . "')");
