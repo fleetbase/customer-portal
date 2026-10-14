@@ -9,6 +9,10 @@
 - **CI runs this package's unit tests again.** (#22)
 
 ---
+## Upgrading
+Depends on fleetbase/ember-ui v0.4.6, fleetbase/ember-core v0.3.26 and fleetbase/fleetops-data v0.2.3. No configuration changes.
+
+---
 ## Need help?
 - [GitHub Discussions](https://github.com/fleetbase/fleetbase/discussions)
 - [Discord](https://discord.gg/HnTqQ6zAVn)
