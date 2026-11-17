@@ -1,18 +1,13 @@
-> v0.0.16 ~ "Portal customers can no longer reach organization settings"
+> v0.1.0 ~ "Laravel 12 and core-api 2.0"
 
 ---
 ## Highlights
 
-- **Security: portal customers could read and overwrite organization settings.** The admin settings routes (`settings/config` and `settings/validate-access-url`) required no permission. A portal customer's token could read the full portal configuration and replace it: the access slug, enabled order configs and service rates, and payment flags. A new `PortalAdminGuard` refuses portal customers. Other non-admin users need `fleet-ops view customer` to read and `fleet-ops update customer` to save. (#22)
-- **Security: the portal account is scoped to the company.** A user with customer profiles in several companies could end up with another company's vendor as their portal account. The contact, vendor and personnel lookups now filter by the signed-in company. (#22)
-- **Fix: creating the default access slug crashed when the company-name slug was taken.** Slugs now try `name-2`, `name-3` and so on. (#22)
-- **CI runs this package's unit tests again.** (#22)
+- **Laravel 12.** The server package now runs on Laravel 12 with Carbon 3 and requires `fleetbase/core-api` ^2.0. It installs into the Laravel 12 Fleetbase API (fleetbase/fleetbase v0.8.0); Laravel 10 installs stay on the v0.0.16 line.
+- **No security advisory exceptions.** `composer audit` reports no advisories on the Laravel 12 dependency set, so the Composer advisory workarounds are gone.
 
 ---
 ## Upgrading
-Depends on fleetbase/ember-ui v0.4.6, fleetbase/ember-core v0.3.26 and fleetbase/fleetops-data v0.2.3. No configuration changes.
 
----
-## Need help?
-- [GitHub Discussions](https://github.com/fleetbase/fleetbase/discussions)
-- [Discord](https://discord.gg/HnTqQ6zAVn)
+- **Requires fleetbase/core-api v2.0.0** (Laravel 12, PHP 8.2 or later). Upgrade the API to fleetbase/fleetbase v0.8.0 first, then this extension.
+- **Requires** `fleetbase/fleetops-api` ^0.7.0, `fleetbase/ledger-api` ^0.1.0. Install those Laravel 12 releases first.

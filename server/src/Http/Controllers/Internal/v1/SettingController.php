@@ -40,7 +40,7 @@ class SettingController extends Controller
 
     public function saveSettings(Request $request)
     {
-        $customerPortalConfig = $this->portalConfig->sanitize($request->array('customerPortalConfig'));
+        $customerPortalConfig = $this->portalConfig->sanitize($request->inputArray('customerPortalConfig'));
         Setting::configureCompany('customer-portal-config', $customerPortalConfig);
 
         return response()->json($this->portalConfig->adminConfig($customerPortalConfig));
